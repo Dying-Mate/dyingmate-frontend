@@ -44,7 +44,6 @@ export default function SignUpForm() {
 
   const handleCheckEmail = () => {
     axios.get(`https://dying-mate-server.link/user/email/exists/${email}`,{
-      "Content-Type": "application/json",
       "Access-Control-Allow-Origin": `https://dyingmate.com`,
       "Access-Control-Allow-Credentials":"true",
     } )
