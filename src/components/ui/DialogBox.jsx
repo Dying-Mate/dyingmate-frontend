@@ -53,16 +53,16 @@ export default function DialogBox({messageArr, stageNum}) {
       console.log(stageNum)
       switch (stageNum) {
         case 1:
-          setAddOffset(0.13)
+          setAddOffset(0.17)
           break;
         case 2:
-          setAddOffset(0.33)
+          setAddOffset(0.42)
           break;
         case 3:
-          setAddOffset(0.53)
+          setAddOffset(0.7)
           break;
         case 4:
-          setAddOffset(0.73)
+          setAddOffset(0.96)
           break;
       }
     },[])

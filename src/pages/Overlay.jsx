@@ -8,9 +8,9 @@ export const Overlay = () => {
   const { progress } = useProgress();
   const { play, end, setPlay, hasScroll } = usePlay();
 
-  useEffect(() => 
+  useEffect(() => {
     setPlay(true)
-  )
+  },[])
 
   return (
     <div
@@ -39,13 +39,13 @@ export const Overlay = () => {
 
 // styled-components
 const GuideText = styled.div`
-  padding: 0.75rem 20rem;
+  width: 45%;
+  padding: 1.1rem 11.6rem;
   font-size: 1.25rem;
-  background-image:
-    linear-gradient(
-      to right, 
-      rgba(255, 255, 255, 0),
-      rgba(255, 255, 255, 100),
-      rgba(255, 255, 255, 0)
-    );
+  color: white;
+  background: linear-gradient(237deg, rgba(0, 0, 0, 0.2) -23.03%, rgba(0, 0, 0, 0.05) 119.63%);
+  outline: 2px solid white; 
+  border-radius: 2rem;  
+  backdrop-filter: blur(60px);
+  box-sizing: border-box;
 `
