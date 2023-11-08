@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import {ReactComponent as MainIcon} from '../../../../assets/icons/PlayerRoom/Diary/main_icon.svg'
-import GraveStoneSrc from '../../../../assets/img/PlayerRoom/diary_gravestone.png'
 import { useDiaryContext } from '../../../../contexts/DiaryContext';
+import GraveStoneSrc from '../../../../assets/img/PlayerRoom/gravestone.png'
 
 export default function StepTwo() {
 
@@ -19,7 +19,7 @@ export default function StepTwo() {
 
   const handleClick = (e) => {
     setIsDone(true)
-    setDiary((data) => ({...data, 'epitaph': stoneText}))
+    setDiary((data) => ({...data, 'epitaph': stoneTextInput}))
   }
 
   useEffect(() => {

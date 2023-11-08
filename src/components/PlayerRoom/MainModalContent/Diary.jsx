@@ -30,7 +30,6 @@ export default function Diary() {
   }
 
   useEffect(() => {
-
     switch(curIdx) {
       case 1:
         setComp(<StepOne/>)
@@ -92,4 +91,5 @@ const Button = styled.div`
   display: flex;
   justify-content: center;
   width: 8.5rem;
+  cursor: pointer;
 `

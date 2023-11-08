@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import {useNavigate} from 'react-router-dom'
 import styled from 'styled-components';
-import { ReactComponent as GoogleIcon } from '../../assets/icons/google_icon.svg'
-import { ReactComponent as KakaoIcon } from '../../assets/icons/kakao_icon.svg'
-import { ReactComponent as HidePwdIcon } from '../../assets/icons/hide_pwd_icon.svg'
+import { ReactComponent as GoogleIcon } from '../../assets/icons/Splash/google_icon.svg'
+import { ReactComponent as KakaoIcon } from '../../assets/icons/Splash/kakao_icon.svg'
+import { ReactComponent as HidePwdIcon } from '../../assets/icons/Splash/hide_pwd_icon.svg'
 import {IoMdAlert} from 'react-icons/io'
 import axios from 'axios'  
 import { useAuthContext } from '../../contexts/AuthContext';
@@ -15,12 +15,11 @@ export default function LoginForm() {
   const [pwd, setPwd] = useState('')
   const [showPwd, setShowPwd] = useState()
   const [isValid, setIsValid] = useState(true)
-  const {token, setToken, login, setLogin} = useAuthContext()
+  const {user, setUser, setLogin} = useAuthContext()
 
   const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&response_type=code`
   const handleKakaoLogin = ()=>{
       window.location.href = kakaoURL;
-      console.log(new URL(window.location.href))
   }
 
   const handleEmail = (e) => {
@@ -47,21 +46,20 @@ export default function LoginForm() {
     )
     .then((response) => {
       console.log(response)
-      if(response.data.message !== '로그인 성공'){
+      if(response.data.message !== '성공'){
         setIsValid(false)
         return;
       }
-      localStorage.setItem('login-token', response.data.data.token);
-      setToken(localStorage.setItem('login-token', response.data.data.token));
+      localStorage.setItem('login-token', response.data.data.accessToken);
+      setUser(response.data.data)
     })
     .then(() => {
       setLogin(true)
-      console.log("login 됐나",login)
-      console.log("토큰 저장?",token)
+      navigate('/main')
     })
     .catch(function (error) {
         // 오류발생시 실행
-        console.log(error.message)
+        console.log(error)
     })
   }
 
@@ -122,6 +120,8 @@ const PasswordInput = styled.div`
   display: flex;
   align-items: center;
   margin: 1rem 0;
+  cursor: pointer;
+
   svg {
     height: 100%;
     width: 1rem;
@@ -195,6 +195,10 @@ const SocialLoginIcons = styled.div`
   display: flex;
   justify-content: center;
   gap: 1rem;
+
+  svg {
+    cursor: pointer;
+  }
 `
 
 const FindInfoText = styled.p`
@@ -203,7 +207,7 @@ const FindInfoText = styled.p`
   font-size: 0.9rem;
   color: white;
   font-weight: 300;
-
+  cursor: pointer;
 `
 
 

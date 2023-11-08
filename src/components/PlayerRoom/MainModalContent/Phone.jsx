@@ -7,12 +7,16 @@ import StyledButton from '../../ui/StyledButton'
 import {ReactComponent as SendIcon} from '../../../assets/icons/PlayerRoom/Phone/send_icon.svg'
 import { ReactComponent as BubbleVector } from '../../../assets/img/PlayerRoom/message_bubble_vec.svg'
 import { useAuthContext } from '../../../contexts/AuthContext'
+import {IoMdAlert} from 'react-icons/io'
 
 export default function Phone() {
-  const [data, setData ] = useState('')
+  const [inputData, setInputData] = useState('')
+  const [data, setData] = useState('')
   const [isSend, setIsSend] = useState(false);
+  const [isMaxLength, setIsMaxLength] = useState(false)
 
-  const {token} = useAuthContext()
+  const baseUrl = 'https://dying-mate-server.link'
+  const {token} = useAuthContext();
 
   // 날짜 구하기
   const date = new Date();
@@ -22,22 +26,26 @@ export default function Phone() {
 
 
   const handleChange = (e) => {
-    setData(e.target.value);
+    const {value, maxLength} = e.target
+    setInputData(value);
     textarea.current.style.height = textarea.current.scrollHeight + 'px';
+    setIsMaxLength(value.length === maxLength)
   }
 
   const handleSubmit = async (e) => {
     setIsSend(true);
-    textarea.value = ''
-    axios.post('/api/message/send', {message: data}, {
+    setInputData('')
+    setData(inputData)
+    textarea.current.style.height = '4rem'
+    setIsMaxLength(false)
+    axios.post(`${baseUrl}/message/send`, {message: inputData}, {
       headers: {
         Authorization: `Bearer ${token}`
       },
       withCredentials: true,
     })
     .then((response) => {
-      console.log(response)
-        
+      console.log(response)        
     }).catch(function (error) {
         // 오류발생시 실행
         console.log(error.message)  
@@ -45,11 +53,11 @@ export default function Phone() {
   }
 
   useEffect(() => {
-    axios.get('/api/message/load', {
+    axios.get(`${baseUrl}/message/load`, {
       headers: {Authorization: 'Bearer ' + token},
     }, )
     .then(function (response) {
-      console.log(response)
+      setData(response.data.data.message)    
     })
     .catch(function (error) {
       console.log(error);
@@ -70,7 +78,7 @@ export default function Phone() {
             <p>부고문자는 한번만 작성할 수 있으니 신중하게 작성해야 합니다. <br/>
               {date.getMonth()}월 {date.getDay()}일 ({week[date.getDay()]}) {date.getHours()}:{String(date.getMinutes()).padStart(2, "0")}
             </p>
-            {isSend && 
+            {(isSend || data.length>0) && 
             <MessageArea>
               <Bubble>
                 <p>{data}</p>
@@ -81,18 +89,31 @@ export default function Phone() {
 
           </Main>
           <Footer method='POST'>
-            <FormInput 
-              ref={textarea}
-              type={"text"}
-              id='message' 
-              name='message' 
-              value={data ?? ''}
-              onChange={handleChange}
-              placeholder='부고 문자에 들어갈 내용을 작성해주세요.' 
-              spellCheck="false"
-              required
-            />
-            <StyledButton width={'6rem'} handleOnClick={handleSubmit} text={<SendIcon/>} btnColor={`var(--main-color)`} />
+            <TextAreaWrapper>
+              {isMaxLength && 
+                <ValidText>
+                  <IoMdAlert/>
+                  <p>200자까지만 작성 가능합니다.</p>
+                </ValidText>
+              }
+
+              <FormInput 
+                ref={textarea}
+                type={"text"}
+                id='message' 
+                name='message' 
+                value={inputData ?? ''}
+                onChange={handleChange}
+                placeholder='부고 문자에 들어갈 내용을 작성해주세요.' 
+                spellCheck="false"
+                required
+                maxLength={500}
+                isMaxLength={isMaxLength}
+              />
+
+            </TextAreaWrapper>
+
+            <StyledButton width={'7rem'} handleOnClick={handleSubmit} text={<SendIcon/>} btnColor={`var(--main-color)`} />
           </Footer>
         </PhoneWrapper>
         <TextArea>
@@ -122,7 +143,7 @@ const Container = styled.div`
 `
 
 const PhoneWrapper = styled.div`
-  width: 26rem;
+  width: 24rem;
   height: 95%;
   background-color: white;
   border-radius: 1.25rem;
@@ -142,15 +163,15 @@ const Header = styled.div`
   p{
     color: black;
     font-weight: 600;
-
+    font-size: 0.875rem;
   }
 `
 
 const Main = styled.div`
-  padding: 1.8rem;
+  padding: 1.4rem;
   box-sizing: border-box;
   height: 100%;
-  font-size: 0.875rem;
+  font-size: 0.85rem;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -164,6 +185,7 @@ const MessageArea = styled.div`
   width: 100%;
   display: flex;
   justify-content: flex-end;
+  margin-top: 0.5rem;
 
   svg {
     position: absolute;
@@ -207,14 +229,38 @@ const Footer = styled.form`
   align-items: flex-end;
 `
 
+const TextAreaWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+
+`
+
+const ValidText = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  color: var(--main-color);
+  font-size: 0.875rem;
+
+  svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+`
+
 const FormInput = styled.textarea`
   width: 100%;
   box-sizing: border-box;
   padding: 1rem;
   border: none;
+  outline: 2px solid ${(props) => props.isMaxLength ? 'var(--main-color)' : 'transparent'};
   border-radius: 1.25rem;
   color: var(--font-gray-2);
   background-color: #f3f3f3;
+  resize: none;
+
   &:focus {
     border: none;
   }

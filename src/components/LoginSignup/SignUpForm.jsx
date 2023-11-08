@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import {useNavigate} from 'react-router-dom'
 import styled from 'styled-components';
-import {ReactComponent as GoogleIcon} from '../../assets/icons/google_icon.svg'
-import {ReactComponent as KakaoIcon} from '../../assets/icons/kakao_icon.svg'
-import {ReactComponent as HidePwdIcon} from '../../assets/icons/hide_pwd_icon.svg'
+import {ReactComponent as GoogleIcon} from '../../assets/icons/Splash/google_icon.svg'
+import {ReactComponent as KakaoIcon} from '../../assets/icons/Splash/kakao_icon.svg'
+import {ReactComponent as HidePwdIcon} from '../../assets/icons/Splash/hide_pwd_icon.svg'
 import axios from 'axios'  
 import {GoCheckCircleFill} from 'react-icons/go'
 import {IoMdAlert} from 'react-icons/io'
@@ -72,7 +72,7 @@ export default function SignUpForm() {
         return;
       }
       else{
-        navigate('/onboarding',{state: {email: email, pwd: pwd}})
+        navigate('/onboarding',{state: {isSocialLogin: false, email: email, pwd: pwd}})
       }
         
     }).catch(function (error) {
@@ -161,6 +161,7 @@ const PasswordInput = styled.div`
   align-items: center;
   verticle-align: middle;
   margin-bottom: 1rem;
+  cursor: pointer;
 
   svg {
     height: 100%;
@@ -241,6 +242,10 @@ const SocialLogin = styled.div`
 
   p:after {
     margin-left: 1.25rem;
+  }
+
+  svg {
+    cursor: pointer;
   }
 `
 

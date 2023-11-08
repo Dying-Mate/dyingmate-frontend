@@ -1,34 +1,47 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import BoardSrc4 from '../../../assets/img/PlayerRoom/boardSrc4.png'
-import BoardSrc5 from '../../../assets/img/PlayerRoom/boardSrc5.png'
 import NewTextPost from './Board/NewTextPost'
 import NewImagePost from './Board/NewImagePost'
 import AddPostModal from './Board/AddPostModal'
-import { getAllBucketlist } from '../../../apis/api/PlayerRoom/bucketlist'
+import axios from 'axios'
+import OnePostItem from './Board/OnePostItem'
+import { useAuthContext } from '../../../contexts/AuthContext'
 
 export default function Board() {
   const [openModal, setOpenModal] = useState(false)
-  const [posts, setAllPosts] = useState([])
   const [isImagePost, setIsImagePost] = useState(false)
+  const [allBucketlist, setAllBucketlist] = useState()
+  const baseUrl = 'https://dying-mate-server.link'
+  const {token} = useAuthContext()
 
   useEffect(() => {
-    getAllBucketlist()
-    .then((res) => {
-      console.log("getAllBucketlist", res.data)
-      res.data.map((item) => setAllPosts([...posts, item]))
-      console.log(posts)
-    }).catch(function (error) {
-      // 오류발생시 실행
-      console.log(error.message)
-    })
-  },[])
+    async function getAllBucketlist() {
+      try{
+        const {data} = await axios.get(`${baseUrl}/bucketlist/load`,{
+          headers: {Authorization: 'Bearer ' + token},
+        }, )
+        return data
+      }
+      catch(error) {
+        console.log(error)
+      }
+    }
+    
+    getAllBucketlist().then((res) =>{
+      if(res) {
+        console.log("getAllBucketlist",res)
+        setAllBucketlist(res.data.fileResponseList)
+      }
+      }).then(() => {
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  },[allBucketlist])
 
   const handleOnClick = (isImagePost) => {
     setOpenModal(true)
     setIsImagePost(isImagePost)
-    console.log("isImagePost", isImagePost)
-    console.log("openModal", openModal)
   }
 
   return (
@@ -41,7 +54,9 @@ export default function Board() {
             <NewTextPost />
           </NewPostWrapper>
           <PostWrapper>
-            {/* 생성한 post 보여주기  */}
+            {allBucketlist && allBucketlist.map((memo, idx) => (
+              <OnePostItem key={idx} memo={memo}/>
+            ))}            
           </PostWrapper>
         </BoardContainer>
       </Container>
@@ -62,7 +77,6 @@ const BoardContainer = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
-  // background: url(${BoardSrc5}) no-repeat center;
   background-color: #D9995D;
   border: 5px solid white;
   box-sizing: border-box;
@@ -91,6 +105,7 @@ const NewPostWrapper = styled.div`
     &:hover{
       transform: scale(1.2) rotate(10deg);
       transition: transform 0.2s;
+      cursor: pointer;
     }
   }
 `

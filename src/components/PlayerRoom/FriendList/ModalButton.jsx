@@ -1,15 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
-import {ReactComponent as FriendModalIcon} from '../../../assets/icons/PlayerRoom/friend_modal.svg'
+import {ReactComponent as FriendModalIcon} from '../../../assets/icons/PlayerRoom/Friend/friend_modal.svg'
 
-export default function ModalButton() {
+export default function ModalButton({requestCount}) {
   return (
     <ButtonWrapper>
       <CircleWrapper>
         <FriendModalIcon/>
       </CircleWrapper>
       <RequestCount>
-        2
+        {requestCount}
       </RequestCount>
     </ButtonWrapper>
   )
@@ -23,13 +23,16 @@ const ButtonWrapper = styled.div`
 `
 
 const CircleWrapper = styled.div`
-  // background: linear-gradient(237deg, rgba(0, 0, 0, 0.51) -23.03%, rgba(0, 0, 0, 0.12) 119.63%);
   background-color: #FD835F;
-
   outline: 2px solid white; 
   position: relative;
   padding: 1.2rem;
   border-radius: 100%;
+  cursor: pointer;
+  
+  &:hover{
+    filter: brightness(1.1);
+  }
 
   svg {
     width: 3rem;

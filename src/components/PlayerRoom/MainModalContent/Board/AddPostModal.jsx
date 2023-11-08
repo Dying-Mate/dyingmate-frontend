@@ -3,22 +3,32 @@ import styled from 'styled-components'
 import {IoIosClose} from 'react-icons/io'
 import IconStyledButton from '../../../ui/IconStyledButton'
 import {PiImageSquareBold} from 'react-icons/pi'
-import { addBucketlist } from '../../../../apis/api/PlayerRoom/bucketlist'
-import { getRandomX, getRandomY } from '../../../../apis/utils/PlayerRoom/getRandomPosition'
 import { useAuthContext } from '../../../../contexts/AuthContext'
 import axios from 'axios'
+import { getRandomPos } from '../../../../apis/utils/PlayerRoom/getRandomPosition'
+
+const MAX_X = 1000
+const MIN_X = 0
+
+const MAX_Y = 500
+const MIN_Y = 0
 
 export default function AddPostModal({isImagePost, setOpenModal}) {
   const [post, setPost] = useState({})
   const [photo, setPhoto] = useState()
   const formData = new FormData()
-  const {token} = useAuthContext()
+  const {token} = useAuthContext();
+  const baseUrl = 'https://dying-mate-server.link'
+  const [randomX, setRandomX] = useState(0)
+  const [randomY, setRandomY] = useState(0)
 
   const handleChange = (e) => {
     const {name, value, files} = e.target
-    setPost((post) => ({...post, 'title': 'title', 'photo': '', 'xLoc': getRandomX, 'yLoc': getRandomY, [name]:value}))
-    if(name === 'file') {
+    setPost((post) => ({...post, [name]: value, 'memoX': randomX, 'memoY': randomY, 'photo': ''}))
+    if(name === 'photo') {
       setPhoto(files && files[0]);
+      console.log("files[0]",files[0])
+
       setPost((post) => ({...post, 'photo': files[0]}))
       return
     }
@@ -29,14 +39,12 @@ export default function AddPostModal({isImagePost, setOpenModal}) {
     setOpenModal(false)
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     for ( const key in post ) {
       formData.append(key, post[key]);
     }
-    console.log("formData", formData)
-    closeModal()
-    await axios
-    .post('/api/bucketlist/add', formData, {
+
+    axios.post(`${baseUrl}/bucketlist/add`, formData, {
       headers: {
         'Content-Type' : 'multipart/form-data',
         'Authorization': `Bearer ${token}`,
@@ -50,7 +58,14 @@ export default function AddPostModal({isImagePost, setOpenModal}) {
         // 오류발생시 실행
       console.log(error.message)
     })
+    closeModal()
+
   }
+
+  useEffect(() => {
+    setRandomX(getRandomPos(MAX_X, MIN_X))
+    setRandomY(getRandomPos(MAX_Y, MIN_Y))
+  },[])
 
 
   return (
@@ -86,7 +101,7 @@ export default function AddPostModal({isImagePost, setOpenModal}) {
                 {isImagePost && 
                   <UploadBox>
                     <p>+ 파일 추가하기</p>
-                    <input type="file" name='file' accept='.png, .jpg,image/*' onChange={handleChange}/>
+                    <input type="file" name='photo' accept='.png, .jpg,image/*' onChange={handleChange}/>
                   </UploadBox>
                 }
                 <IconStyledButton width={'100%'} text={'생성하기'} fontSize={'1.25rem'} fontWeight={'700'} color={'white'} btnColor={'var(--main-color)'} handleOnClick={handleSubmit} />
@@ -122,7 +137,7 @@ const ModalContainer = styled.div`
   height: fit-content;
   outline: 2px solid white;
   filter: drop-shadow(0px 4px 45px rgba(0, 0, 0, 0.10));
-  background: linear-gradient(237deg, rgba(0, 0, 0, 0.51) -23.03%, rgba(0, 0, 0, 0.12) 119.63%);
+  background: linear-gradient(237deg, rgba(0, 0, 0, 0.2) -23.03%, rgba(0, 0, 0, 0.05) 119.63%);
   backdrop-filter: blur(60px);
   border-radius: 2.5rem;
 `
@@ -135,6 +150,7 @@ const CloseHeader = styled.div`
   svg {
     color: white;
     font-size: 2rem;
+    cursor: pointer;
   }
 `
 
@@ -222,6 +238,7 @@ const UploadBox = styled.div`
   display: flex;
   align-items: center;
   position: relative;
+  cursor: pointer;
 
   input[type="file"] {
     width: 100%;

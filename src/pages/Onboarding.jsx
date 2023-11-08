@@ -4,56 +4,45 @@ import { ReactComponent as DialogNextIcon } from '../assets/icons/dialog_next_ic
 import {useNavigate} from 'react-router-dom'
 import axios from 'axios'  
 import { useLocation } from 'react-router-dom'
-import { createUsername } from '../apis/api/user'
 import { useAuthContext } from '../contexts/AuthContext'
+import Loading from './Loading'
+import { DiaglogArr } from '../data/onboarding'
 
 export default function Onboarding() {
   const navigate = useNavigate()
   const [curIdx, setCurIdx] = useState(0);
   const [userName, setUserName] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   const location = useLocation();
-  const {email, pwd} = location.state
+  const {isSocialLogin} = location.state
+  const {email, pwd} = !isSocialLogin && location.state
   const {token, setToken, setLogin} = useAuthContext()
-
-  const DiaglogArr = [
-    { text: `바쁘고 치열한 현재의 삶이 너무 힘들어 스스로에 대해 깊게 생각해 볼 기회가 없던 당신은
-            어느 숲속 마을에 웰다잉을 경험하게 도와주는 웰다잉 하숙집이 있다는 사실을 알게 됩니다. \n
-            죽음에 대해 깊게 고민하고 현재의 삶을 더 가치있게 살아내고 싶었던 당신은
-            하숙집에 들어가 웰다잉을 직접 경험해보기로 하는데...` 
-    },
-    {
-      text: `하숙집에서 차를 보내 당신을 데리러 왔네요!
-            차를 타고 하숙집으로 이동해볼까요? `
-    },
-    {
-      text: `이동 중 기사님이 당신에게 이름을 물어봤어요!\n
-            서비스 내에서 사용할 당신만의 이름을 저장해주세요.
-            이름을 저장하면 웰다잉 하숙집에 도착합니다.`
-    },
-  ]
+  const baseUrl = 'https://dying-mate-server.link'
 
   useEffect(() => {
-    axios.post(
-      '/api/user/login',
-      {
-        email: email,
-        pwd: pwd  
-      },
-      {withCredentials: true},
-    )
-    .then((response) => {
-      console.log(response)
-      localStorage.setItem('login-token', response.data.data.token);
-      setToken(localStorage.getItem('login-token'));
-    })
-    .then(() => {
-      setLogin(true)
-    })
-    .catch(function (error) {
-        // 오류발생시 실행
+    if(!isSocialLogin) {
+      axios.post(
+        `${baseUrl}/user/login`,
+        {
+          email: email,
+          pwd: pwd  
+        },
+        {withCredentials: true},
+      )
+      .then((response) => {
+        localStorage.setItem('login-token', response.data.data.accessToken);
+        setToken(localStorage.getItem('login-token'));
+      })
+      .then(() => {
+        setLogin(true)
+      })
+      .catch(function (error) {
+          // 오류발생시 실행
         console.log(error.message)
-    })
+      })
+    }
+
   },[])
   
   const handleDiaglogBox = () => {
@@ -65,17 +54,23 @@ export default function Onboarding() {
   }
 
   const handleOnSubmit = async (e) => {
+    setIsLoading(true)
     e.preventDefault()
     await axios
-    .post(`/api/user/${userName}/save`, {}, {
+    .post(`${baseUrl}/user/${userName}/save`, {}, {
       headers: {
         Authorization: `Bearer ${token}`
       },
       withCredentials: true,
     })
     .then((response) => {
-      console.log(response)
-      navigate('/main')
+      setIsLoading(false)
+
+      const delayFunc = setTimeout(() => {
+        navigate('/main')
+      }, 1500)
+      return () => clearTimeout(delayFunc)
+
         
     }).catch(function (error) {
         // 오류발생시 실행
@@ -85,10 +80,11 @@ export default function Onboarding() {
 
   return (
     <>
+      {isLoading && <Loading text={'하숙집으로 이동 중'}/>}
       <Container>
         <VideoWrapper>
           <video width="100%" height="100%" min-width="100%"  autoPlay muted playsInline loop>
-            <source src={'/videos/testOnboarding.mp4'} type="video/mp4" />
+            <source src={'/videos/onboardingVideo.mp4'} type="video/mp4" />
           </video>
         </VideoWrapper>
 
@@ -142,7 +138,7 @@ const ContentBox = styled.div`
   flex-direction: column;
   width: 45%;
   padding: 4rem 11rem;
-  background: linear-gradient(223deg, rgba(0, 0, 0, 0.51) 0%, rgba(0, 0, 0, 0.12) 100%);
+  background: linear-gradient(237deg, rgba(0, 0, 0, 0.2) -23.03%, rgba(0, 0, 0, 0.05) 119.63%);
   backdrop-filter: blur(60px);
   outline: solid 2px #ffffff;
   border-radius: 2.5rem;  

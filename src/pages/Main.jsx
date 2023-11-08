@@ -6,15 +6,16 @@ import { ScrollControls, OrbitControls } from "@react-three/drei";
 import MapOverlay from '../components/MapOverlay';
 import SettingModal from '../components/SetUp/SettingModal';
 import { Overlay } from './Overlay';
-import {ReactComponent as SettingIcon} from '../assets/icons/setting_icon.svg'
+import {ReactComponent as SettingIcon} from '../assets/icons/SetUp/setting_modal.svg'
 import {ReactComponent as MapModalButton} from '../assets/img/map_modal_btn.svg'
 import styled from 'styled-components';
-
+import EnterRoomDialog from '../components/ui/EnterRoomDialog';
 
 export default function Main() {
   const [showSetup, setShowSetup] = useState(false);
   const [showMap, setShowMap] = useState(false);
   const {play, end} = usePlay();
+  const [showEnterDialog, setShowEnterDialog] = useState(0) // 0인 경우 dialog box 보이지 않음. 1~5까지 각 stage 의미
 
   return (
   <>
@@ -23,13 +24,13 @@ export default function Main() {
     </Header>
 
     <Canvas>
-      <axesHelper args={[1000, 1000, 1000]} />
+      {/* <axesHelper args={[1000, 1000, 1000]} /> */}
       <color attach="background" arg={["#f59f9f"]} />
       <ScrollControls
         pages={play && !end ? 36 : 0}
         damping={0.5}
       >
-        <MainExperience />
+        <MainExperience setShowEnterDialog={setShowEnterDialog} />
       </ScrollControls>
     </Canvas>
     <Overlay/>
@@ -38,6 +39,7 @@ export default function Main() {
     </MapButtonWrapper>
     <MapOverlay showMap={showMap} setShowMap={setShowMap} />
     <SettingModal showSetup={showSetup} setShowSetup={setShowSetup} />
+    {showEnterDialog !== 0 && <EnterRoomDialog stageNum={showEnterDialog}/>}
   </>
   );
 }

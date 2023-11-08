@@ -1,10 +1,11 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import Message from '../Message';
 import styled from 'styled-components';
 import {useNavigate} from 'react-router-dom'
 import { ReactComponent as DialogNextIcon } from '../../assets/icons/dialog_next_icon.svg'
 import { useRoomFocus } from '../../contexts/RoomFocus';
 import { useAuthContext } from '../../contexts/AuthContext';
+import {useStageContext} from '../../contexts/StageContext'
 import axios from 'axios'
 
 export default function DialogBox({messageArr, stageNum}) {
@@ -12,7 +13,8 @@ export default function DialogBox({messageArr, stageNum}) {
   const [messageEnded, setMessageEnded] = useState(false);
   const {setFocus} = useRoomFocus();
   const navigate = useNavigate()
-  const {token} = useAuthContext
+  const {token} = useAuthContext()
+  const {setAddOffset} = useStageContext()
 
     const handleOnClick = useCallback(() => {
       setMessageEnded(false);
@@ -25,7 +27,7 @@ export default function DialogBox({messageArr, stageNum}) {
 
       if(curMessage > messageArr.length -2) {
         axios
-        .patch(`https://dying-mate-server.link/map/open/${stageNum}`, {}, {
+        .patch(`https://dying-mate-server.link/map/open/${stageNum+1}`, {}, {
           headers: {
             Authorization: `Bearer ${token}`
           },
@@ -36,7 +38,7 @@ export default function DialogBox({messageArr, stageNum}) {
             
         }).catch(function (error) {
             // 오류발생시 실행
-            console.log(error.message)
+            console.log(error)
         })
         setTimeout(() => {
           navigate('/main')
@@ -46,6 +48,24 @@ export default function DialogBox({messageArr, stageNum}) {
       setCurMessage(curMessage + 1)
       
     }, [curMessage, messageEnded, messageArr.length]);
+
+    useEffect(() => {
+      console.log(stageNum)
+      switch (stageNum) {
+        case 1:
+          setAddOffset(0.13)
+          break;
+        case 2:
+          setAddOffset(0.33)
+          break;
+        case 3:
+          setAddOffset(0.53)
+          break;
+        case 4:
+          setAddOffset(0.73)
+          break;
+      }
+    },[])
 
   return (
     <Container>
@@ -77,6 +97,7 @@ const Container = styled.div`
 `
 const NextButton = styled.div`
   width: 100%;
+  cursor: pointer;
   
   & > *{
     position: absolute;

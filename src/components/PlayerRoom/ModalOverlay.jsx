@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { usePlay } from '../../contexts/Play';
 import { ReactComponent as CloseModal } from '../../assets/icons/close_modal.svg'
@@ -9,6 +9,7 @@ import Phone from '../PlayerRoom/MainModalContent/Phone'
 import Diary from '../PlayerRoom/MainModalContent/Diary'
 import Board from './MainModalContent/Board';
 import Shelf from './MainModalContent/Shelf/Shelf';
+import Desktop from './MainModalContent/Desktop';
 
 export default function ModalOverlay({curIdx, setCamera}) {
   const {setFocus} = usePlay()
@@ -35,6 +36,9 @@ export default function ModalOverlay({curIdx, setCamera}) {
         break;
       case 5: 
         setComp(<Shelf/>)
+        break;
+      case 6:
+        setComp(<Desktop/>)
         break;
     }
   },[]);
@@ -84,6 +88,11 @@ const Header = styled.div`
     width: 3rem;
     height: 3rem;
     z-index:999;
+    cursor: pointer;
+    
+    &:hover{
+      filter: brightness(1.1)
+    }
   }
 `
 const MainComp = styled.div`

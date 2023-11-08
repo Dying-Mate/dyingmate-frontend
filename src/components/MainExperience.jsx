@@ -1,18 +1,18 @@
 import React, { useEffect, useMemo, useRef } from 'react'
 import { usePlay } from '../contexts/Play';
 import { useFrame } from "@react-three/fiber";
-import {PerspectiveCamera, OrbitControls, useScroll} from "@react-three/drei";
+import {PerspectiveCamera, useScroll} from "@react-three/drei";
 import * as THREE from "three";
-import { Euler, Group, Vector3 } from "three";
 import { MainBackground } from './MainBackground';
 import { Main_Ground } from './models/Outside/MainGround';
+import { useStageContext } from '../contexts/StageContext';
 
 // 상수 선언
 const CURVE_AHEAD_CAMERA = 0.1
 const LINE_NB_POINTS = 50
 
 
-export default function MainExperience() {
+export default function MainExperience({setShowEnterDialog}) {
 
   const cameraRef = useRef();
   const scroll = useScroll();
@@ -20,6 +20,7 @@ export default function MainExperience() {
   const sceneOpacity = 0
 
   const {play, setHasScroll, end} = usePlay()
+  const {addOffset} = useStageContext()
 
   const curvePoints = useMemo(
     () => [
@@ -92,7 +93,7 @@ export default function MainExperience() {
       return;
     }
 
-    const scrollOffset = Math.max(0, scroll.offset);
+    const scrollOffset = Math.max(0, scroll.offset + addOffset);
 
     let friction = 1;
 
@@ -111,7 +112,7 @@ export default function MainExperience() {
 
     const curPoint = curve.getPoint(lerpedScrollOffset);
     cameraRef.current.position.lerp(curPoint, delta);
-
+    cameraRef.current.position.clone().add(curPoint)
     // Make the group look ahead on the curve
 
     const lookAtPoint = curve.getPoint(
@@ -129,8 +130,33 @@ export default function MainExperience() {
     cameraRef.current.lookAt(
       cameraRef.current.position.clone().add(lookAt)
     );
+    
+    console.log("lookAt", lookAt)
+    console.log("curPoint", curPoint)
+    console.log("scrollOffset", scrollOffset)
+    console.log("cameraRef.current.position", cameraRef.current.position)
+    console.log("lerpedScrollOffset", lerpedScrollOffset)
+    console.log("lastScroll", lastScroll)
+    console.log("targetLookAt", lastScroll)
 
+
+    if(scroll.offset > 0.1 - addOffset && scroll.offset < 0.13 - addOffset){
+      setShowEnterDialog(1)
+    }else if(scroll.offset > 0.3 - addOffset && scroll.offset < 0.33 - addOffset){
+      setShowEnterDialog(2)
+    }else if(scroll.offset > 0.5 - addOffset && scroll.offset < 0.53 - addOffset){
+      setShowEnterDialog(3)
+    }else if(scroll.offset > 0.7 - addOffset && scroll.offset < 0.73 - addOffset){
+      setShowEnterDialog(4)
+    }else{
+      setShowEnterDialog(0) // dialog 박스 보이지 않게
+    }
   })
+
+  useEffect(() => {
+    console.log("lastScroll", lastScroll)
+    lastScroll.current = addOffset
+  },[])
 
   return useMemo(() =>
   (
@@ -159,7 +185,6 @@ export default function MainExperience() {
       <group position={[0,-22,0]}>
         <Main_Ground />
       </group>
-
 
     </>
 
