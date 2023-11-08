@@ -4,12 +4,12 @@ const StageContext = createContext()
 
 export const StageContextProvider = ({children}) => {
   const [stage, setStage] = useState({})
-  const [addOffset, setAddOffset] = useState(0)
+  const [comeOutRoom, setComeOutRoom] = useState(0)
 
   return (
     <StageContext.Provider value={{
       stage, setStage,
-      addOffset, setAddOffset
+      comeOutRoom, setComeOutRoom
     }}>
       {children}
     </StageContext.Provider>
