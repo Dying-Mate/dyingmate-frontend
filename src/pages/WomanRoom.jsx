@@ -7,6 +7,7 @@ import { useRoomFocus } from '../contexts/RoomFocus';
 import CharMainDialog from '../components/ui/CharMainDialog';
 import { MessageArr } from '../data/woman_script';
 import { Woman } from '../components/models/WomanRoom/Woman';
+import { usePlay } from '../contexts/Play';
 
 export default function WomanRoom() {
   const {focus} = useRoomFocus();
