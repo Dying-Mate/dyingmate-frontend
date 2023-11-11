@@ -6,12 +6,14 @@ import MethodExplain from '../../../Diary/MethodExplain';
 import { useDiaryContext } from '../../../../contexts/DiaryContext';
 import axios from 'axios'
 import { useAuthContext } from '../../../../contexts/AuthContext';
+import { editSuccess } from '../../../ui/ToastMessage';
 
-export default function StepOne() {
+export default function StepOne({method}) {
   const {diary, setDiary} = useDiaryContext()
   const [curIdx, setCurIdx] = useState();
   const {token} = useAuthContext()
   const baseUrl = 'https://dying-mate-server.link'
+  const formData = new FormData()
 
   const data= [
     { id: 1, itemText: "화장 후 봉안", explain: `화장을 통해 향기로운 아름다움을 간직해볼 수 있습니다. \n \n 화장은 당신의 존재와 흔적을 살아있는 불꽃으로 옮기며, \n 당신의 애도와 사랑을 함께 전달할 수 있습니다. \n 이것은 고인을 위로하고, 그들이 향하는 곳에서 편안함과 평화를 느낄 수 있는 방법으로 알려져 있습니다. `},
@@ -19,20 +21,34 @@ export default function StepOne() {
     { id: 3, itemText: "매장", explain: `매장 방신은 공간에서 사랑하는 이들과 함께하는 장례방법입니다. \n \n 사랑하는 사람들이 편안하고 평화로운 곳에서 쉬어갈 수 있도록 고정적인 장소를 마련해 장례를 진행하는 하나의 방식입니다. `},
   ]
 
-  useEffect(() =>  {
-    axios.get(`${baseUrl}/funeral/select`, {
-      headers: {Authorization: 'Bearer ' + token},
-    }, )
-    .then(function(res){
-      setDiary(() => ({...res.data}))
-    })
-    .then(() => {
-      setCurIdx(diary.method)
-    })
+  useEffect(() => {
+    setCurIdx(method ? method : 1)
   },[])
 
   useEffect(() => {
     setDiary((data) => ({...data, 'method': curIdx}))
+    if(method){
+      for ( const key in diary ) {
+        formData.append(key, diary[key]);
+      }
+      axios
+      .patch(`${baseUrl}/funeral/modify`, formData, {
+        headers: {
+          'Content-Type' : 'multipart/form-data',
+          'Authorization': `Bearer ${token}`,
+        },
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log(res)
+          
+      }).catch(function (error) {
+          // 오류발생시 실행
+          console.log(error.message)
+      })
+      editSuccess()
+    }
+
   },[curIdx])
 
 

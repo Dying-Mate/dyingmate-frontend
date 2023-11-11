@@ -3,33 +3,58 @@ import styled from 'styled-components'
 import {ReactComponent as MainIcon} from '../../../../assets/icons/PlayerRoom/Diary/main_icon.svg'
 import { useDiaryContext } from '../../../../contexts/DiaryContext';
 import GraveStoneSrc from '../../../../assets/img/PlayerRoom/gravestone.png'
+import axios from 'axios'
+import { useAuthContext } from '../../../../contexts/AuthContext';
+import { editSuccess } from '../../../ui/ToastMessage';
 
-export default function StepTwo() {
+export default function StepTwo({epitaph}) {
 
   const [stoneTextInput, setStoneTextInput] = useState('');
-  const [epitaph, setEpitaph] = useState('')
-  const [isDone, setIsDone] = useState(false)
+  const [stoneText, setStoneText] = useState('')
   const {diary, setDiary} = useDiaryContext()
-
-  const hasEpitaph = epitaph ?? ''
+  const {token} = useAuthContext()
+  const baseUrl = 'https://dying-mate-server.link'
+  const formData = new FormData()
 
   const handleChange = (e) => {
-    setStoneTextInput(e.target.value);
+    setStoneTextInput(e.target.value)
   }
 
   const handleClick = (e) => {
-    setIsDone(true)
-    setDiary((data) => ({...data, 'epitaph': stoneTextInput}))
+    setDiary((diary) => ({...diary, 'epitaph': stoneTextInput}))
+    setStoneText(stoneTextInput)
+    if(epitaph){
+      for ( const key in diary ) {
+        formData.append(key, diary[key]);
+      }
+      axios
+      .patch(`${baseUrl}/funeral/modify`, formData, {
+        headers: {
+          'Content-Type' : 'multipart/form-data',
+          'Authorization': `Bearer ${token}`,
+        },
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log(res)
+          
+      }).catch(function (error) {
+          // 오류발생시 실행
+          console.log(error.message)
+      })
+      editSuccess()
+    }
+    
   }
 
   useEffect(() => {
-    console.log("stepTwo diary", diary)
-    
+    setStoneTextInput(epitaph ? epitaph : stoneTextInput)
+    setStoneText(epitaph ? epitaph : "")
   },[])
 
   return (
     <Content>
-      <GraveStone><p>{isDone ? stoneTextInput : ''}</p></GraveStone>
+      <GraveStone><p>{stoneText}</p></GraveStone>
       <div>
         <TextArea>
           <MainIcon/>
@@ -49,11 +74,7 @@ export default function StepTwo() {
             placeholder='묘비명을 입력해주세요.' 
             onChange={handleChange}
             required/>
-          {isDone ?
-            <EditButton isFill={stoneTextInput!==''} onClick={handleClick}>수정하기</EditButton>
-            :
-            <SaveButton isFill={stoneTextInput!==''} onClick={handleClick}>저장하기</SaveButton>
-         }
+            <SaveButton isFill={stoneTextInput!==''} onClick={handleClick}>확인</SaveButton>
         </InputBox>
       </div>
     </Content>
@@ -145,23 +166,11 @@ const FormInput = styled.input`
 `
 
 const SaveButton = styled.button`
-width: 11rem;
+width: 8rem;
 height: 3.5rem;
 border: none;
 background-color: ${(props) => props.isFill ? 'var(--main-color)' : '#DEDEDE'};
 color: ${(props) => props.isFill ? 'white' : '#999'};
-padding: 0.75rem 1.5rem;
-border-radius: 1.25rem;
-font-weight: 700;
-position: absolute;
-`
-
-const EditButton = styled.button`
-width: 11rem;
-height: 3.5rem;
-border: none;
-background-color: '#DEDEDE';
-color: var(--font-gray-3);
 padding: 0.75rem 1.5rem;
 border-radius: 1.25rem;
 font-weight: 700;
