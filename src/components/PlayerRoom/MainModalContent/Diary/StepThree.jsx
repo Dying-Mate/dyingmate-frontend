@@ -4,24 +4,55 @@ import {ReactComponent as MainIcon} from '../../../../assets/icons/PlayerRoom/Di
 import UploadFrameSrc from '../../../../assets/img/PlayerRoom/upload_frame.png'
 import { useDiaryContext } from '../../../../contexts/DiaryContext'
 import {FiFolderPlus} from 'react-icons/fi'
+import { useAuthContext } from '../../../../contexts/AuthContext'
+import axios from 'axios'
+import { editSuccess } from '../../../ui/ToastMessage'
 
-export default function StepThree() {
+export default function StepThree({photo}) {
   const fileInput = useRef(null)
   const [selectImg, setSelectImg] = useState()
   const {diary, setDiary} = useDiaryContext()
+  const {token} = useAuthContext()
+  const baseUrl = 'https://dying-mate-server.link'
+  const formData = new FormData()
 
-  const handleChange = (e) => {
-    const {name, value, files} = e.target;
+  const handleChange = async (e) => {
+    const {name, files} = e.target;
 
     if(name === 'file') {
       setSelectImg(files && files[0]);
       setDiary((data) => ({...data, 'portrait_photo': files[0]}))
       return;
     }
+
+    if(photo){
+      for ( const key in diary ) {
+        formData.append(key, diary[key]);
+      }
+      axios
+      .patch(`${baseUrl}/funeral/modify`, formData, {
+        headers: {
+          'Content-Type' : 'multipart/form-data',
+          'Authorization': `Bearer ${token}`,
+        },
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log(res)
+          
+      }).catch(function (error) {
+          // 오류발생시 실행
+          console.log(error.message)
+      })
+      editSuccess()
+    }
+
+    
+
   };
 
   useEffect(() => {
-    setSelectImg(diary.portrait_photo)
+    setSelectImg(photo)
   },[])
 
   return (

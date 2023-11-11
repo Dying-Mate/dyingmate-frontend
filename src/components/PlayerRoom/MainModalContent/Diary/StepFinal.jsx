@@ -4,6 +4,7 @@ import {ReactComponent as MainIcon} from '../../../../assets/icons/PlayerRoom/Di
 import axios from 'axios'  
 import { useAuthContext } from '../../../../contexts/AuthContext'
 import { useDiaryContext } from '../../../../contexts/DiaryContext'
+import { saveSuccess } from '../../../ui/ToastMessage'
 
 export default function StepFinal() {
   const formData = new FormData()
@@ -16,7 +17,7 @@ export default function StepFinal() {
       formData.append(key, diary[key]);
     }
     axios
-    .post(`${baseUrl}/funeral/save`, formData, {
+    .patch(`${baseUrl}/funeral/save`, formData, {
       headers: {
         'Content-Type' : 'multipart/form-data',
         'Authorization': `Bearer ${token}`,
@@ -25,6 +26,7 @@ export default function StepFinal() {
     })
     .then((res) => {
       console.log(res)
+      saveSuccess()
         
     }).catch(function (error) {
         // 오류발생시 실행

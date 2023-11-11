@@ -29,7 +29,7 @@ export default function Board() {
     
     getAllBucketlist().then((res) =>{
       if(res) {
-        console.log("getAllBucketlist",res)
+        // console.log("getAllBucketlist",res)
         setAllBucketlist(res.data.fileResponseList)
       }
       }).then(() => {
