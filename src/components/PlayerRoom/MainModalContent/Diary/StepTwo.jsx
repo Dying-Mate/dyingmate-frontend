@@ -24,9 +24,8 @@ export default function StepTwo({epitaph}) {
     setDiary((diary) => ({...diary, 'epitaph': stoneTextInput}))
     setStoneText(stoneTextInput)
     if(epitaph){
-      for ( const key in diary ) {
-        formData.append(key, diary[key]);
-      }
+      formData.append('epitaph', stoneTextInput)
+
       axios
       .patch(`${baseUrl}/funeral/modify`, formData, {
         headers: {
@@ -37,12 +36,11 @@ export default function StepTwo({epitaph}) {
       })
       .then((res) => {
         console.log(res)
-          
+        editSuccess()          
       }).catch(function (error) {
           // 오류발생시 실행
-          console.log(error.message)
+          console.log(error)
       })
-      editSuccess()
     }
     
   }

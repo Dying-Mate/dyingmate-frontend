@@ -27,12 +27,9 @@ export default function AddPostModal({isImagePost, setOpenModal}) {
     setPost((post) => ({...post, [name]: value, 'memoX': randomX, 'memoY': randomY, 'photo': ''}))
     if(name === 'photo') {
       setPhoto(files && files[0]);
-      console.log("files[0]",files[0])
-
       setPost((post) => ({...post, 'photo': files[0]}))
       return
     }
-    console.log("post", post)
   }
 
   const closeModal = () => {
@@ -56,7 +53,7 @@ export default function AddPostModal({isImagePost, setOpenModal}) {
       
     }).catch(function (error) {
         // 오류발생시 실행
-      console.log(error.message)
+      console.log(error)
     })
     closeModal()
 
