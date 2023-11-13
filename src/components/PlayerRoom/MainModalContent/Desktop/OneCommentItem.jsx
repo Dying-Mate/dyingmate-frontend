@@ -1,8 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import TestProfile from '../../../../assets/img/splashBg.png'
+import {AiOutlineLike, AiTwotoneLike} from 'react-icons/ai'
 
-export default function OneCommentItem({name, content, likeCount, date}) {
+export default function OneCommentItem({name, content, likeCount, date}) {  
+  const [isClicked, setIsClicked] = useState() 
+  const handleLikeCount = () => {
+    setIsClicked(!isClicked)
+  }
+
   return (
     <>
       <CommentItem>
@@ -14,7 +20,10 @@ export default function OneCommentItem({name, content, likeCount, date}) {
           <p>{content}</p>
         </MainContent>
         <Footer>
-          <p>{likeCount}</p>
+          <Like>
+            {isClicked ? <AiTwotoneLike color={'var(--main-color)'} onClick={handleLikeCount}/> :<AiOutlineLike onClick={handleLikeCount}/>}
+            <p>{likeCount}개</p>
+          </Like>
           <p>{date} 작성됨</p>
         </Footer>
       </CommentItem>
@@ -60,4 +69,15 @@ const Footer = styled.div`
   gap: 0.5rem;
   font-size: 0.875rem;
   color: #dedede;
+`
+
+const Like = styled.div`
+  display: flex;
+  gap: 0.5rem;
+
+  svg{
+    width: 1.25rem;
+    height: 1.25rem;
+    cursor: pointer;
+  }
 `

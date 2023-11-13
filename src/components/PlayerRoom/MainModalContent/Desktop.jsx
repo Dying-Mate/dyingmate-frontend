@@ -1,10 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import {ReactComponent as MainIcon} from '../../../assets/icons/PlayerRoom/Desktop/main_icon.svg'
 import {IoIosClose} from 'react-icons/io'
 import OneCommentItem from './Desktop/OneCommentItem'
 
 export default function Desktop() {
+  const [isOpen, setIsOpen] = useState(false)
+  const [content, setContent] = useState('')
+
+  const handleChange = (e) => {
+    setContent(e.target.value)
+  }
+
   return (
     <Overlay>
       <Container>
@@ -22,9 +29,29 @@ export default function Desktop() {
             <TopicBox>
               <TopicContent>"인생에서 우리가 경험하는 모든 것은 결국에는 무엇을 위한 것인지, 그리고 인생의 근본적인 의미는 어떤 것일까요? 어떤 방식으로 우리는 존재하고 경험하는 것이 의미 있는 것으로 여겨질 수 있을까요?"</TopicContent>
               <hr/>
-              <AddCommentButton>
-                댓글 달기
-              </AddCommentButton>
+              {isOpen && 
+                <FormInput 
+                type={"text"}
+                id='content' 
+                name='content' 
+                value={content ?? ''}
+                onChange={handleChange}
+                placeholder='내용을 입력하세요.' 
+                spellCheck="false"
+                required
+                />
+              }
+              <CommentInputWrapper>
+                {!isOpen ? 
+                  <OpenInputButton onClick={() => setIsOpen(true)}>
+                    댓글 달기
+                  </OpenInputButton>
+                  :
+                  <AddCommentButton isFill={content!==''}>댓글 달기</AddCommentButton>
+                }
+              </CommentInputWrapper>
+
+
             </TopicBox>
           </TopicWrapper>
           <CommentWrapper>
@@ -113,6 +140,7 @@ const TopicWrapper = styled.div`
 
 const TopicBox = styled.div`
   width: 100%;
+  height: fit-content;
   background-color: white;
   border-radius: 1.25rem;
   outline: 1px solid var(--main-color);
@@ -127,6 +155,7 @@ const TopicBox = styled.div`
     width: 100%;
     border-top: 1px solid rgba(0, 0, 0, 0.10);    ;
   }
+  
 `
 
 const TopicContent = styled.p`
@@ -138,7 +167,7 @@ const TopicContent = styled.p`
   font-weight: 400;
 `
 
-const AddCommentButton = styled.button`
+const OpenInputButton = styled.button`
   padding: 0.5rem 1.25rem;
   background-color: var(--main-color);
   color: white;
@@ -152,4 +181,39 @@ const CommentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+`
+
+const CommentInputWrapper = styled.div`
+  width: 100%;
+`
+
+const FormInput = styled.textarea`
+  width: 100%;
+  height: 10rem;
+  padding: 1rem;
+  border: none;
+  outline: none;
+  box-sizing: border-box;
+  border-radius: 0.75rem;
+  color: var(--font-gray-3);
+  background-color: #f3f3f3;
+  font-size: 1rem;  
+  resize: none;
+
+  &::placeholder {
+    color: var(--font-gray-1);
+  }
+  // animation: slideDown 0.2s ease-in-out forwards;
+  // transform-origin: 0%, 50%;
+`
+
+const AddCommentButton = styled.button`
+  width: 100%;
+  font-size: 1.25rem;
+  font-weight: 500;
+  background-color: ${(props) => props.isFill ? 'var(--main-color)' : '#DEDEDE'};
+  color: ${(props) => props.isFill ? 'white' : '#999'};
+  border-radius: 0.75rem;
+  padding: 1rem 0;
+  border: none;
 `

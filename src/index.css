@@ -169,3 +169,13 @@ button:hover{
     transform: rotate(360deg);
   }
 }
+
+@keyframes slideDown {
+  0% { 
+    transform: scale(1, 0);
+  }
+
+  100% {
+    transform: scale(1,1);
+  }
+}
