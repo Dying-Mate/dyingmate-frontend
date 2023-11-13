@@ -13,8 +13,8 @@ const MIN_X = 0
 const MAX_Y = 500
 const MIN_Y = 0
 
-export default function AddPostModal({isImagePost, setOpenModal}) {
-  const [post, setPost] = useState({})
+export default function AddPostModal({isImagePost, setOpenModal, setUpdate}) {
+  const [post, setPost] = useState({"photo": ""})
   const [photo, setPhoto] = useState()
   const formData = new FormData()
   const {token} = useAuthContext();
@@ -24,12 +24,15 @@ export default function AddPostModal({isImagePost, setOpenModal}) {
 
   const handleChange = (e) => {
     const {name, value, files} = e.target
-    setPost((post) => ({...post, [name]: value}))
 
     if(name === 'photo') {
-      setPhoto(files && files[0]);
+      setPhoto(files && files[0])
+      setPost((post) => ({...post, 'photo': files[0]}))
       return
     }
+    setPost((post) => ({...post, 'content': value, 'memoX': randomX, 'memoY': randomY}))
+
+    console.log("post", post)
   }
 
   const closeModal = () => {
@@ -37,8 +40,6 @@ export default function AddPostModal({isImagePost, setOpenModal}) {
   }
 
   const handleSubmit = (e) => {
-    console.log("post", post)
-    setPost((post) => ({...post, 'memoX': randomX, 'memoY': randomY, 'photo': photo ? photo : ''}))
 
     for ( const key in post ) {
       formData.append(key, post[key]);
@@ -53,6 +54,7 @@ export default function AddPostModal({isImagePost, setOpenModal}) {
     })
     .then((response) => {
       console.log(response)
+      setUpdate()
       
     }).catch(function (error) {
         // 오류발생시 실행

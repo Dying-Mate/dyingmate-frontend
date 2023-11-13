@@ -11,6 +11,7 @@ export default function Board() {
   const [openModal, setOpenModal] = useState(false)
   const [isImagePost, setIsImagePost] = useState(false)
   const [allBucketlist, setAllBucketlist] = useState()
+  const [update, setUpdate] = useState(false)
   const baseUrl = 'https://dying-mate-server.link'
   const {token} = useAuthContext()
 
@@ -37,7 +38,7 @@ export default function Board() {
       .catch((error) => {
         console.log(error)
       })
-  },[allBucketlist])
+  },[update])
 
   const handleOnClick = (isImagePost) => {
     setOpenModal(true)
@@ -60,7 +61,7 @@ export default function Board() {
           </PostWrapper>
         </BoardContainer>
       </Container>
-      {openModal && <AddPostModal isImagePost={isImagePost} setOpenModal={setOpenModal}/>}
+      {openModal && <AddPostModal isImagePost={isImagePost} setOpenModal={setOpenModal} setUpdate={(prev) => setUpdate(!prev)}/>}
     </>
   )
 }
