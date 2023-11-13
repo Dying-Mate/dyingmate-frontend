@@ -14,7 +14,7 @@ import EnterRoomDialog from '../components/ui/EnterRoomDialog';
 export default function Main() {
   const [showSetup, setShowSetup] = useState(false);
   const [showMap, setShowMap] = useState(false);
-  const {play, end} = usePlay();
+  const {play, end, isFirst} = usePlay();
   const [showEnterDialog, setShowEnterDialog] = useState(0) // 0인 경우 dialog box 보이지 않음. 1~5까지 각 stage 의미
 
   return (
@@ -33,7 +33,7 @@ export default function Main() {
         <MainExperience setShowEnterDialog={setShowEnterDialog} />
       </ScrollControls>
     </Canvas>
-    <Overlay/>
+    {isFirst && <Overlay/>}
     <MapButtonWrapper>
       <MapModalButton onClick={() => setShowMap(true)}/>
     </MapButtonWrapper>

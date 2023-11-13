@@ -7,9 +7,11 @@ import { useRoomFocus } from '../contexts/RoomFocus';
 import CharMainDialog from '../components/ui/CharMainDialog';
 import { MessageArr } from '../data/woman_script';
 import { Woman } from '../components/models/WomanRoom/Woman';
+import { usePlay } from '../contexts/Play';
 
 export default function WomanRoom() {
   const {focus} = useRoomFocus();
+  const {setIsFirst} = usePlay()
   const [position, setPosition] = useState({ x: 12, y: 9, z: 0 });
   const [target, setTarget] = useState({ x: 0, y: -5, z: 0 });
 
@@ -22,6 +24,7 @@ export default function WomanRoom() {
       setPosition({ x: 12, y: 9, z: 0 });
       setTarget({ x: 0, y: 5, z: 0});
     }
+    setIsFirst(false)
   },[focus])
 
   return (

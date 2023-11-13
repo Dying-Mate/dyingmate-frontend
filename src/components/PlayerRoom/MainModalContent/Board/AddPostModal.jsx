@@ -56,7 +56,7 @@ export default function AddPostModal({isImagePost, setOpenModal}) {
       
     }).catch(function (error) {
         // 오류발생시 실행
-      console.log(error.message)
+      console.log(error)
     })
     closeModal()
 

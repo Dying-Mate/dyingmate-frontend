@@ -8,9 +8,11 @@ import { Grandmother } from '../components/models/GrandmaRoom/Grandmother';
 import { MessageArr } from '../data/grandma_script';
 import CharMainDialog from '../components/ui/CharMainDialog';
 import {useProgress} from '@react-three/drei'
+import { usePlay } from '../contexts/Play';
 
 export default function GrandmaRoom() {
   const {focus} = useRoomFocus();
+  const {setIsFirst} = usePlay()
   const [position, setPosition] = useState({ x: 10, y: 9, z: 0 });
   const [target, setTarget] = useState({ x: 0, y: -5, z: 0 });
   const { progress } = useProgress();
@@ -24,6 +26,7 @@ export default function GrandmaRoom() {
       setPosition({ x: 10, y: 9, z: 0 });
       setTarget({ x: 0, y: 5, z: 0});
     }
+    setIsFirst(false)
   },[focus])
 
   return (

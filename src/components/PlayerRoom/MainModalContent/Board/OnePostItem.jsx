@@ -16,7 +16,9 @@ export default function OnePostItem({memo, memo:{content, photo, memoX, memoY, i
         <PostItem hasPhoto={photo !== null} memoX={memoX} memoY={memoY}>
           <HeaderPin><Pin/></HeaderPin>
           { photo &&
-            <PhotoWrapper />
+            <PhotoWrapper>
+              <img src={photo && URL.createObjectURL(photo) } />
+            </PhotoWrapper>
           }
           <ContentWrapper iscomplete={isComplete}>
             <p>{content}</p>
@@ -52,11 +54,13 @@ const HeaderPin = styled.div`
 `
 
 const PhotoWrapper = styled.div`
-  padding: 1rem;
   box-sizing: border-box;
   width: 100%;
   height: 5rem;
-  background: url(${TestImage});
+
+  img{
+    width: 100%;
+  }
 `
 
 const ContentWrapper = styled.div`

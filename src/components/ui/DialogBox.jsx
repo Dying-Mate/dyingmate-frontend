@@ -14,7 +14,7 @@ export default function DialogBox({messageArr, stageNum}) {
   const {setFocus} = useRoomFocus();
   const navigate = useNavigate()
   const {token} = useAuthContext()
-  const {setAddOffset} = useStageContext()
+  const {setComeOutRoom} = useStageContext()
 
     const handleOnClick = useCallback(() => {
       setMessageEnded(false);
@@ -50,21 +50,7 @@ export default function DialogBox({messageArr, stageNum}) {
     }, [curMessage, messageEnded, messageArr.length]);
 
     useEffect(() => {
-      console.log(stageNum)
-      switch (stageNum) {
-        case 1:
-          setAddOffset(0.13)
-          break;
-        case 2:
-          setAddOffset(0.33)
-          break;
-        case 3:
-          setAddOffset(0.53)
-          break;
-        case 4:
-          setAddOffset(0.73)
-          break;
-      }
+      setComeOutRoom(stageNum)
     },[])
 
   return (

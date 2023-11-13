@@ -26,9 +26,8 @@ export default function StepThree({photo}) {
     }
 
     if(photo){
-      for ( const key in diary ) {
-        formData.append(key, diary[key]);
-      }
+      formData.append('portrait_photo', files[0])
+
       axios
       .patch(`${baseUrl}/funeral/modify`, formData, {
         headers: {
@@ -39,16 +38,13 @@ export default function StepThree({photo}) {
       })
       .then((res) => {
         console.log(res)
+        editSuccess()
           
       }).catch(function (error) {
           // 오류발생시 실행
-          console.log(error.message)
+          console.log(error)
       })
-      editSuccess()
     }
-
-    
-
   };
 
   useEffect(() => {

@@ -81,7 +81,6 @@ export default function FriendListModal({setFriendListModal}) {
       withCredentials: true,
     })
     .then((response) => {
-      console.log(response)   
       setUpdate((prev) => !prev)     
     }).catch(function (error) {
         // 오류발생시 실행
@@ -98,7 +97,6 @@ export default function FriendListModal({setFriendListModal}) {
       withCredentials: true,
     })
     .then((response) => {
-      console.log(response)        
       setUpdate((prev) => !prev)
     }).catch(function (error) {
         // 오류발생시 실행
@@ -108,7 +106,8 @@ export default function FriendListModal({setFriendListModal}) {
 
 
   return (
-    <Overlay>
+    <>
+      <Overlay>
       <Container>
         <Header>
           <HeaderTitle>
@@ -155,8 +154,11 @@ export default function FriendListModal({setFriendListModal}) {
           </ListWrapper>
         </ListContainer>
       </Container>
-      <ToastContainer />
-    </Overlay>
+      
+      </Overlay>
+    <ToastContainer />
+    </>
+
   )
 }
 

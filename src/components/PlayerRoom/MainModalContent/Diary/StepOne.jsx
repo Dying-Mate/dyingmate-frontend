@@ -28,9 +28,7 @@ export default function StepOne({method}) {
   useEffect(() => {
     setDiary((data) => ({...data, 'method': curIdx}))
     if(method){
-      for ( const key in diary ) {
-        formData.append(key, diary[key]);
-      }
+      formData.append('method', curIdx)
       axios
       .patch(`${baseUrl}/funeral/modify`, formData, {
         headers: {
@@ -40,13 +38,13 @@ export default function StepOne({method}) {
         withCredentials: true,
       })
       .then((res) => {
+        console.log("formData", formData)
         console.log(res)
-          
+        editSuccess()          
       }).catch(function (error) {
           // 오류발생시 실행
-          console.log(error.message)
+          console.log(error)
       })
-      editSuccess()
     }
 
   },[curIdx])

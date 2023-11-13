@@ -5,10 +5,10 @@ const Context = createContext();
 export const PlayProvider = ({ children }) => {
   const [play, setPlay] = useState(false)
   const [end, setEnd] = useState(false)
+  const [isFirst, setIsFirst] = useState(true)
   const [hasScroll, setHasScroll] = useState(false)
   const [focus, setFocus] = useState(false)
   const [startFunc, setStartFunc] = useState(false)
-  const [friendList, setFriendList] = useState(false)
   const [enter, setEnter] = useState(true)
 
   return (
@@ -16,6 +16,7 @@ export const PlayProvider = ({ children }) => {
       value={{
         play, setPlay, 
         end, setEnd, 
+        isFirst, setIsFirst,
         hasScroll, setHasScroll, 
         focus, setFocus, 
         startFunc, setStartFunc, 
