@@ -24,10 +24,10 @@ export default function AddPostModal({isImagePost, setOpenModal}) {
 
   const handleChange = (e) => {
     const {name, value, files} = e.target
-    setPost((post) => ({...post, [name]: value, 'memoX': randomX, 'memoY': randomY, 'photo': ''}))
+    setPost((post) => ({...post, [name]: value}))
+
     if(name === 'photo') {
       setPhoto(files && files[0]);
-      setPost((post) => ({...post, 'photo': files[0]}))
       return
     }
   }
@@ -37,6 +37,9 @@ export default function AddPostModal({isImagePost, setOpenModal}) {
   }
 
   const handleSubmit = (e) => {
+    console.log("post", post)
+    setPost((post) => ({...post, 'memoX': randomX, 'memoY': randomY, 'photo': photo ? photo : ''}))
+
     for ( const key in post ) {
       formData.append(key, post[key]);
     }
