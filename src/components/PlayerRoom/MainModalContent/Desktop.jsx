@@ -1,16 +1,52 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import {ReactComponent as MainIcon} from '../../../assets/icons/PlayerRoom/Desktop/main_icon.svg'
-import {IoIosClose} from 'react-icons/io'
 import OneCommentItem from './Desktop/OneCommentItem'
+import { useAuthContext } from '../../../contexts/AuthContext'
+import axios from 'axios'
+import { getCommentList } from '../../../apis/api/PlayerRoom/community'
 
 export default function Desktop() {
   const [isOpen, setIsOpen] = useState(false)
   const [content, setContent] = useState('')
+  const {token} = useAuthContext()
+  const baseUrl = 'https://dying-mate-server.link'
+  const [update, setUpdate] = useState(false)
+  const [commentList, setCommentList] = useState([])
 
   const handleChange = (e) => {
     setContent(e.target.value)
   }
+
+  const handleSubmit = (e) => {   
+    if(inputData === '') {
+      nullWarning()
+      return 
+    }
+    axios
+    .post(`${baseUrl}/community/register`, {content: content}, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      withCredentials: true,
+    })
+    .then((response) => {
+      console.log(response)
+      setIsOpen(false)
+      setContent('')
+      setUpdate((prev) => !prev)
+    }).catch(function (error) {
+        // 오류발생시 실행
+        console.log(error.message)
+    })
+  }
+
+  useEffect(() => {
+    getCommentList().then((res) => {
+      console.log("res", res)
+      setCommentList([...res.data])
+    })
+  },[update])
 
   return (
     <Overlay>
@@ -47,16 +83,18 @@ export default function Desktop() {
                     댓글 달기
                   </OpenInputButton>
                   :
-                  <AddCommentButton isFill={content!==''}>댓글 달기</AddCommentButton>
+                  <AddCommentButton disabled={!isFill} isFill={content!==''} onClick={handleSubmit}>댓글 달기</AddCommentButton>
                 }
               </CommentInputWrapper>
-
-
             </TopicBox>
           </TopicWrapper>
           <CommentWrapper>
-            <OneCommentItem name={'댓글 작성자 이름'} content={'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.'} likeCount={3} date={'2023-07-20 17:43'}/>
-            <OneCommentItem name={'댓글 작성자 이름'} content={'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.'} likeCount={3} date={'2023-07-20 17:43'}/>
+            {commentList && commentList.length > 0 &&
+            commentList.map(data => {
+              const {commentId, profile, name, content, creationTime, likeNum} = data
+              return <OneCommentItem key={commentId} name={name} content={content} likeCount={likeNum} date={creationTime}/>
+            })  
+          }
           </CommentWrapper>
         </ScrollSection>
       </Container>

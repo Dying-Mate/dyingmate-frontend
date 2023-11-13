@@ -38,7 +38,7 @@ export const addFriendSuccess = () => {
 }
 
 export const nullWarning = () => {
-  toast.success('내용을 입력해주세요', {
+  toast.warning('내용을 입력해주세요', {
     position: "bottom-right",
     autoClose: 2000,
     hideProgressBar: true,

@@ -64,8 +64,6 @@ export default function Onboarding() {
       withCredentials: true,
     })
     .then((response) => {
-      setIsLoading(false)
-
       const delayFunc = setTimeout(() => {
         navigate('/main')
       }, 1500)
