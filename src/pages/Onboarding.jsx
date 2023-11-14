@@ -5,15 +5,12 @@ import {useNavigate} from 'react-router-dom'
 import axios from 'axios'  
 import { useLocation } from 'react-router-dom'
 import { useAuthContext } from '../contexts/AuthContext'
-import Loading from './Loading'
 import { DiaglogArr } from '../data/onboarding'
 
 export default function Onboarding() {
   const navigate = useNavigate()
   const [curIdx, setCurIdx] = useState(0);
   const [userName, setUserName] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
-
   const location = useLocation();
   const {isSocialLogin} = location.state
   const {email, pwd} = !isSocialLogin && location.state
@@ -42,7 +39,6 @@ export default function Onboarding() {
         console.log(error.message)
       })
     }
-
   },[])
   
   const handleDiaglogBox = () => {
@@ -54,7 +50,6 @@ export default function Onboarding() {
   }
 
   const handleOnSubmit = async (e) => {
-    setIsLoading(true)
     e.preventDefault()
     await axios
     .post(`${baseUrl}/user/${userName}/save`, {}, {
@@ -63,13 +58,8 @@ export default function Onboarding() {
       },
       withCredentials: true,
     })
-    .then((response) => {
-      const delayFunc = setTimeout(() => {
-        navigate('/main')
-      }, 1500)
-      return () => clearTimeout(delayFunc)
-
-        
+    .then(() => {
+      navigate('/main')       
     }).catch(function (error) {
         // 오류발생시 실행
         console.log(error.message)
@@ -78,7 +68,6 @@ export default function Onboarding() {
 
   return (
     <>
-      {isLoading && <Loading text={'하숙집으로 이동 중'}/>}
       <Container>
         <VideoWrapper>
           <video width="100%" height="100%" min-width="100%"  autoPlay muted playsInline loop>

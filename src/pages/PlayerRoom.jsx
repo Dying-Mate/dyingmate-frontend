@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Canvas } from "@react-three/fiber";
 import { DirectionalLightHelper } from "three";
-import { useHelper} from "@react-three/drei";
+import { useHelper, useProgress } from "@react-three/drei";
 import { CameraControls } from '../Camera';
 import { usePlay } from '../contexts/Play';
 import ModalOverlay from '../components/PlayerRoom/ModalOverlay';
@@ -14,13 +14,13 @@ import { Phone } from '../components/models/PlayerRoom/Phone';
 import { Diary } from '../components/models/PlayerRoom/Diary';
 import { Shelf } from '../components/models/PlayerRoom/Shelf';
 import { Desktop } from '../components/models/PlayerRoom/Desktop';
-import { useAuthContext } from '../contexts/AuthContext';
 import { getFriendList } from '../apis/api/PlayerRoom/friendList';
+import Loading from './Loading';
 
 export default function PlayerRoom() {
   const light1 = useRef()
   const light2 = useRef()
-
+  const { progress } = useProgress()
   const {focus, setFocus} = usePlay();
   const [friendListModal, setFriendListModal] = useState(false)
 
@@ -30,8 +30,6 @@ export default function PlayerRoom() {
   const [target, setTarget] = useState({ x: 0, y: 5, z: 0 });
   const [hovered, setHovered] = useState(false)
 
-  const baseUrl = 'https://dying-mate-server.link'
-  const {token} = useAuthContext()
   const [requestCount, setRequestCount] = useState(0)
 
   const setCamera = () => {
@@ -62,8 +60,8 @@ export default function PlayerRoom() {
       position = { x: -8, y: 5, z: 11.5 };
       target = { x: -12, y: 5, z: 12 };
     } else if ( idx ===6) {
-      position = { x: -8, y: 9, z: 4 };
-      target = { x: -10, y: 9, z: 4 };
+      position = { x: -8, y: 9, z: 3 };
+      target = { x: -10, y: 8, z: 3 };
     }
     if(curIdx === idx) {
       setCamera()
@@ -147,10 +145,16 @@ export default function PlayerRoom() {
       { focus && <ModalOverlay setCamera={setCamera} curIdx={curIdx} />}
 
       {/* 친구 목록 */}
-      <div onClick={() => {handleClick(10); setFriendListModal(true)}}>
-        <ModalButton requestCount={requestCount} />
-      </div>
+      {progress === 100 &&
+        <div onClick={() => {handleClick(10); setFriendListModal(true)}}>
+          <ModalButton requestCount={requestCount} />
+        </div>
+      }
+
       {friendListModal && <FriendListModal setFriendListModal={setFriendListModal}/>}
+      { progress !== 100 &&
+        <Loading text={"방 들어가는 중"} />
+      }
     </>
   )
 }

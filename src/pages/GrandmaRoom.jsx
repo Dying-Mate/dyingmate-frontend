@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { Canvas } from "@react-three/fiber";
 import { GMHome } from '../components/models/GrandmaRoom/GrandmaRoom';
-import {OrbitControls} from '@react-three/drei'
+import {OrbitControls, useProgress} from '@react-three/drei'
 import { CameraControls } from '../Camera';
 import { useRoomFocus } from '../contexts/RoomFocus';
 import { Grandmother } from '../components/models/GrandmaRoom/Grandmother';
 import { MessageArr } from '../data/grandma_script';
 import CharMainDialog from '../components/ui/CharMainDialog';
-import {useProgress} from '@react-three/drei'
 import { usePlay } from '../contexts/Play';
+import Loading from './Loading';
 
 export default function GrandmaRoom() {
   const {focus} = useRoomFocus();
@@ -34,7 +34,6 @@ export default function GrandmaRoom() {
       <audio id="musicplayer" autoPlay>
         <source src="/audio/grandmaRoom.mp3" />
       </audio>
-      {progress === 100 &&
       <>
         <Canvas camera={{position:[10,9,0]}}>
         <OrbitControls/>
@@ -49,10 +48,14 @@ export default function GrandmaRoom() {
           <Grandmother/>
         </group>        
         </Canvas>
-        <CharMainDialog messageArr={MessageArr} stageNum={1} />
-      </>
-      }
 
+      </>
+      {progress === 100 &&
+        <CharMainDialog messageArr={MessageArr} stageNum={1} />
+      }
+      { progress !== 100 &&
+        <Loading text={"방 들어가는 중"} />
+      }
     </>
   )
 }
