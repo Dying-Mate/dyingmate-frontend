@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import MainExperience from '../components/MainExperience';
 import { usePlay } from '../contexts/Play';
 import { Canvas } from "@react-three/fiber";
-import { ScrollControls, OrbitControls } from "@react-three/drei";
+import { ScrollControls, OrbitControls, useProgress } from "@react-three/drei";
 import MapOverlay from '../components/MapOverlay';
 import SettingModal from '../components/SetUp/SettingModal';
 import { Overlay } from './Overlay';
@@ -10,19 +10,17 @@ import {ReactComponent as SettingIcon} from '../assets/icons/SetUp/setting_modal
 import {ReactComponent as MapModalButton} from '../assets/img/map_modal_btn.svg'
 import styled from 'styled-components';
 import EnterRoomDialog from '../components/ui/EnterRoomDialog';
+import Loading from './Loading';
 
 export default function Main() {
   const [showSetup, setShowSetup] = useState(false);
   const [showMap, setShowMap] = useState(false);
   const {play, end, isFirst} = usePlay();
+  const { progress } = useProgress()
   const [showEnterDialog, setShowEnterDialog] = useState(0) // 0인 경우 dialog box 보이지 않음. 1~5까지 각 stage 의미
 
   return (
   <>
-    <Header onClick={() => setShowSetup(!showSetup)}>
-      <SettingIcon/>
-    </Header>
-
     <Canvas>
       {/* <axesHelper args={[1000, 1000, 1000]} /> */}
       <color attach="background" arg={["#f59f9f"]} />
@@ -34,12 +32,23 @@ export default function Main() {
       </ScrollControls>
     </Canvas>
     {isFirst && <Overlay/>}
-    <MapButtonWrapper>
-      <MapModalButton onClick={() => setShowMap(true)}/>
-    </MapButtonWrapper>
+
     <MapOverlay showMap={showMap} setShowMap={setShowMap} />
     <SettingModal showSetup={showSetup} setShowSetup={setShowSetup} />
+    {progress === 100 &&
+      <>
+        <Header onClick={() => setShowSetup(!showSetup)}>
+          <SettingIcon/>
+        </Header>
+        <MapButtonWrapper>
+          <MapModalButton onClick={() => setShowMap(true)}/>
+        </MapButtonWrapper> 
+      </>
+    }
     {showEnterDialog !== 0 && <EnterRoomDialog stageNum={showEnterDialog}/>}
+    { progress !== 100 &&
+      <Loading text={"하숙집으로 이동 중..."} />
+    }
   </>
   );
 }

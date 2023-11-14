@@ -1,20 +1,21 @@
 import React, {useEffect, useState } from 'react'
 import { Canvas } from "@react-three/fiber";
 import { Man_Room } from '../components/models/ManRoom/ManRoom';
-import {OrbitControls} from '@react-three/drei'
+import {OrbitControls, useProgress} from '@react-three/drei'
 import { CameraControls } from '../Camera';
 import { useRoomFocus } from '../contexts/RoomFocus';
 import { Man } from '../components/models/ManRoom/Man';
 import CharMainDialog from '../components/ui/CharMainDialog';
 import { MessageArr } from '../data/man_script';
 import { usePlay } from '../contexts/Play';
+import Loading from './Loading';
 
 export default function ManRoom() {
   const {focus} = useRoomFocus();
   const {setIsFirst} = usePlay()
   const [position, setPosition] = useState({ x: 12, y: 8, z: 0 });
   const [target, setTarget] = useState({ x: 0, y: -5, z: 0 });
-
+  const { progress } = useProgress();
 
   useEffect(() => {
     if(focus) {
@@ -44,7 +45,12 @@ export default function ManRoom() {
           <Man/>
         </group>
       </Canvas>
-      <CharMainDialog messageArr={MessageArr} stageNum={2} />
+      {progress === 100 &&
+        <CharMainDialog messageArr={MessageArr} stageNum={2} />
+      }
+      { progress !== 100 &&
+        <Loading text={"방 들어가는 중"} />
+      }
     </>
   )
 }

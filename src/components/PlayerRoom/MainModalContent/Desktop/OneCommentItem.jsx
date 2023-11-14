@@ -5,8 +5,12 @@ import {AiOutlineLike, AiTwotoneLike} from 'react-icons/ai'
 
 export default function OneCommentItem({name, content, likeCount, date}) {  
   const [isClicked, setIsClicked] = useState() 
+  const [count, setCount] = useState(likeCount)
   const handleLikeCount = () => {
     setIsClicked(!isClicked)
+    setCount(isClicked ? count-1 : count+1);  
+    // likecount api 연동
+    //
   }
 
   return (
@@ -22,7 +26,7 @@ export default function OneCommentItem({name, content, likeCount, date}) {
         <Footer>
           <Like>
             {isClicked ? <AiTwotoneLike color={'var(--main-color)'} onClick={handleLikeCount}/> :<AiOutlineLike onClick={handleLikeCount}/>}
-            <p>{likeCount}개</p>
+            <p>{count}개</p>
           </Like>
           <p>{date} 작성됨</p>
         </Footer>
@@ -66,7 +70,7 @@ const MainContent = styled.p`
 const Footer = styled.div`
   display: flex;
   align-items: center;  
-  gap: 0.5rem;
+  gap: 1rem;
   font-size: 0.875rem;
   color: #dedede;
 `

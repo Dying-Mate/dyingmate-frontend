@@ -22,7 +22,7 @@ export default function Loading({text}) {
 
 const LoaderContainer = styled.div`
   position: absolute;
-  height: 100vh;
+  height: 100%;
   top:0;
   bottom:0;
   left:0;
@@ -31,7 +31,7 @@ const LoaderContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgba(28, 23, 23, 0.40);
+  background: rgba(0, 0, 0, 0.30);
 `
 
 const Spinner = styled.div`
