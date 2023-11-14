@@ -5,6 +5,7 @@ import OneCommentItem from './Desktop/OneCommentItem'
 import { useAuthContext } from '../../../contexts/AuthContext'
 import axios from 'axios'
 import { getCommentList } from '../../../apis/api/PlayerRoom/community'
+import { nullWarning } from '../../ui/ToastMessage'
 
 export default function Desktop() {
   const [isOpen, setIsOpen] = useState(false)
@@ -19,7 +20,7 @@ export default function Desktop() {
   }
 
   const handleSubmit = (e) => {   
-    if(inputData === '') {
+    if(content === '') {
       nullWarning()
       return 
     }
@@ -83,7 +84,7 @@ export default function Desktop() {
                     댓글 달기
                   </OpenInputButton>
                   :
-                  <AddCommentButton disabled={!isFill} isFill={content!==''} onClick={handleSubmit}>댓글 달기</AddCommentButton>
+                  <AddCommentButton disabled={content===''} isFill={content!==''} onClick={handleSubmit}>댓글 달기</AddCommentButton>
                 }
               </CommentInputWrapper>
             </TopicBox>
