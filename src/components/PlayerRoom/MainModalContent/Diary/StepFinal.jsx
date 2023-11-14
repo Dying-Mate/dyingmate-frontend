@@ -17,7 +17,7 @@ export default function StepFinal() {
       formData.append(key, diary[key]);
     }
     axios
-    .patch(`${baseUrl}/funeral/save`, formData, {
+    .post(`${baseUrl}/funeral/save`, formData, {
       headers: {
         'Content-Type' : 'multipart/form-data',
         'Authorization': `Bearer ${token}`,

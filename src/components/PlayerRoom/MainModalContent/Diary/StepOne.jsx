@@ -29,8 +29,9 @@ export default function StepOne({method}) {
     setDiary((data) => ({...data, 'method': curIdx}))
     if(method){
       formData.append('method', curIdx)
+      formData.append('_method', 'PATCH');
       axios
-      .patch(`${baseUrl}/funeral/modify`, formData, {
+      .post(`${baseUrl}/funeral/modify`, formData, {
         headers: {
           'Content-Type' : 'multipart/form-data',
           'Authorization': `Bearer ${token}`,
@@ -38,7 +39,6 @@ export default function StepOne({method}) {
         withCredentials: true,
       })
       .then((res) => {
-        console.log("formData", formData)
         console.log(res)
         editSuccess()          
       }).catch(function (error) {

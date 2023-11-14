@@ -27,9 +27,10 @@ export default function StepThree({photo}) {
 
     if(photo){
       formData.append('portrait_photo', files[0])
+      formData.append('_method', 'PATCH');
 
       axios
-      .patch(`${baseUrl}/funeral/modify`, formData, {
+      .post(`${baseUrl}/funeral/modify`, formData, {
         headers: {
           'Content-Type' : 'multipart/form-data',
           'Authorization': `Bearer ${token}`,

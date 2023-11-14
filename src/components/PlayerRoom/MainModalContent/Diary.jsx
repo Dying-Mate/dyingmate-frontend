@@ -40,7 +40,7 @@ export default function Diary() {
       headers: {Authorization: 'Bearer ' + token},
     }, )
     .then(function(res){
-      setDiary(() => ({...res.data.data}))
+      // setDiary(() => ({...res.data.data}))
       console.log("res", res)
     })
     .catch((error) => {

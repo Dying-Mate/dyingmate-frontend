@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {ReactComponent as Pin} from '../../../../assets/img/PlayerRoom/pin.svg'
 import styled from 'styled-components'
 import Draggable from 'react-draggable';
@@ -17,7 +17,9 @@ export default function OnePostItem({memo, memo:{content, photo, memoX, memoY, i
           <HeaderPin><Pin/></HeaderPin>
           { photo &&
             <PhotoWrapper>
-              <img src={photo && URL.createObjectURL(photo) } />
+              {/* <img src={photo && URL.createObjectURL(photo) } /> */}
+              <img src={TestImage } />
+
             </PhotoWrapper>
           }
           <ContentWrapper iscomplete={isComplete}>

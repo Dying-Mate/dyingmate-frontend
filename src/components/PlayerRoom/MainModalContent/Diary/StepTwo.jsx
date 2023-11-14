@@ -25,9 +25,10 @@ export default function StepTwo({epitaph}) {
     setStoneText(stoneTextInput)
     if(epitaph){
       formData.append('epitaph', stoneTextInput)
+      formData.append('_method', 'PATCH');
 
       axios
-      .patch(`${baseUrl}/funeral/modify`, formData, {
+      .post(`${baseUrl}/funeral/modify`, formData, {
         headers: {
           'Content-Type' : 'multipart/form-data',
           'Authorization': `Bearer ${token}`,
