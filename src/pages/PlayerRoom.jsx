@@ -145,16 +145,14 @@ export default function PlayerRoom() {
       { focus && <ModalOverlay setCamera={setCamera} curIdx={curIdx} />}
 
       {/* 친구 목록 */}
-      {progress === 100 &&
+      { progress === 100 &&
         <div onClick={() => {handleClick(10); setFriendListModal(true)}}>
           <ModalButton requestCount={requestCount} />
         </div>
       }
 
-      {friendListModal && <FriendListModal setFriendListModal={setFriendListModal}/>}
-      { progress !== 100 &&
-        <Loading text={"방 들어가는 중"} />
-      }
+      { friendListModal && <FriendListModal setFriendListModal={setFriendListModal}/>}
+      { progress !== 100 && <Loading /> }
     </>
   )
 }

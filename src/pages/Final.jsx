@@ -1,14 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useState } from 'react'
 import { Canvas } from "@react-three/fiber";
-import {OrbitControls, PerspectiveCamera} from '@react-three/drei'
+import {useProgress} from '@react-three/drei'
 import { Ending } from '../components/models/Ending';
 import { CameraControls } from '../EndingCamera';
 import EndingText from '../components/EndingText';
+import Loading from './Loading';
 
 export default function Final() {
   const [position, setPosition] = useState({x: 210, y: 120, z: 105});
   const [target, setTarget] = useState({ x: 100, y: 150, z: 50 });
   const [showText, setShowText] = useState(false)
+  const { progress } = useProgress();
 
   const handleShowText = () => {
     setShowText(!showText)
@@ -30,6 +32,8 @@ export default function Final() {
       {showText &&
         <EndingText />
       }
+      { progress !== 100 && <Loading /> }
+
     </>
   )
 }

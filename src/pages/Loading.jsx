@@ -1,26 +1,18 @@
 import React from 'react'
 import styled from 'styled-components'
-import {Oval} from 'react-loader-spinner'
 
-export default function Loading({text}) {
+export default function Loading() {
   return (
-    <LoaderContainer>
-      <Spinner>
-        <Oval
-          color='var(--main-color)'
-          secondaryColor='white'
-          height={120}
-          width={120}
-          strokeWidth={4}
-          strokeOpacity={1}
-        />
-        {text && <p>{text}</p>}
-      </Spinner>
-    </LoaderContainer>
-  )
+    <LoadingContainer>
+      <svg viewBox="25 25 50 50">
+        <circle r="20" cy="50" cx="50"></circle>
+      </svg>
+    </LoadingContainer>  
+)
 }
 
-const LoaderContainer = styled.div`
+
+const LoadingContainer = styled.div`
   position: absolute;
   height: 100%;
   top:0;
@@ -31,17 +23,43 @@ const LoaderContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgba(0, 0, 0, 0.30);
-`
 
-const Spinner = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  align-items: center;
-  p{
-    color: white;
-    font-size: 1.25rem;
-    font-weight: 500;
+  svg {
+    width: 4rem;
+    transform-origin: center;
+    animation: rotate4 2s linear infinite;
   }
+  
+  circle {
+    fill: none;
+    stroke: var(--main-color);
+    stroke-width: 3;
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+    stroke-linecap: round;
+    animation: dash4 1.5s ease-in-out infinite;
+  }
+  
+  @keyframes rotate4 {
+    100% {
+    transform: rotate(360deg);
+    }
+  }
+  
+  @keyframes dash4 {
+    0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+    }
+  
+    50% {
+    stroke-dasharray: 90, 200;
+    stroke-dashoffset: -35px;
+    }
+  
+    100% {
+    stroke-dashoffset: -125px;
+    }
+  }
+ 
 `
