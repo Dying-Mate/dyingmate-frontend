@@ -16,6 +16,8 @@ import { Shelf } from '../components/models/PlayerRoom/Shelf';
 import { Desktop } from '../components/models/PlayerRoom/Desktop';
 import { getFriendList } from '../apis/api/PlayerRoom/friendList';
 import Loading from './Loading';
+import { isAllDone } from '../apis/api/PlayerRoom/ending';
+import EnterRoomDialog from '../components/ui/EnterRoomDialog';
 
 export default function PlayerRoom() {
   const light1 = useRef()
@@ -31,11 +33,20 @@ export default function PlayerRoom() {
   const [hovered, setHovered] = useState(false)
 
   const [requestCount, setRequestCount] = useState(0)
+  const [showEndingBox, setShowEndingBox] = useState(true)
 
   const setCamera = () => {
     setPosition({ x: 12, y: 8, z: 0 })
     setTarget({ x: 0, y: 5, z: 0 })
     setCurIdx(0)
+
+    isAllDone().then((res) => {
+      if(res) {
+        setShowEndingBox(res.data)
+      }
+    }).catch((error) => {
+      console.log(error)
+    })
   }
   
   // 오브젝트 클릭시 카메라 pos, target 설정
@@ -106,15 +117,10 @@ export default function PlayerRoom() {
     };
   },[])
 
-  const LightHelper = () => {
-    useHelper(light1, DirectionalLightHelper, 1, "red");
-    useHelper(light2, DirectionalLightHelper, 1, "blue");
-  }
 
   return (
     <>
       <Canvas camera={{position:[12,8,0]}} colorManagement>
-        <LightHelper />
         {/* <axesHelper args={[200, 200, 200]} /> */}
         <ambientLight intensity={2} />
         <directionalLight ref={light1} intensity={5}  decay={2} color="#eca864" position={[ 17, 12.421, 2]} target-position={[0, 9, 0]} />
@@ -150,9 +156,10 @@ export default function PlayerRoom() {
           <ModalButton requestCount={requestCount} />
         </div>
       }
-
+      { showEndingBox && <EnterRoomDialog stageNum={5} setShowEndingBox={setShowEndingBox}/>}
       { friendListModal && <FriendListModal setFriendListModal={setFriendListModal}/>}
       { progress !== 100 && <Loading /> }
+      
     </>
   )
 }

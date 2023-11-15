@@ -5,12 +5,12 @@ import {useNavigate} from 'react-router-dom'
 import { useStageContext } from '../../contexts/StageContext'
 import { EnterRoomMsg } from '../../data/enter_room_dialog'
 
-export default function EnterRoomDialog({stageNum}) {
+export default function EnterRoomDialog({stageNum, setShowEndingBox}) {
   const navigate = useNavigate()
   const {stage} = useStageContext()
   const [enterFail, setEnterFail] = useState(false)
 
-  const handleOnClick = () => {
+  const handleOnClick = (close) => {
     switch(stageNum) {
       case 1:
         navigate('/gmroom')
@@ -36,6 +36,13 @@ export default function EnterRoomDialog({stageNum}) {
           setEnterFail(true)
         }
         break;
+      case 5:
+        if(close) {
+          setShowEndingBox((prev) => !prev)
+          return;
+        }
+        navigate('/final')
+        break;
     } 
     
   }
@@ -47,7 +54,14 @@ export default function EnterRoomDialog({stageNum}) {
           {!enterFail ? 
             <>
               <p>{EnterRoomMsg[stageNum].text}</p>
-              <StyledButton width={'7.5rem'} text={'입장하기'} textColor={'white'} btnColor={'var(--main-color)'} handleOnClick={() => handleOnClick()}/> 
+              {stageNum !== 5
+                ? <StyledButton width={'7.5rem'} text={'입장하기'} textColor={'white'} btnColor={'var(--main-color)'} handleOnClick={() => handleOnClick()}/> 
+                : <ButtonWrapper>
+                    <StyledButton width={'7.5rem'} text={'나중에'} textColor={'white'} btnColor={'#DEDEDE'} handleOnClick={() => handleOnClick(close)}/> 
+                    <StyledButton width={'7.5rem'} text={'이동하기'} textColor={'white'} btnColor={'var(--main-color)'} handleOnClick={() => handleOnClick()}/> 
+                  </ButtonWrapper>
+                
+              }
             </>
             :
             <p>{EnterRoomMsg[0].text}</p>
@@ -89,4 +103,8 @@ const DialogBox = styled.div`
     text-align: center;
     flex-shrink: 0;
   }
+`
+const ButtonWrapper = styled.div`
+  display: flex;
+  gap: 1rem;
 `

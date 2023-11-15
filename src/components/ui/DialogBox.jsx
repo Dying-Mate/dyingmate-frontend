@@ -42,7 +42,7 @@ export default function DialogBox({messageArr, stageNum}) {
         })
         setTimeout(() => {
           navigate('/main')
-        }, 2000)
+        }, 3000)
         return;
       }
       setCurMessage(curMessage + 1)
