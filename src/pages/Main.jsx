@@ -10,7 +10,7 @@ import {ReactComponent as SettingIcon} from '../assets/icons/SetUp/setting_modal
 import {ReactComponent as MapModalButton} from '../assets/img/map_modal_btn.svg'
 import styled from 'styled-components';
 import EnterRoomDialog from '../components/ui/EnterRoomDialog';
-import Loading from './Loading';
+import OnBoardingLoading from './OnBoardingLoading';
 
 export default function Main() {
   const [showSetup, setShowSetup] = useState(false);
@@ -47,7 +47,7 @@ export default function Main() {
     }
     {showEnterDialog !== 0 && <EnterRoomDialog stageNum={showEnterDialog}/>}
     { progress !== 100 &&
-      <Loading text={"하숙집으로 이동 중..."} />
+      <OnBoardingLoading text={"마을로 이동 중..."} />
     }
   </>
   );

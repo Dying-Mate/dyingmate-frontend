@@ -24,7 +24,7 @@
           {
             duration: 3,
             repeat: 0,
-            delay: 1,
+            delay: 2.5,
             x: position.x,
             y: position.y,
             z: position.z,
@@ -40,7 +40,7 @@
           {
             duration: 3,
             repeat: 0,
-            delay: 1,
+            delay: 2.5,
             x: target.x,
             y: target.y,
             z: target.z,

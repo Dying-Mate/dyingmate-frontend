@@ -5,6 +5,8 @@ import axios from 'axios'
 import { useAuthContext } from '../../../../contexts/AuthContext'
 import { useDiaryContext } from '../../../../contexts/DiaryContext'
 import { saveSuccess } from '../../../ui/ToastMessage'
+import GraveStoneSrc from '../../../../assets/img/PlayerRoom/gravestone.png'
+import UploadFrameSrc from '../../../../assets/img/PlayerRoom/upload_frame.png'
 
 export default function StepFinal() {
   const formData = new FormData()
@@ -46,6 +48,15 @@ export default function StepFinal() {
           </p>
         </Text>
       </TextArea>
+      <Result>
+        <GraveStone><p>{diary.epitaph}</p></GraveStone>
+        <UploadBox>
+          <img src={UploadFrameSrc}/>
+          <img src={diary && URL.createObjectURL(diary.portrait_photo) } />
+        </UploadBox>
+      </Result>
+
+
     </Content>
   )
 }
@@ -55,7 +66,7 @@ const Content = styled.div`
   height: 30rem;
   display: flex;
   flex-direction: row;
-  gap: 3.75rem;
+  gap: 1.5rem;
   margin: 0 4.25rem;
   align-items: center;
   justify-content: center;
@@ -64,7 +75,7 @@ const Content = styled.div`
 const TextArea = styled.div`
   display: flex;
   flex-direction: column;
-  max-width: 50rem;
+  max-width: 55rem;
   width: fit-content;
   gap: 1.8rem;
  
@@ -77,4 +88,46 @@ const Text = styled.div`
     margin-bottom: 0.4rem;
   }
 
+`
+
+const Result = styled.div`
+  display: flex;
+  width: 20rem;
+`
+
+const GraveStone = styled.div`
+  background-image: url(${GraveStoneSrc});
+  width: 13rem;
+  height: 20rem;
+  background-repeat:no-repeat;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Perpetua Titling MT;  
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.33125rem;
+
+  p {
+    width: 9rem;
+    word-break: break-all;
+    text-align: center;
+  }
+`
+
+const UploadBox = styled.div`
+  background-repeat:no-repeat;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  position: relative;
+  transform: rotate( -5deg ) translate(-30%, 20%) scale(0.8);
+
+  img:nth-child(2){
+    position: absolute;
+    width: 10.8rem;
+    height: 15rem;
+    border-radius: 0.25rem;
+  }
 `

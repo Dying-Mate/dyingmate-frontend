@@ -47,9 +47,8 @@ export default function WomanRoom() {
       {progress === 100 &&
         <CharMainDialog messageArr={MessageArr} stageNum={3} />
       }
-      { progress !== 100 &&
-        <Loading text={"방 들어가는 중"} />
-      }
+      { progress !== 100 && <Loading /> }
+
     </>
   )
 }
