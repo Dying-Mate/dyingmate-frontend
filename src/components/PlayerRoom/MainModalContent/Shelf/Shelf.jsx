@@ -22,11 +22,11 @@ export default function Shelf() {
   },[])
 
 const handleScrollLeft = () => {
-  setScrollPage(scrollPage - widthSize - 24)
+  setScrollPage(scrollPage - widthSize - 48)
 }
 
 const handleScrollRight = () => {
-  setScrollPage(scrollPage + widthSize + 24)
+  setScrollPage(scrollPage + widthSize - 48)
 }
 
 useEffect(() => {
@@ -92,7 +92,7 @@ const HeaderTitle = styled.div`
 const SlideWrapper = styled.div`
   height: 100%;
   width: 100%;
-  padding: 2.25rem 0 2.75rem 0;
+  padding: 2.25rem 2.25rem 2.75rem 2.25rem;
   box-sizing: border-box;
   overflow: hidden;
 `
