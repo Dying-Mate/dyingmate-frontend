@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import TestProfile from '../../../assets/img/splashBg.png'
+import UserProfile from '../../ui/UserProfile'
 
 
 export default function OneSearchItem({isExist, email, name, photo, handleAddFriend}) {
@@ -11,7 +12,9 @@ export default function OneSearchItem({isExist, email, name, photo, handleAddFri
       <ItemBox>
         <UserInfo>
           {/* 사용자 프로필 사진으로 변경 필요 */}
-          <Profile image={TestProfile} />
+          <ProfileWrapper>
+            <UserProfile photoNum={photo}/>
+          </ProfileWrapper>
           <IdNameText>
             <p>@{email}</p>
             <p>{name}</p>
@@ -50,11 +53,9 @@ const UserInfo = styled.div`
   align-items: center;
 `
 
-const Profile = styled.div`
+const ProfileWrapper = styled.div`
   width: 2rem;
   height: 2rem;
-  border-radius: 100%;
-  background-image: url(${props => props.image});
 `
 
 const IdNameText = styled.div`

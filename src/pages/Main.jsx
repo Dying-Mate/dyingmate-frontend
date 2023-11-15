@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import MainExperience from '../components/MainExperience';
 import { usePlay } from '../contexts/Play';
 import { Canvas } from "@react-three/fiber";
-import { ScrollControls, OrbitControls, useProgress } from "@react-three/drei";
+import { ScrollControls, useProgress } from "@react-three/drei";
 import MapOverlay from '../components/MapOverlay';
 import SettingModal from '../components/SetUp/SettingModal';
 import { Overlay } from './Overlay';
@@ -58,6 +58,10 @@ const Header = styled.div`
   top: 3.75rem;
   right: 3rem;
   z-index: 1;
+
+  svg {
+    cursor: pointer;
+  }
 `
 
 const MapButtonWrapper = styled.div`
@@ -68,4 +72,8 @@ const MapButtonWrapper = styled.div`
   top: 50%;
   right: 0;
   transform: translate(0, -50%);
+
+  &:hover{
+    filter: brightness(1.1);
+  }
 `

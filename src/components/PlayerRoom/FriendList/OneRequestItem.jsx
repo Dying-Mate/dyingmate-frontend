@@ -1,12 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
 import TestProfile from '../../../assets/img/splashBg.png'
+import UserProfile from '../../ui/UserProfile'
 
-export default function OneRequestItem({userId, username, handleAcceptFriend, handleRefuseFriend}) {
+export default function OneRequestItem({userId, photoNum, username, handleAcceptFriend, handleRefuseFriend}) {
   return (
     <ItemBox>
       <UserInfo>
-        <Profile image={TestProfile} />
+        <ProfileWrapper>
+          <UserProfile photoNum={photoNum}/>
+        </ProfileWrapper>
         <IdNameText>
           <p>@{userId}</p>
           <p>{username}</p>
@@ -34,11 +37,9 @@ const UserInfo = styled.div`
   align-items: center;
 `
 
-const Profile = styled.div`
+const ProfileWrapper = styled.div`
   width: 2.5rem;
   height: 2.5rem;
-  border-radius: 100%;
-  background-image: url(${props => props.image});
 `
 
 const IdNameText = styled.div`

@@ -1,16 +1,23 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import {ReactComponent as MainIcon} from '../../assets/icons/SetUp/main_icon.svg'
 import {IoIosClose} from 'react-icons/io'
 import {LuPencilLine, LuLogIn, LuRotateCcw} from 'react-icons/lu'
 import IconStyledButton from '../ui/IconStyledButton'
+import UserProfile from '../ui/UserProfile'
+import { useAuthContext } from '../../contexts/AuthContext'
 
 export default function SettingModal({showSetup, setShowSetup}) {
+  const {user} = useAuthContext();
 
   const handleOnClick = (e) => {
     // 1. 에러 방지 팝업 보여주기
     // 2. 로그아웃, 초기화하기
   }
+
+  useEffect(() => {
+    console.log("user", user)
+  },[])
 
   return (
     <>
@@ -26,8 +33,9 @@ export default function SettingModal({showSetup, setShowSetup}) {
           </Header>
           <ContentWrapper>
             <ProfileBox>
-              {/* 이미지 추가 */}
-              <ProfileImg /> 
+              <ProfileWrapper>
+                <UserProfile photoNum={user && user.photoNum} />
+              </ProfileWrapper>
               <p>워리어즈 님,</p>
               <IconStyledButton width={'100%'} text={'닉네임 수정하기'} fontWeight={'700'} color={'white'} btnColor={`var(--main-color-2)`} icon={<LuPencilLine fontSize='1.5rem'/>} handleOnClick={handleOnClick} />
             </ProfileBox>
@@ -70,6 +78,10 @@ const Header = styled.div`
   svg {
     color: white;
     font-size: 2.5rem;
+  }
+
+  svg:last-child{
+    cursor: pointer;
   }
 
 `
@@ -119,11 +131,9 @@ const ProfileBox = styled.div`
   }
 `
 
-const ProfileImg = styled.div`
+const ProfileWrapper = styled.div`
   width: 6rem;
   height: 6rem;
-  border-radius: 100%;
-  background-color: black;
 `
 
 const ButtonWrapper = styled.div`

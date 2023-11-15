@@ -136,21 +136,25 @@ export default function FriendListModal({setFriendListModal}) {
         <ListContainer>
           <ListWrapper>
             <p>친구 목록</p>
-            {friendList && friendList.map((data, idx) => (
-              <OneFriendItem key={idx} userId={data.email} username={data.name}/>
-            ))}
+            {friendList && friendList.map((data, idx) => {
+              const {email, name, photo} = data
+              return <OneFriendItem key={idx} userId={email} username={name} photoNum={photo}/>
+            }
+          )}
           </ListWrapper>
           <ListWrapper>
             <p>친구 요청</p>
-            {requestList && requestList.map((data, idx) => (
-              <OneRequestItem 
-                key={idx} 
-                userId={data.email} 
-                username={data.name} 
-                handleAcceptFriend={() =>handleAcceptFriend(data.email)} 
-                handleRefuseFriend={() =>handleRefuseFriend(data.email)}
-              />
-            ))}
+            {requestList && requestList.map((data, idx) => {
+              const {email, name, photo} = data
+              return <OneRequestItem 
+                        key={idx} 
+                        userId={email} 
+                        username={name} 
+                        photoNum={photo}
+                        handleAcceptFriend={() =>handleAcceptFriend(data.email)} 
+                        handleRefuseFriend={() =>handleRefuseFriend(data.email)}
+                      />
+            })}
           </ListWrapper>
         </ListContainer>
       </Container>
