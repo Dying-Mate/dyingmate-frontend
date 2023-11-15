@@ -50,7 +50,7 @@ export default function LoginForm() {
         return;
       }
       localStorage.setItem('login-token', response.data.data.accessToken);
-      setUser(response.data.data)
+      setUser({...response.data.data})
     })
     .then(() => {
       setLogin(true)
