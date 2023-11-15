@@ -8,7 +8,6 @@ import {IoMdAlert} from 'react-icons/io'
 import axios from 'axios'  
 import { useAuthContext } from '../../contexts/AuthContext';
 
-
 export default function LoginForm() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
