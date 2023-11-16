@@ -152,7 +152,7 @@ export function Ending(props) {
       </group>
       <mesh geometry={nodes.Cube012.geometry} material={materials.campfire2} position={[-100.437, 30.951, -80.701]} rotation={[-Math.PI, 1.298, -Math.PI]} scale={[4.96, 1.118, 4.96]} />
       <mesh geometry={nodes.Cube003.geometry} material={materials['camp1.001']} position={[-157.304, 27.328, -74.314]} rotation={[0.075, 1.386, -0.07]} scale={[18.333, 3.318, 3.318]} />
-      <mesh geometry={nodes.Plane003.geometry} material={materials['Material.004']} position={[212.879, 187.547, 120.154]} rotation={[Math.PI / 2, 0, -1.235]} scale={[1300.754, 12.05, 500.236]} />
+      <mesh geometry={nodes.Plane003.geometry} material={materials['Material.004']} position={[212.879, 187.547, 96.154]} rotation={[Math.PI / 2, 0, -1.235]} scale={[1100.754, 9.05, 600.236]} />
     </group>
   )
 }
