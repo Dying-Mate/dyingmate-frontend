@@ -14,7 +14,7 @@ const MAX_Y = 500
 const MIN_Y = 0
 
 export default function AddPostModal({isImagePost, setOpenModal, setUpdate}) {
-  const [post, setPost] = useState({"photo": ""})
+  const [post, setPost] = useState({})
   const [photo, setPhoto] = useState()
   const formData = new FormData()
   const {token} = useAuthContext();
@@ -39,15 +39,34 @@ export default function AddPostModal({isImagePost, setOpenModal, setUpdate}) {
     setOpenModal(false)
   }
 
-  const handleSubmit = (e) => {
+  const handleFileSubmit = (e) => {
 
     for ( const key in post ) {
       formData.append(key, post[key]);
     }
 
-    axios.post(`${baseUrl}/bucketlist/add`, formData, {
+    axios.post(`${baseUrl}/bucketlist/add/file`, formData, {
       headers: {
         'Content-Type' : 'multipart/form-data',
+        'Authorization': `Bearer ${token}`,
+      },
+      withCredentials: true,
+    })
+    .then((response) => {
+      console.log(response)
+      setUpdate()
+      
+    }).catch(function (error) {
+        // 오류발생시 실행
+      console.log(error)
+    })
+    closeModal()
+
+  }
+
+  const handleContentSubmit = (e) => {
+    axios.post(`${baseUrl}/bucketlist/add/content`, post, {
+      headers: {
         'Authorization': `Bearer ${token}`,
       },
       withCredentials: true,
@@ -106,7 +125,7 @@ export default function AddPostModal({isImagePost, setOpenModal, setUpdate}) {
                     <input type="file" name='photo' accept='.png, .jpg,image/*' onChange={handleChange}/>
                   </UploadBox>
                 }
-                <IconStyledButton width={'100%'} text={'생성하기'} fontSize={'1.25rem'} fontWeight={'700'} color={'white'} btnColor={'var(--main-color)'} handleOnClick={handleSubmit} />
+                <IconStyledButton width={'100%'} text={'생성하기'} fontSize={'1.25rem'} fontWeight={'700'} color={'white'} btnColor={'var(--main-color)'} handleOnClick={isImagePost ? handleFileSubmit : handleContentSubmit} />
               </ButtonWrapper>
             </Main>
           </Wrapper>

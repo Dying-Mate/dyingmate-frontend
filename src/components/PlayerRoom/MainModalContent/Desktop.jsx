@@ -93,7 +93,7 @@ export default function Desktop() {
             {commentList && commentList.length > 0 &&
             commentList.map(data => {
               const {commentId, profile, name, content, creationTime, likeNum} = data
-              return <OneCommentItem key={commentId} commentId={commentId} name={name} content={content} likeCount={likeNum} date={creationTime}/>
+              return <OneCommentItem key={commentId} commentId={commentId} profile={profile} name={name} content={content} likeCount={likeNum} date={creationTime}/>
             })  
           }
           </CommentWrapper>

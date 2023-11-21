@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import TestProfile from '../../../../assets/img/splashBg.png'
 import {AiOutlineLike, AiTwotoneLike} from 'react-icons/ai'
+import UserProfile from '../../../ui/UserProfile'
 
-export default function OneCommentItem({name, content, likeCount, date}) {  
+export default function OneCommentItem({name, profile, content, likeCount, date}) {  
   const [isClicked, setIsClicked] = useState() 
   const [count, setCount] = useState(likeCount)
   const handleLikeCount = () => {
@@ -17,7 +17,9 @@ export default function OneCommentItem({name, content, likeCount, date}) {
     <>
       <CommentItem>
         <WriterInfo>
-          <Profile image={TestProfile}/>
+          <ProfileWrapper>
+            <UserProfile photoNum={profile} />
+          </ProfileWrapper>
           <p>{name}</p>
         </WriterInfo>
         <MainContent>
@@ -41,11 +43,9 @@ const CommentItem = styled.div`
   gap: 1rem;
 `
 
-const Profile = styled.div`
+const ProfileWrapper = styled.div`
   width: 2rem;
   height: 2rem;
-  border-radius: 100%;
-  background-image: url(${props => props.image});
 `
 
 const WriterInfo = styled.div`

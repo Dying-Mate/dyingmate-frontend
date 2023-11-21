@@ -33,7 +33,7 @@ export default function PlayerRoom() {
   const [hovered, setHovered] = useState(false)
 
   const [requestCount, setRequestCount] = useState(0)
-  const [showEndingBox, setShowEndingBox] = useState(true)
+  const [showEndingBox, setShowEndingBox] = useState(false)
 
   const setCamera = () => {
     setPosition({ x: 12, y: 8, z: 0 })
