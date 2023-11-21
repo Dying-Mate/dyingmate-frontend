@@ -31,6 +31,9 @@ export default function WomanRoom() {
 
   return (
     <>
+      <audio id="musicplayer" autoPlay>
+        <source src="/audio/womanroom.mp3" />
+      </audio>
       <Canvas camera={{position:[12,9,0]}} colorManagement>
         <OrbitControls/>
         {/* <LightHelper /> */}

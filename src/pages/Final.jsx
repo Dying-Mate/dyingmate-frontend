@@ -18,6 +18,9 @@ export default function Final() {
 
   return (
     <>
+      <audio id="musicplayer" autoPlay>
+        <source src="/audio/ending.mp3" />
+      </audio>
       <Canvas camera={{position:[200,30,100]}} colorManagement>
         {/* <axesHelper args={[500, 500, 500]} /> */}
         {/* <LightHelper /> */}

@@ -7,6 +7,9 @@ import LoginSignup from './LoginSignup'
 export default function Splash() {
   return (
     <>
+      <audio id="musicplayer" autoPlay>
+        <source src="/audio/splash.mp3" />
+      </audio>
       <SplashContainer>
         <ContentBox>
           <Description>

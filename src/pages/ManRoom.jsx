@@ -32,6 +32,9 @@ export default function ManRoom() {
 
   return (
     <>
+      <audio id="musicplayer" autoPlay>
+        <source src="/audio/manroom.mp3" />
+      </audio>
       <Canvas camera={{position:[12,8,0]}} colorManagement>
         <OrbitControls/>
         {/* <LightHelper /> */}
