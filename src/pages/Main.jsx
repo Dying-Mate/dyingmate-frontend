@@ -21,6 +21,9 @@ export default function Main() {
 
   return (
   <>
+    <audio id="musicplayer" autoPlay>
+      <source src="/audio/main.aac" />
+    </audio>
     <Canvas>
       {/* <axesHelper args={[1000, 1000, 1000]} /> */}
       <color attach="background" arg={["#f59f9f"]} />

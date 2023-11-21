@@ -68,6 +68,9 @@ export default function Onboarding() {
 
   return (
     <>
+      <audio id="musicplayer" autoPlay>
+        <source src="/audio/onboarding.aac" />
+      </audio>
       <Container>
         <VideoWrapper>
           <video width="100%" height="100%" min-width="100%"  autoPlay muted playsInline loop>

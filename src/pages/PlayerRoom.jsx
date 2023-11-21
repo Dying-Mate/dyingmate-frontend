@@ -120,6 +120,9 @@ export default function PlayerRoom() {
 
   return (
     <>
+      <audio id="musicplayer" autoPlay>
+        <source src="/audio/playerroom.mp3" />
+      </audio>
       <Canvas camera={{position:[12,8,0]}} colorManagement>
         {/* <axesHelper args={[200, 200, 200]} /> */}
         <ambientLight intensity={2} />
