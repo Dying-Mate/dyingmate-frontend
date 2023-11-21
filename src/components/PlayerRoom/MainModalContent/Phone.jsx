@@ -76,7 +76,7 @@ export default function Phone() {
           </Header>
           <Main>
             <p>부고문자는 한번만 작성할 수 있으니 신중하게 작성해야 합니다. <br/>
-              {date.getMonth()}월 {date.getDay()}일 ({week[date.getDay()]}) {date.getHours()}:{String(date.getMinutes()).padStart(2, "0")}
+              {date.getMonth()+1}월 {date.getDate()}일 ({week[date.getDay()]}) {date.getHours()}:{String(date.getMinutes()).padStart(2, "0")}
             </p>
             {(isSend || data.length>0) && 
             <MessageArea>
@@ -205,6 +205,7 @@ const Bubble = styled.div`
     color: white;
     padding: 1rem;
     box-sizing: border-box;
+    word-break: break-all;
   }
 `
 
