@@ -15,7 +15,7 @@ export default function Board() {
   const baseUrl = 'https://dying-mate-server.link'
   const {token} = useAuthContext()
 
-  useEffect(() => {
+  const getBucketList = () => {
     async function getAllBucketlist() {
       try{
         const {data} = await axios.get(`${baseUrl}/bucketlist/load`,{
@@ -30,7 +30,6 @@ export default function Board() {
     
     getAllBucketlist().then((res) =>{
       if(res) {
-        // console.log("getAllBucketlist",res)
         setAllBucketlist(res.data.fileResponseList)
       }
       }).then(() => {
@@ -38,7 +37,16 @@ export default function Board() {
       .catch((error) => {
         console.log(error)
       })
-  },[update])
+  }
+
+  useEffect(() => {
+    getBucketList()
+    const intervalId = setInterval(getBucketList, 1500);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  },[])
 
   const handleOnClick = (isImagePost) => {
     setOpenModal(true)

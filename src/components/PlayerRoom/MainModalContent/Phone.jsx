@@ -107,7 +107,7 @@ export default function Phone() {
                 placeholder='부고 문자에 들어갈 내용을 작성해주세요.' 
                 spellCheck="false"
                 required
-                maxLength={500}
+                maxLength={200}
                 isMaxLength={isMaxLength}
               />
 
