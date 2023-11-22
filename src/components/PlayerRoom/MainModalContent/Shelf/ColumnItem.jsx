@@ -27,7 +27,7 @@ const ItemBox = styled.div`
   a{
     color: var(--font-gray-3);
     font-weight: 400;
-
+    word-break: break-all;
   }
 `
 
