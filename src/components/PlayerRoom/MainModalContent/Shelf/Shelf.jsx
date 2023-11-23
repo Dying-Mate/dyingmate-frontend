@@ -58,7 +58,7 @@ useEffect(() => {
 
 const Container = styled.div`
   width: 60%;
-  height: calc(100vh - 16rem);
+  height: calc(100vh - 10rem);
   min-height: 36.5rem;
   display: flex;
   position: relative;

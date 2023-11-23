@@ -41,7 +41,7 @@ export default function Board() {
 
   useEffect(() => {
     getBucketList()
-    const intervalId = setInterval(getBucketList, 1500);
+    const intervalId = setInterval(getBucketList, 1000);
 
     return () => {
       clearInterval(intervalId);
