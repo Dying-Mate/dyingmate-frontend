@@ -180,7 +180,7 @@ const EmailInputWrapper = styled.div`
 `
 
 const EmailCheckBtn = styled.button`
-  width: 6.8rem;
+  width: 7rem;
   padding: 0.5rem 1.5rem;
   background-color: ${props => props.isFill ? 'var(--main-color)' : 'var(--font-gray-1)'};
   color: white;

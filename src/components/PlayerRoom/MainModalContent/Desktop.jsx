@@ -61,7 +61,7 @@ export default function Desktop() {
         </Header>
         <ScrollSection>
           <TopicWrapper>
-            <p>2023 7월 둘째주</p>
+            <p>2023 11월 넷째주</p>
             <p>이번 주 대화 주제</p>
             <TopicBox>
               <TopicContent>"인생에서 우리가 경험하는 모든 것은 결국에는 무엇을 위한 것인지, 그리고 인생의 근본적인 의미는 어떤 것일까요? 어떤 방식으로 우리는 존재하고 경험하는 것이 의미 있는 것으로 여겨질 수 있을까요?"</TopicContent>

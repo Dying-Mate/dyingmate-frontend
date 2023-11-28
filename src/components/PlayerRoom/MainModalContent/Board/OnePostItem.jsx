@@ -38,7 +38,7 @@ export default function OnePostItem({memo, memo:{content, photo, memoX, memoY, i
           { photo &&
             <PhotoWrapper>
               {/* <img src={photo && URL.createObjectURL(photo) } /> */}
-              <img src={TestImage } />
+              <img src={photo} />
 
             </PhotoWrapper>
           }

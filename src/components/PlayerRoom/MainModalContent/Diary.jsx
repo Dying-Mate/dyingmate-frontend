@@ -10,6 +10,7 @@ import ProgressBar from '../../Diary/ProgressBar'
 import axios from 'axios'
 import { useDiaryContext } from '../../../contexts/DiaryContext'
 import { useAuthContext } from '../../../contexts/AuthContext'
+import {ToastContainer} from 'react-toastify'
 
 export default function Diary() {
   const [comp, setComp] = useState()
@@ -76,6 +77,7 @@ export default function Diary() {
         </MainComponent>
         <ProgressBar curIdx={curIdx}/>
       </Container>
+      <ToastContainer/>
     </>
   )
 }
