@@ -1,17 +1,38 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import {ReactComponent as Pin} from '../../../../assets/img/PlayerRoom/pin.svg'
 import styled from 'styled-components'
 import Draggable from 'react-draggable';
+import TestImage from '../../../../assets/img/splashBg.png'
+import axios from 'axios'
+import { useAuthContext } from '../../../../contexts/AuthContext';
 
 export default function OnePostItem({memo, memo:{content, photo, memoX, memoY, isComplete}}) {
-  // const trackPos = (data) => {
-    // 메모 위치 이동 시 patch api 연동 필요
-  // }
+  const baseUrl = 'https://dying-mate-server.link'
+  const {token} = useAuthContext();
+
+  const trackPos = (data) => {    
+    axios.patch(
+      `${baseUrl}/bucketlist/move/1?x=${memoX+data.lastX}&y=${memoY+data.lastY}`, {}, 
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        withCredentials: true,
+      })
+    .then((res) => {
+      console.log(res)        
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  }
+
+
 
   return (
     <>
-      {/* <Draggable onDrag={(e, data) => trackPos(data)}> */}
-      <Draggable>
+      
+      <Draggable onStop={(e, data) => trackPos(data)}>
         <PostItem hasPhoto={photo !== null} memoX={memoX} memoY={memoY}>
           <HeaderPin><Pin/></HeaderPin>
           { photo &&
