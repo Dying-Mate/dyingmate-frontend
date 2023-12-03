@@ -4,17 +4,11 @@ import {ReactComponent as MainIcon} from '../../../../assets/icons/PlayerRoom/Di
 import MethodItem from '../../../Diary/MethodItem'
 import MethodExplain from '../../../Diary/MethodExplain';
 import { useDiaryContext } from '../../../../contexts/DiaryContext';
-import axios from 'axios'
-import { useAuthContext } from '../../../../contexts/AuthContext';
-import { editSuccess } from '../../../ui/ToastMessage';
 import FuneralSelectData from '../../../../data/funeral_select';
 
 export default function StepOne({method}) {
   const {diary, setDiary} = useDiaryContext()
   const [curIdx, setCurIdx] = useState();
-  const {token} = useAuthContext()
-  const baseUrl = 'https://dying-mate-server.link'
-  const formData = new FormData()
 
   useEffect(() => {
     setCurIdx(method ? method : 1)
@@ -22,26 +16,6 @@ export default function StepOne({method}) {
 
   useEffect(() => {
     setDiary((data) => ({...data, 'method': curIdx}))
-    if(method){
-      formData.append('method', curIdx)
-      formData.append('_method', 'PATCH');
-      axios
-      .post(`${baseUrl}/funeral/modify`, formData, {
-        headers: {
-          'Content-Type' : 'multipart/form-data',
-          'Authorization': `Bearer ${token}`,
-        },
-        withCredentials: true,
-      })
-      .then((res) => {
-        console.log(res)
-        editSuccess()          
-      }).catch(function (error) {
-          // 오류발생시 실행
-          console.log(error)
-      })
-    }
-
   },[curIdx])
 
 
@@ -80,14 +54,12 @@ const Content = styled.div`
   margin: 0 4.25rem;
   flex-shrink: 0;
 `
-
 const TextArea = styled.div`
   display: flex;
   width: 100%;
   gap: 1.8rem;
   margin-bottom: 3.75rem;
 `
-
 const Text = styled.div`
   flex-direction: column;
   text-align: left;
@@ -96,9 +68,7 @@ const Text = styled.div`
   p:nth-child(1){
     font-size: 1.25rem;
   }
-
 `
-
 const Main = styled.div`
   display: flex;
   gap: 2rem;

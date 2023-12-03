@@ -2,16 +2,12 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import {ReactComponent as MainIcon} from '../../../assets/icons/PlayerRoom/Desktop/main_icon.svg'
 import OneCommentItem from './Desktop/OneCommentItem'
-import { useAuthContext } from '../../../contexts/AuthContext'
-import axios from 'axios'
-import { getCommentList } from '../../../apis/api/PlayerRoom/community'
+import { addComment, getCommentList } from '../../../apis/api/PlayerRoom/community'
 import { nullWarning } from '../../ui/ToastMessage'
 
 export default function Desktop() {
   const [isOpen, setIsOpen] = useState(false)
   const [content, setContent] = useState('')
-  const {token} = useAuthContext()
-  const baseUrl = 'https://dying-mate-server.link'
   const [update, setUpdate] = useState(false)
   const [commentList, setCommentList] = useState([])
 
@@ -24,27 +20,20 @@ export default function Desktop() {
       nullWarning()
       return 
     }
-    axios
-    .post(`${baseUrl}/community/register`, {content: content}, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-      withCredentials: true,
-    })
-    .then((response) => {
-      console.log(response)
+
+    addComment(content)
+    .then((res) => {
       setIsOpen(false)
       setContent('')
       setUpdate((prev) => !prev)
-    }).catch(function (error) {
-        // 오류발생시 실행
-        console.log(error.message)
+    })
+    .catch((error) => {
+      console.log(error)
     })
   }
 
   useEffect(() => {
     getCommentList().then((res) => {
-      console.log("res", res)
       setCommentList([...res.data])
     })
   },[update])
@@ -61,7 +50,7 @@ export default function Desktop() {
         </Header>
         <ScrollSection>
           <TopicWrapper>
-            <p>2023 7월 둘째주</p>
+            <p>2023 11월 넷째주</p>
             <p>이번 주 대화 주제</p>
             <TopicBox>
               <TopicContent>"인생에서 우리가 경험하는 모든 것은 결국에는 무엇을 위한 것인지, 그리고 인생의 근본적인 의미는 어떤 것일까요? 어떤 방식으로 우리는 존재하고 경험하는 것이 의미 있는 것으로 여겨질 수 있을까요?"</TopicContent>
@@ -91,16 +80,14 @@ export default function Desktop() {
           </TopicWrapper>
           <CommentWrapper>
             {commentList && commentList.length > 0 &&
-            commentList.map(data => {
-              const {commentId, profile, name, content, creationTime, likeNum} = data
-              return <OneCommentItem key={commentId} commentId={commentId} profile={profile} name={name} content={content} likeCount={likeNum} date={creationTime}/>
-            })  
+            commentList.map((comment, idx) => (
+              <OneCommentItem key={idx} comment={comment}/>
+            ))  
           }
           </CommentWrapper>
         </ScrollSection>
       </Container>
     </Overlay>
-
   )
 }
 
@@ -133,7 +120,6 @@ const Header = styled.div`
     font-size: 2.5rem;
     cursor: pointer;
   }
-
 `
 
 const HeaderTitle = styled.div`
@@ -190,11 +176,11 @@ const TopicBox = styled.div`
   align-items: center;
   gap: 1rem;
   box-sizing: border-box;
+
   hr{
     width: 100%;
     border-top: 1px solid rgba(0, 0, 0, 0.10);    ;
   }
-  
 `
 
 const TopicContent = styled.p`
@@ -242,8 +228,6 @@ const FormInput = styled.textarea`
   &::placeholder {
     color: var(--font-gray-1);
   }
-  // animation: slideDown 0.2s ease-in-out forwards;
-  // transform-origin: 0%, 50%;
 `
 
 const AddCommentButton = styled.button`

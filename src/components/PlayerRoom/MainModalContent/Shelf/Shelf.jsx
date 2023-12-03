@@ -5,7 +5,7 @@ import {ReactComponent as MainIcon} from '../../../../assets/icons/PlayerRoom/Sh
 import {CgClose} from 'react-icons/cg'
 import {ReactComponent as PrevButton} from '../../../../assets/icons/PlayerRoom/Shelf/prev_btn.svg'
 import {ReactComponent as NextButton} from '../../../../assets/icons/PlayerRoom/Shelf/next_btn.svg'
-
+import ColumnData from '../../../../data/column'
 
 export default function Shelf() {
   const [scrollPage, setScrollPage]=useState(0);
@@ -14,7 +14,6 @@ export default function Shelf() {
   const [widthSize, setWidthSize] = useState()
   const [heightSize, setHeightSize] = useState()
 
-  const mapArray= new Array(20).fill(0)
 
   useEffect(() => {
     setWidthSize(slideWrapperRef.current && slideWrapperRef.current.clientWidth)
@@ -45,10 +44,10 @@ useEffect(() => {
       </Header>
       <SlideWrapper ref={slideWrapperRef}>
         <SlideList ref={slideListRef} style={{scrollLeft:scrollPage}}>
-          {mapArray.map((i, item) => (
-            <ColumnItem key={i} title={'죽음 불안이란?'} content={'죽음은 우리 인생에서 불가피한 순간 중 하나입니다. 이러한 사실은 때로는 불안과 두려움을 일으킬 수 있습니다. 그러나 죽음에 대한 불안은 개인에 따라 다를 수 있으며, 이는 자연스러운 경험입니다. 이해와 받아들임을 통해 이 불안 요소를 완화할 수 있습니다....'} link={'https://www.naver.com/'} />
-
-          ))}
+          {ColumnData && ColumnData.map(data => {
+            const {title, content, link} = data
+            return <ColumnItem title={title} content={content} link={link} />
+          })}
         </SlideList>
       </SlideWrapper>
       <PrevButtonWrapper onClick={(e) => handleScrollLeft(e)} style={scrollPage === 0 ? {opacity: 0, cursor: 'default'} : {}}><PrevButton /></PrevButtonWrapper>
@@ -59,7 +58,7 @@ useEffect(() => {
 
 const Container = styled.div`
   width: 60%;
-  height: calc(100vh - 16rem);
+  height: calc(100vh - 10rem);
   min-height: 36.5rem;
   display: flex;
   position: relative;

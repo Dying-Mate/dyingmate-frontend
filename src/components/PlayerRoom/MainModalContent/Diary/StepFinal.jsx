@@ -1,38 +1,28 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import {ReactComponent as MainIcon} from '../../../../assets/icons/PlayerRoom/Diary/main_icon.svg'
-import axios from 'axios'  
-import { useAuthContext } from '../../../../contexts/AuthContext'
 import { useDiaryContext } from '../../../../contexts/DiaryContext'
 import { saveSuccess } from '../../../ui/ToastMessage'
 import GraveStoneSrc from '../../../../assets/img/PlayerRoom/gravestone.png'
 import UploadFrameSrc from '../../../../assets/img/PlayerRoom/upload_frame.png'
+import { saveDiary } from '../../../../apis/api/PlayerRoom/diary'
 
 export default function StepFinal() {
   const formData = new FormData()
-  const {token} = useAuthContext()
   const {diary} = useDiaryContext()
-  const baseUrl = 'https://dying-mate-server.link'
 
   useEffect(() => {
     for ( const key in diary ) {
       formData.append(key, diary[key]);
     }
-    axios
-    .post(`${baseUrl}/funeral/save`, formData, {
-      headers: {
-        'Content-Type' : 'multipart/form-data',
-        'Authorization': `Bearer ${token}`,
-      },
-      withCredentials: true,
-    })
+
+    saveDiary(formData)
     .then((res) => {
       console.log(res)
       saveSuccess()
-        
-    }).catch(function (error) {
-        // 오류발생시 실행
-        console.log(error.message)
+    })
+    .catch((error) => {
+      console.log(error)
     })
   },[])
 
@@ -76,16 +66,16 @@ const TextArea = styled.div`
   max-width: 55rem;
   width: fit-content;
   gap: 1.8rem;
- 
 `
+
 const Text = styled.div`
   text-align: left;
   font-size: 1.125rem;
+
   p:nth-child(1){
     font-size: 1.25rem;
     margin-bottom: 0.4rem;
   }
-
 `
 
 const Result = styled.div`

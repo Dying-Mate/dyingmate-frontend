@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import TestProfile from '../../../assets/img/splashBg.png'
 import UserProfile from '../../ui/UserProfile'
 
 

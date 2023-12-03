@@ -81,6 +81,7 @@ const StageImage = styled.div`
   position: absolute;
   border: 2px solid white;
   box-sizing: border-box;
+  background-size: contain;
 `
 
 const StageTitle = styled.div`

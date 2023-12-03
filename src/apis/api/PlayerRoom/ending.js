@@ -1,16 +1,12 @@
-import axios from 'axios'
+import { authInstance } from "../../utils/api"
 
-const baseUrl = 'https://dying-mate-server.link'
-const token = localStorage.getItem('login-token')
-
+// 나의 방에서 모든 기능 수행 완료 여부
 export const isAllDone = async () => {
   try {
-    const {data} = await axios.get(`${baseUrl}/ending`, {
-      headers: {Authorization: 'Bearer ' + token},
-    }, )
+    const {data} = await authInstance.get('/ending')
     return data
-  }
-  catch(error) {
+  } 
+  catch (error) {
     console.log(error)
   }
 }

@@ -1,17 +1,28 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import {AiOutlineLike, AiTwotoneLike} from 'react-icons/ai'
 import UserProfile from '../../../ui/UserProfile'
+import { addLike, cancelLike } from '../../../../apis/api/PlayerRoom/community'
 
-export default function OneCommentItem({name, profile, content, likeCount, date}) {  
-  const [isClicked, setIsClicked] = useState() 
-  const [count, setCount] = useState(likeCount)
+export default function OneCommentItem({comment: {commentId, name, profile, content, likeNum, date, push}}) {  
+  const [isClicked, setIsClicked] = useState(false) 
+  const [count, setCount] = useState(0)
+
   const handleLikeCount = () => {
     setIsClicked(!isClicked)
     setCount(isClicked ? count-1 : count+1);  
-    // likecount api 연동
-    //
+
+    if(push){
+      cancelLike(commentId)
+    }else{
+      addLike(commentId)
+    }
   }
+
+  useEffect(() => {
+    setCount(likeNum)
+    setIsClicked(push)
+  },[])
 
   return (
     <>
@@ -52,6 +63,7 @@ const WriterInfo = styled.div`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+
   p{
     font-size: 1.125rem;
     font-weight: 700;
@@ -64,7 +76,6 @@ const MainContent = styled.p`
   font-weight: 500;
   color: white;
   line-height: 150%;
-
 `
 
 const Footer = styled.div`

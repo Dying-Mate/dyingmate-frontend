@@ -3,18 +3,11 @@ import styled from 'styled-components'
 import {ReactComponent as MainIcon} from '../../../../assets/icons/PlayerRoom/Diary/main_icon.svg'
 import { useDiaryContext } from '../../../../contexts/DiaryContext';
 import GraveStoneSrc from '../../../../assets/img/PlayerRoom/gravestone.png'
-import axios from 'axios'
-import { useAuthContext } from '../../../../contexts/AuthContext';
-import { editSuccess } from '../../../ui/ToastMessage';
 
 export default function StepTwo({epitaph}) {
-
   const [stoneTextInput, setStoneTextInput] = useState('');
   const [stoneText, setStoneText] = useState('')
   const {diary, setDiary} = useDiaryContext()
-  const {token} = useAuthContext()
-  const baseUrl = 'https://dying-mate-server.link'
-  const formData = new FormData()
 
   const handleChange = (e) => {
     setStoneTextInput(e.target.value)
@@ -23,27 +16,6 @@ export default function StepTwo({epitaph}) {
   const handleClick = (e) => {
     setDiary((diary) => ({...diary, 'epitaph': stoneTextInput}))
     setStoneText(stoneTextInput)
-    if(epitaph){
-      formData.append('epitaph', stoneTextInput)
-      formData.append('_method', 'PATCH');
-
-      axios
-      .post(`${baseUrl}/funeral/modify`, formData, {
-        headers: {
-          'Content-Type' : 'multipart/form-data',
-          'Authorization': `Bearer ${token}`,
-        },
-        withCredentials: true,
-      })
-      .then((res) => {
-        console.log(res)
-        editSuccess()          
-      }).catch(function (error) {
-          // 오류발생시 실행
-          console.log(error)
-      })
-    }
-    
   }
 
   useEffect(() => {
@@ -79,7 +51,6 @@ export default function StepTwo({epitaph}) {
     </Content>
   )
 }
-
 
 const Content = styled.div`
   width: 60rem;
@@ -118,8 +89,6 @@ const GraveStone = styled.div`
     word-break: break-all;
     text-align: center;
   }
-
-
 `
 
 const TextArea = styled.div`
@@ -128,7 +97,6 @@ const TextArea = styled.div`
   max-width: 50rem;
   width: fit-content;
   gap: 1.8rem;
-
 `
 
 const Text = styled.div`
@@ -161,17 +129,16 @@ const FormInput = styled.input`
   &::placeholder {
     color: var(--font-gray-1);
   }
-  
 `
 
 const SaveButton = styled.button`
-width: 8rem;
-height: 3.5rem;
-border: none;
-background-color: ${(props) => props.isFill ? 'var(--main-color)' : '#DEDEDE'};
-color: ${(props) => props.isFill ? 'white' : '#999'};
-padding: 0.75rem 1.5rem;
-border-radius: 1.25rem;
-font-weight: 700;
-position: absolute;
+  width: 8rem;
+  height: 3.5rem;
+  border: none;
+  background-color: ${(props) => props.isFill ? 'var(--main-color)' : '#DEDEDE'};
+  color: ${(props) => props.isFill ? 'white' : '#999'};
+  padding: 0.75rem 1.5rem;
+  border-radius: 1.25rem;
+  font-weight: 700;
+  position: absolute;
 `
