@@ -9,8 +9,8 @@ import OneSearchItem from './FriendList/OneSearchItem'
 import { useAuthContext } from '../../contexts/AuthContext'
 import { addFriendSuccess } from '../ui/ToastMessage'
 import {ToastContainer} from 'react-toastify'
+import ModalOverlay from '../FriendRecord/ModalOverlay'
 import { getFriendList } from '../../apis/api/PlayerRoom/friend'
-
 
 export default function FriendListModal({setFriendListModal}) {
   const [searchInput, setSearchInput] = useState('')  
@@ -21,7 +21,8 @@ export default function FriendListModal({setFriendListModal}) {
   
   const baseUrl = 'https://dying-mate-server.link'
   const {token} = useAuthContext()
-
+  const [open, setOpen] = useState(false)
+  const [friendId, setFriendId] = useState('')
 
   const handleOnChange = (e) => {
     setSearchInput(e.target.value)
@@ -138,7 +139,7 @@ export default function FriendListModal({setFriendListModal}) {
             <p>친구 목록</p>
             {friendList && friendList.map((data, idx) => {
               const {email, name, photo} = data
-              return <OneFriendItem key={idx} userId={email} username={name} photoNum={photo}/>
+              return <OneFriendItem key={idx} userId={email} username={name} photoNum={photo} setOpen={() => setOpen(true)} setFriendId={() => setFriendId(email)}/>
             }
           )}
           </ListWrapper>
@@ -158,9 +159,10 @@ export default function FriendListModal({setFriendListModal}) {
           </ListWrapper>
         </ListContainer>
       </Container>
-      
       </Overlay>
     <ToastContainer />
+    {open && <ModalOverlay setOpen={() => setOpen()} email={friendId}/>}
+  
     </>
 
   )
