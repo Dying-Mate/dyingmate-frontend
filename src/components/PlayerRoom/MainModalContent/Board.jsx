@@ -3,46 +3,31 @@ import styled from 'styled-components'
 import NewTextPost from './Board/NewTextPost'
 import NewImagePost from './Board/NewImagePost'
 import AddPostModal from './Board/AddPostModal'
-import axios from 'axios'
 import OnePostItem from './Board/OnePostItem'
-import { useAuthContext } from '../../../contexts/AuthContext'
+import { getAllBucketlist } from '../../../apis/api/PlayerRoom/bucketlist'
 
 export default function Board() {
   const [openModal, setOpenModal] = useState(false)
   const [isImagePost, setIsImagePost] = useState(false)
-  const [allBucketlist, setAllBucketlist] = useState()
+  const [allBucketlist, setAllBucketlist] = useState([])
+  const [allTitleList, setAllTitleList] = useState([])
   const [update, setUpdate] = useState(false)
-  const baseUrl = 'https://dying-mate-server.link'
-  const {token} = useAuthContext()
 
   const getBucketList = () => {
-    async function getAllBucketlist() {
-      try{
-        const {data} = await axios.get(`${baseUrl}/bucketlist/load`,{
-          headers: {Authorization: 'Bearer ' + token},
-        }, )
-        return data
-      }
-      catch(error) {
-        console.log(error)
-      }
-    }
-    
-    getAllBucketlist().then((res) =>{
-      if(res) {
-        setAllBucketlist(res.data.fileResponseList)
-      }
-      }).then(() => {
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+    getAllBucketlist()
+    .then((res) => {
+      setAllBucketlist([...res.data.fileResponseList])
+      setAllTitleList([...res.data.titleResponseList])
+    })
+    .catch((error) => {
+      console.log(error)
+    })
   }
-
+  
   useEffect(() => {
     getBucketList()
-    const intervalId = setInterval(getBucketList, 1000);
 
+    const intervalId = setInterval(getBucketList, 1000);
     return () => {
       clearInterval(intervalId);
     };

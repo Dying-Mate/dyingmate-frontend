@@ -2,12 +2,11 @@ import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import {ReactComponent as MainIcon} from '../../../assets/icons/PlayerRoom/Phone/main_icon.svg'
 import {ReactComponent as IconWrapper} from '../../../assets/icons/PlayerRoom/Phone/header_wrapper.svg'
-import axios from 'axios'  
 import StyledButton from '../../ui/StyledButton'
 import {ReactComponent as SendIcon} from '../../../assets/icons/PlayerRoom/Phone/send_icon.svg'
 import { ReactComponent as BubbleVector } from '../../../assets/img/PlayerRoom/message_bubble_vec.svg'
-import { useAuthContext } from '../../../contexts/AuthContext'
 import {IoMdAlert} from 'react-icons/io'
+import { getMessage, saveMessage } from '../../../apis/api/PlayerRoom/message'
 
 export default function Phone() {
   const [inputData, setInputData] = useState('')
@@ -15,15 +14,11 @@ export default function Phone() {
   const [isSend, setIsSend] = useState(false);
   const [isMaxLength, setIsMaxLength] = useState(false)
 
-  const baseUrl = 'https://dying-mate-server.link'
-  const {token} = useAuthContext();
-
   // 날짜 구하기
   const date = new Date();
   const week = ['일', '월', '화', '수', '목', '금', '토'];
 
   const textarea = useRef();
-
 
   const handleChange = (e) => {
     const {value, maxLength} = e.target
@@ -32,37 +27,30 @@ export default function Phone() {
     setIsMaxLength(value.length === maxLength)
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {  
     setIsSend(true);
     setInputData('')
     setData(inputData)
     textarea.current.style.height = '4rem'
     setIsMaxLength(false)
-    axios.post(`${baseUrl}/message/send`, {message: inputData}, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-      withCredentials: true,
+
+    saveMessage(inputData)
+    .then((res) => {
+      console.log(res)
     })
-    .then((response) => {
-      console.log(response)        
-    }).catch(function (error) {
-        // 오류발생시 실행
-        console.log(error.message)  
+    .catch((error) => {
+      console.log(error)
     })
   }
 
   useEffect(() => {
-    axios.get(`${baseUrl}/message/load`, {
-      headers: {Authorization: 'Bearer ' + token},
-    }, )
-    .then(function (response) {
-      setData(response.data.data.message)    
+    getMessage()
+    .then((res) => {
+      setData(res.data.message)
     })
-    .catch(function (error) {
-      console.log(error);
-    });
- 
+    .catch((error) => {
+      console.log(error)
+    }) 
   },[])
 
 
@@ -75,7 +63,7 @@ export default function Phone() {
             <IconWrapper/>
           </Header>
           <Main>
-            <p>부고문자는 한번만 작성할 수 있으니 신중하게 작성해야 합니다. <br/>
+            <p>
               {date.getMonth()+1}월 {date.getDate()}일 ({week[date.getDay()]}) {date.getHours()}:{String(date.getMinutes()).padStart(2, "0")}
             </p>
             {(isSend || data.length>0) && 
@@ -110,7 +98,6 @@ export default function Phone() {
                 maxLength={200}
                 isMaxLength={isMaxLength}
               />
-
             </TextAreaWrapper>
 
             <StyledButton width={'7rem'} handleOnClick={handleSubmit} text={<SendIcon/>} btnColor={`var(--main-color)`} />

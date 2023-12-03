@@ -7,16 +7,13 @@ import StepFinal from './Diary/StepFinal'
 import {ReactComponent as PrevButton} from '../../../assets/icons/PlayerRoom/Diary/prev_btn.svg'
 import {ReactComponent as NextButton} from '../../../assets/icons/PlayerRoom/Diary/next_btn.svg'
 import ProgressBar from '../../Diary/ProgressBar'
-import axios from 'axios'
 import { useDiaryContext } from '../../../contexts/DiaryContext'
-import { useAuthContext } from '../../../contexts/AuthContext'
 import {ToastContainer} from 'react-toastify'
+import { getDiary } from '../../../apis/api/PlayerRoom/diary'
 
 export default function Diary() {
   const [comp, setComp] = useState()
   const [curIdx, setCurIdx] = useState(1)
-  const {token} = useAuthContext()
-  const baseUrl = 'https://dying-mate-server.link'
   const {diary, setDiary} = useDiaryContext()
 
   const handleIndex = (side, e) => {
@@ -36,17 +33,19 @@ export default function Diary() {
     }
   }
 
-  useEffect(() =>  {
-    axios.get(`${baseUrl}/funeral/select`, {
-      headers: {Authorization: 'Bearer ' + token},
-    }, )
-    .then(function(res){
-      // setDiary(() => ({...res.data.data}))
-      console.log("res", res)
+  const getDiaryData = () => {
+    getDiary()
+    .then((res) => {
+      console.log(res)
+      setDiary({...res.data})
     })
     .catch((error) => {
       console.log(error)
     })
+  }
+
+  useEffect(() =>  {
+    getDiaryData()
   },[])
 
   useEffect(() => {

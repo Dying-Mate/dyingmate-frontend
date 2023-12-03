@@ -3,25 +3,20 @@ import styled from 'styled-components'
 import {ReactComponent as MainIcon} from '../../../assets/icons/PlayerRoom/Will/main_icon.svg'
 import willPaper from '../../../assets/img/PlayerRoom/will_paper.png'
 import StyledButton from '../../ui/StyledButton';
-import axios from 'axios'  
-import { useAuthContext } from '../../../contexts/AuthContext';
 import {ToastContainer} from 'react-toastify'
 import { editSuccess, nullWarning, saveSuccess } from '../../ui/ToastMessage';
+import { editWill, getWill, saveWill } from '../../../apis/api/PlayerRoom/will';
 
 
 export default function Will() {
   let [inputData, setInputData] = useState('');
   const [data, setData] = useState('')
   const hasData = data && (data !== '')
-  const {token} = useAuthContext();
   const textarea = useRef();
-
-  const baseUrl = 'https://dying-mate-server.link'
 
   const handleChange = (e) => {
     setInputData(e.target.value)
     textarea.current.style.height = '42rem'
-    // textarea.current.style.height = textarea.current.scrollHeight + 'px';
   }
 
   const handleSubmit = (e) => {   
@@ -29,52 +24,37 @@ export default function Will() {
       nullWarning()
       return 
     }
-    axios
-    .post(`${baseUrl}/will/write`, {content: inputData}, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-      withCredentials: true,
-    })
-    .then((response) => {
-      console.log(response)
+    saveWill(inputData)
+    .then((res) => {
+      console.log(res)
       saveSuccess()
-    }).catch(function (error) {
-        // 오류발생시 실행
-        console.log(error.message)
+    })
+    .catch((error) => {
+      console.log(error)
     })
   }
 
   const handleEdit = (e) => {
-    axios.patch(
-      `${baseUrl}/will/modify`, 
-      {content: inputData}, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
-        withCredentials: true,
-      })
-    .then((response) => {
-      console.log(response)
+    editWill(inputData)
+    .then((res) => {
+      console.log(res)
       editSuccess()
-        
-    }).catch(function (error) {
-        // 오류발생시 실행
-        console.log(error.message)
+    })
+    .catch((error) => {
+      console.log(error)
     })
   }
 
   useEffect(() => {
-    axios.get(`${baseUrl}/will/load`, {
-      headers: {Authorization: 'Bearer ' + token},
-    }, )
-    .then(function (response) {
-      setInputData(response.data.data.content ?? '')
-      setData(response.data.data.content ?? '')
+    getWill()
+    .then((res) => {
+      console.log(res)
+      setInputData(res.data.content ?? '')
+      setData(res.data.content ?? '')
     })
-    .catch(function (error) {
-      console.log(error);
-    });
+    .catch((error) => {
+      console.log(error)
+    })
   },[])
 
   return (
