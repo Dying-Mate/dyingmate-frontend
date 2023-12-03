@@ -9,7 +9,7 @@ import OneSearchItem from './FriendList/OneSearchItem'
 import { useAuthContext } from '../../contexts/AuthContext'
 import { addFriendSuccess } from '../ui/ToastMessage'
 import {ToastContainer} from 'react-toastify'
-import { getFriendList } from '../../apis/api/PlayerRoom/friendList'
+import { getFriendList } from '../../apis/api/PlayerRoom/friend'
 
 
 export default function FriendListModal({setFriendListModal}) {

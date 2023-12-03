@@ -2,43 +2,27 @@ import React from 'react'
 import {ReactComponent as Pin} from '../../../../assets/img/PlayerRoom/pin.svg'
 import styled from 'styled-components'
 import Draggable from 'react-draggable';
-import axios from 'axios'
-import { useAuthContext } from '../../../../contexts/AuthContext';
+import { movePost } from '../../../../apis/api/PlayerRoom/bucketlist';
 
-export default function OnePostItem({memo, memo:{content, photo, memoX, memoY, isComplete}}) {
-  const baseUrl = 'https://dying-mate-server.link'
-  const {token} = useAuthContext();
-
+export default function OnePostItem({memo, memo:{bucketlistId, content, photo, memoX, memoY, isComplete}}) {
   const trackPos = (data) => {    
-    axios.patch(
-      `${baseUrl}/bucketlist/move/1?x=${memoX+data.lastX}&y=${memoY+data.lastY}`, {}, 
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
-        withCredentials: true,
-      })
+    movePost(bucketlistId, memoX+data.lastX, memoY+data.lastY)
     .then((res) => {
-      console.log(res)        
+      console.log(res)
     })
     .catch((error) => {
       console.log(error)
     })
   }
 
-
-
   return (
-    <>
-      
+    <> 
       <Draggable onStop={(e, data) => trackPos(data)}>
         <PostItem hasPhoto={photo !== null} memoX={memoX} memoY={memoY}>
           <HeaderPin><Pin/></HeaderPin>
           { photo &&
             <PhotoWrapper>
-              {/* <img src={photo && URL.createObjectURL(photo) } /> */}
               <img src={photo} />
-
             </PhotoWrapper>
           }
           <ContentWrapper iscomplete={isComplete}>
@@ -65,7 +49,6 @@ const PostItem = styled.div`
   align-items: center;
   top: ${(props) => props.memoY}px;
   left: ${(props) => props.memoX}px;
-
 `
 
 const HeaderPin = styled.div`

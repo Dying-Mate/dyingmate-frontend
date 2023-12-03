@@ -14,7 +14,7 @@ import { Phone } from '../components/models/PlayerRoom/Phone';
 import { Diary } from '../components/models/PlayerRoom/Diary';
 import { Shelf } from '../components/models/PlayerRoom/Shelf';
 import { Desktop } from '../components/models/PlayerRoom/Desktop';
-import { getFriendList } from '../apis/api/PlayerRoom/friendList';
+import { getFriendList } from '../apis/api/PlayerRoom/friend';
 import Loading from './Loading';
 import { isAllDone } from '../apis/api/PlayerRoom/ending';
 import EnterRoomDialog from '../components/ui/EnterRoomDialog';

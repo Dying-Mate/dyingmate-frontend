@@ -1,20 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import styled from 'styled-components'
 import {ReactComponent as MainIcon} from '../../../../assets/icons/PlayerRoom/Diary/main_icon.svg'
 import UploadFrameSrc from '../../../../assets/img/PlayerRoom/upload_frame.png'
 import { useDiaryContext } from '../../../../contexts/DiaryContext'
 import {FiFolderPlus} from 'react-icons/fi'
-import { useAuthContext } from '../../../../contexts/AuthContext'
-import axios from 'axios'
-import { editSuccess } from '../../../ui/ToastMessage'
 
 export default function StepThree({photo}) {
   const fileInput = useRef(null)
   const [selectImg, setSelectImg] = useState()
   const {diary, setDiary} = useDiaryContext()
-  const {token} = useAuthContext()
-  const baseUrl = 'https://dying-mate-server.link'
-  const formData = new FormData()
 
   const handleChange = async (e) => {
     const {name, files} = e.target;
@@ -24,46 +18,19 @@ export default function StepThree({photo}) {
       setDiary((data) => ({...data, 'portrait_photo': files[0]}))
       return;
     }
-
-    if(photo){
-      formData.append('portrait_photo', files[0])
-      formData.append('_method', 'PATCH');
-
-      axios
-      .post(`${baseUrl}/funeral/modify`, formData, {
-        headers: {
-          'Content-Type' : 'multipart/form-data',
-          'Authorization': `Bearer ${token}`,
-        },
-        withCredentials: true,
-      })
-      .then((res) => {
-        console.log(res)
-        editSuccess()
-          
-      }).catch(function (error) {
-          // 오류발생시 실행
-          console.log(error)
-      })
-    }
   };
-
-  useEffect(() => {
-    setSelectImg(photo)
-  },[])
 
   return (
     <Content>
       <UploadBox>
         <img src={UploadFrameSrc}/>
-        {selectImg ? 
-          <img src={selectImg && URL.createObjectURL(selectImg) } />
+        {photo ? 
+          <img src={selectImg ? URL.createObjectURL(selectImg) : photo} />
           :
           <SelectFileBox>
             <FiFolderPlus/>
           </SelectFileBox>
         }
-        
         <input type="file" name='file' ref={fileInput} accept='.png, .jpg,image/*' onChange={handleChange}/>
       </UploadBox>
       <TextArea>
@@ -98,6 +65,7 @@ const UploadBox = styled.div`
   justify-content: center;
   display: flex;
   position: relative;
+
   img:nth-child(1){
     position: absolute;
     width: 14.4375rem;
@@ -150,9 +118,9 @@ const TextArea = styled.div`
 const Text = styled.div`
   text-align: left;
   font-size: 1.125rem;
+  
   p:nth-child(1){
     font-size: 1.25rem;
     margin-bottom: 0.4rem;
   }
-
 `

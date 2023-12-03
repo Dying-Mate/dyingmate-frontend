@@ -3,22 +3,19 @@ import styled from 'styled-components'
 import {IoIosClose} from 'react-icons/io'
 import IconStyledButton from '../../../ui/IconStyledButton'
 import {PiImageSquareBold} from 'react-icons/pi'
-import { useAuthContext } from '../../../../contexts/AuthContext'
-import axios from 'axios'
 import { getRandomPos } from '../../../../apis/utils/PlayerRoom/getRandomPosition'
+import { addContentBucketlist, addFileBucketlist } from '../../../../apis/api/PlayerRoom/bucketlist'
 
-const MAX_X = 1000
-const MIN_X = 0
+const MAX_X = 800
+const MIN_X = 200
 
-const MAX_Y = 500
-const MIN_Y = 0
+const MAX_Y = 450
+const MIN_Y = 50
 
 export default function AddPostModal({isImagePost, setOpenModal, setUpdate}) {
   const [post, setPost] = useState({})
   const [photo, setPhoto] = useState()
   const formData = new FormData()
-  const {token} = useAuthContext();
-  const baseUrl = 'https://dying-mate-server.link'
   const [randomX, setRandomX] = useState(0)
   const [randomY, setRandomY] = useState(0)
 
@@ -40,47 +37,31 @@ export default function AddPostModal({isImagePost, setOpenModal, setUpdate}) {
   }
 
   const handleFileSubmit = (e) => {
-
     for ( const key in post ) {
       formData.append(key, post[key]);
     }
 
-    axios.post(`${baseUrl}/bucketlist/add/file`, formData, {
-      headers: {
-        'Content-Type' : 'multipart/form-data',
-        'Authorization': `Bearer ${token}`,
-      },
-      withCredentials: true,
+    addFileBucketlist(formData)
+    .then((res) => {
+      console.log(res)
     })
-    .then((response) => {
-      console.log(response)
-      setUpdate()
-      
-    }).catch(function (error) {
-        // 오류발생시 실행
+    .catch((error) => {
       console.log(error)
     })
-    closeModal()
 
+    closeModal()
   }
 
   const handleContentSubmit = (e) => {
-    axios.post(`${baseUrl}/bucketlist/add/content`, post, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-      withCredentials: true,
+    addContentBucketlist(post)
+    .then((res) => {
+      console.log(res)
     })
-    .then((response) => {
-      console.log(response)
-      setUpdate()
-      
-    }).catch(function (error) {
-        // 오류발생시 실행
+    .catch((error) => {
       console.log(error)
     })
-    closeModal()
 
+    closeModal()
   }
 
   useEffect(() => {

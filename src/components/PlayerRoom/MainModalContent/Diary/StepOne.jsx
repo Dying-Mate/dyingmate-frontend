@@ -4,16 +4,10 @@ import {ReactComponent as MainIcon} from '../../../../assets/icons/PlayerRoom/Di
 import MethodItem from '../../../Diary/MethodItem'
 import MethodExplain from '../../../Diary/MethodExplain';
 import { useDiaryContext } from '../../../../contexts/DiaryContext';
-import axios from 'axios'
-import { useAuthContext } from '../../../../contexts/AuthContext';
-import { editSuccess } from '../../../ui/ToastMessage';
 
 export default function StepOne({method}) {
   const {diary, setDiary} = useDiaryContext()
   const [curIdx, setCurIdx] = useState();
-  const {token} = useAuthContext()
-  const baseUrl = 'https://dying-mate-server.link'
-  const formData = new FormData()
 
   const data= [
     { id: 1, itemText: "화장 후 봉안", explain: `화장을 통해 향기로운 아름다움을 간직해볼 수 있습니다. \n \n 화장은 당신의 존재와 흔적을 살아있는 불꽃으로 옮기며, \n 당신의 애도와 사랑을 함께 전달할 수 있습니다. \n 이것은 고인을 위로하고, 그들이 향하는 곳에서 편안함과 평화를 느낄 수 있는 방법으로 알려져 있습니다. `},
@@ -27,26 +21,6 @@ export default function StepOne({method}) {
 
   useEffect(() => {
     setDiary((data) => ({...data, 'method': curIdx}))
-    if(method){
-      formData.append('method', curIdx)
-      formData.append('_method', 'PATCH');
-      axios
-      .post(`${baseUrl}/funeral/modify`, formData, {
-        headers: {
-          'Content-Type' : 'multipart/form-data',
-          'Authorization': `Bearer ${token}`,
-        },
-        withCredentials: true,
-      })
-      .then((res) => {
-        console.log(res)
-        editSuccess()          
-      }).catch(function (error) {
-          // 오류발생시 실행
-          console.log(error)
-      })
-    }
-
   },[curIdx])
 
 
@@ -84,16 +58,13 @@ const Content = styled.div`
   align-items: center;
   margin: 0 4.25rem;
   flex-shrink: 0;
-
 `
-
 const TextArea = styled.div`
   display: flex;
   width: 100%;
   gap: 1.8rem;
   margin-bottom: 3.75rem;
 `
-
 const Text = styled.div`
   flex-direction: column;
   text-align: left;
@@ -102,9 +73,7 @@ const Text = styled.div`
   p:nth-child(1){
     font-size: 1.25rem;
   }
-
 `
-
 const Main = styled.div`
   display: flex;
   gap: 2rem;
