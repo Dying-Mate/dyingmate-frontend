@@ -55,8 +55,6 @@ export default function StepFinal() {
           <img src={diary && URL.createObjectURL(diary.portrait_photo) } />
         </UploadBox>
       </Result>
-
-
     </Content>
   )
 }

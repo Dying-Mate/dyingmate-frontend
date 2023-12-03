@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import Draggable from 'react-draggable';
 import TestImage from '../../../../assets/img/splashBg.png'
 
-export default function OnePostItem({memo, memo:{content, photo, memoX, memoY, isComplete}}) {
+export default function OnePostItem({memo, memo:{content, photo, memoX, memoY, isComplete}, isMine}) {
   // const trackPos = (data) => {
     // 메모 위치 이동 시 patch api 연동 필요
   // }
@@ -12,7 +12,7 @@ export default function OnePostItem({memo, memo:{content, photo, memoX, memoY, i
   return (
     <>
       {/* <Draggable onDrag={(e, data) => trackPos(data)}> */}
-      <Draggable>
+      <Draggable disabled={!isMine}>
         <PostItem hasPhoto={photo !== null} memoX={memoX} memoY={memoY}>
           <HeaderPin><Pin/></HeaderPin>
           { photo &&
