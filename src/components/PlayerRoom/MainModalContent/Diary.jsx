@@ -7,14 +7,13 @@ import StepFinal from './Diary/StepFinal'
 import {ReactComponent as PrevButton} from '../../../assets/icons/PlayerRoom/Diary/prev_btn.svg'
 import {ReactComponent as NextButton} from '../../../assets/icons/PlayerRoom/Diary/next_btn.svg'
 import ProgressBar from '../../Diary/ProgressBar'
-import { useDiaryContext } from '../../../contexts/DiaryContext'
 import {ToastContainer} from 'react-toastify'
-import { getDiary } from '../../../apis/api/PlayerRoom/diary'
+import { useDiaryContext } from '../../../contexts/DiaryContext'
 
 export default function Diary() {
   const [comp, setComp] = useState()
   const [curIdx, setCurIdx] = useState(1)
-  const {diary, setDiary} = useDiaryContext()
+  const {diary} = useDiaryContext()
 
   const handleIndex = (side, e) => {
     if(side === 'prev'){
@@ -33,21 +32,6 @@ export default function Diary() {
     }
   }
 
-  const getDiaryData = () => {
-    getDiary()
-    .then((res) => {
-      console.log(res)
-      setDiary({...res.data})
-    })
-    .catch((error) => {
-      console.log(error)
-    })
-  }
-
-  useEffect(() =>  {
-    getDiaryData()
-  },[])
-
   useEffect(() => {
     switch(curIdx) {
       case 1:
@@ -60,7 +44,7 @@ export default function Diary() {
         setComp(<StepThree photo={diary.portrait_photo}/>)
         break;
       case 4:
-        setComp(<StepFinal epitaph={diary.epitaph} photo={diary.portrait_photo}/>)
+        setComp(<StepFinal/>)
         break;
     }
   },[curIdx])

@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 
-export default function NoRecord({email, text}) {
+export default function Loading() {
   return (
     <Container>
-      <p>@{email} 님이 아직 {text}를 기록하지 않았습니다.</p>
+      <p>불러오는 중입니다.</p>
     </Container>
   )
 }

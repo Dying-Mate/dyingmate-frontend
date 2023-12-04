@@ -7,11 +7,13 @@ import {ReactComponent as IconWrapper} from '../../assets/icons/PlayerRoom/Phone
 import StyledButton from '../ui/StyledButton'
 import { getMessage } from '../../apis/api/FriendRecord/friendRecord'
 import NoRecord from './NoRecord'
+import Loading from './Loading'
 
 export default function Phone({email}) {
   const date = new Date();
   const week = ['일', '월', '화', '수', '목', '금', '토'];
   const [message, setMessage] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     getMessage(email)
@@ -20,6 +22,7 @@ export default function Phone({email}) {
       if(res.status === "OK"){
         setMessage(res.data.message)
       }
+      setIsLoading(false)
     })
     .catch((error) => {
       console.log(error)
@@ -28,7 +31,8 @@ export default function Phone({email}) {
 
   return (
     <>
-    {
+      { isLoading ? <Loading />
+      :
       message ?
       <Container>
         <PhoneWrapper>
@@ -41,7 +45,7 @@ export default function Phone({email}) {
             </p>
             <MessageArea>
               <Bubble>
-                <p>{}</p>
+                <p>{message}</p>
                 <BubbleVector/>
               </Bubble>
             </MessageArea>
@@ -52,7 +56,7 @@ export default function Phone({email}) {
                 type={"text"}
                 id='message' 
                 name='message' 
-                value={message}
+                value={''}
                 placeholder='' 
                 spellCheck="false"
                 required
@@ -63,12 +67,12 @@ export default function Phone({email}) {
         </PhoneWrapper>
         <TextArea>
           <MainIcon/>
-          <div>userName의 부고문자를 열람해요.</div>
+          <div>@{email} 님의 부고문자를 열람해요</div>
           <p>친구의 부고문자를 통해 남겨진 사람들에게 어떤 말을<br/>전달하고 싶었을까 생각해보아요.</p>
         </TextArea>
       </Container>
       :
-      <NoRecord />
+      <NoRecord email={email} text={"부고문자"}/>
     }
     </>
   )
@@ -164,6 +168,7 @@ const TextArea = styled.div`
 
   div{
     font-size: 1.5rem;
+    font-weight: 600;
   }
   p{
     font-size: 1.125rem;

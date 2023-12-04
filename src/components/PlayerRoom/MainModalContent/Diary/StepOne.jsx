@@ -7,8 +7,8 @@ import { useDiaryContext } from '../../../../contexts/DiaryContext';
 import FuneralSelectData from '../../../../data/funeral_select';
 
 export default function StepOne({method}) {
-  const {diary, setDiary} = useDiaryContext()
-  const [curIdx, setCurIdx] = useState();
+  const {setDiary} = useDiaryContext()
+  const [curIdx, setCurIdx] = useState(1);
 
   useEffect(() => {
     setCurIdx(method ? method : 1)

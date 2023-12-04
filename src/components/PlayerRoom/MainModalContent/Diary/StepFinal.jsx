@@ -11,7 +11,7 @@ export default function StepFinal() {
   const formData = new FormData()
   const {diary} = useDiaryContext()
 
-  useEffect(() => {
+  useEffect(() => {    
     for ( const key in diary ) {
       formData.append(key, diary[key]);
     }
@@ -24,6 +24,8 @@ export default function StepFinal() {
     .catch((error) => {
       console.log(error)
     })
+
+
   },[])
 
   return (
@@ -42,7 +44,7 @@ export default function StepFinal() {
         <GraveStone><p>{diary.epitaph}</p></GraveStone>
         <UploadBox>
           <img src={UploadFrameSrc}/>
-          <img src={diary && URL.createObjectURL(diary.portrait_photo) } />
+          <img src={diary && URL.createObjectURL(diary.portrait_photo)} />
         </UploadBox>
       </Result>
     </Content>
