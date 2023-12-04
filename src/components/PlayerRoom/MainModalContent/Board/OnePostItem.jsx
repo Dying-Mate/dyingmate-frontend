@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import Draggable from 'react-draggable';
 import { movePost } from '../../../../apis/api/PlayerRoom/bucketlist';
 
-export default function OnePostItem({memo, memo:{content, photo, memoX, memoY, isComplete}, isMine}) {
+export default function OnePostItem({memo, memo:{bucketlistId, content, photo, memoX, memoY, isComplete}}) {
   const trackPos = (data) => {    
     movePost(bucketlistId, memoX+data.lastX, memoY+data.lastY)
     .then((res) => {
@@ -17,7 +17,7 @@ export default function OnePostItem({memo, memo:{content, photo, memoX, memoY, i
 
   return (
     <> 
-      <Draggable disabled={!isMine} onStop={(e, data) => trackPos(data)}>
+      <Draggable onStop={(e, data) => trackPos(data)}>
         <PostItem hasPhoto={photo !== null} memoX={memoX} memoY={memoY}>
           <HeaderPin><Pin/></HeaderPin>
           { photo &&

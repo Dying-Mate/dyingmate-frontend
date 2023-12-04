@@ -49,7 +49,7 @@ export default function Board() {
           </NewPostWrapper>
           <PostWrapper>
             {allBucketlist && allBucketlist.map((memo, idx) => (
-              <OnePostItem key={idx} memo={memo} isMine={true}/>
+              <OnePostItem key={idx} memo={memo}/>
             ))}            
           </PostWrapper>
         </BoardContainer>

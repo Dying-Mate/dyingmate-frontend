@@ -2,24 +2,20 @@ import React from 'react'
 import styled from 'styled-components'
 import UserProfile from '../../ui/UserProfile'
 
-export default function OneFriendItem({userId, username, photoNum, setOpen, setFriendId}) {
-
+export default function OneFriendItem({userId, username, photoNum}) {
   return (
-    <>
-      <ItemBox>
-        <UserInfo>
-          <ProfileWrapper>
-            <UserProfile photoNum={photoNum}/>
-          </ProfileWrapper>
-          <IdNameText>
-            <p>@{userId}</p>
-            <p>{username}</p>
-          </IdNameText>
-        </UserInfo>
-        <VisitButton onClick={() => {setOpen(true); setFriendId(userId)} }>기록보기</VisitButton>
-      </ItemBox>
-    </>
-
+    <ItemBox>
+      <UserInfo>
+        <ProfileWrapper>
+          <UserProfile photoNum={photoNum}/>
+        </ProfileWrapper>
+        <IdNameText>
+          <p>@{userId}</p>
+          <p>{username}</p>
+        </IdNameText>
+      </UserInfo>
+      <VisitButton>방문하기</VisitButton>
+    </ItemBox>
   )
 }
 
