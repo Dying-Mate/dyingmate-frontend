@@ -5,10 +5,12 @@ import UploadFrameSrc from '../../assets/img/PlayerRoom/upload_frame.png'
 import {ReactComponent as MainIcon} from '../../assets/icons/PlayerRoom/Diary/main_icon.svg'
 import FuneralSelectData from '../../data/funeral_select'
 import { getFuneral } from '../../apis/api/FriendRecord/friendRecord'
+import Loading from './Loading'
 import NoRecord from './NoRecord'
 
 export default function Diary({email}) {
   const [funeral, setFuneral] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     getFuneral(email)
@@ -17,6 +19,7 @@ export default function Diary({email}) {
       if(res.status === "OK") {
         setFuneral({...res.data})
       }
+      setIsLoading(false)
     })
     .catch((error) => {
       console.log(error)
@@ -25,9 +28,10 @@ export default function Diary({email}) {
 
   return (
     <>
-    {
+      { isLoading ? <Loading />
+      :
       funeral ?
-      <Container>
+        <Container> 
         <TextArea>
           <MainIcon/>
           <Text>
@@ -44,8 +48,8 @@ export default function Diary({email}) {
         </Result>
       </Container>
       :
-      <NoRecord />
-    }
+      <NoRecord email={email} text={"죽음준비"}/>
+      }
 
     </>
   )
@@ -73,8 +77,9 @@ const Text = styled.div`
   text-align: left;
   font-size: 1.125rem;
   p:nth-child(1){
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     margin-bottom: 0.4rem;
+    font-weight: 600;
   }
 
 `

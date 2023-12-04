@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { getBucketlist } from '../../apis/api/FriendRecord/friendRecord'
 import OnePostItem from '../PlayerRoom/MainModalContent/Board/OnePostItem'
+import Loading from './Loading'
 import NoRecord from './NoRecord'
 
 export default function Board({email}) {
   const [allBucketlist, setAllBucketlist] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     getBucketlist(email)
@@ -14,6 +16,7 @@ export default function Board({email}) {
       if(res.status === "OK") {
         setAllBucketlist(res.data.fileResponseList)
       }
+      setIsLoading(false)
     })
     .catch((error) => {
       console.log(error)
@@ -22,20 +25,21 @@ export default function Board({email}) {
 
   return (
     <>
-    {
-      allBucketlist ?
-      <Container>
-        <BoardContainer>
-          <PostWrapper>
-            {allBucketlist && allBucketlist.map((memo, idx) => (
-              <OnePostItem key={idx} memo={memo} isMine={false}/>
-            ))}            
-          </PostWrapper>
-        </BoardContainer>
-      </Container>
+      { isLoading ? <Loading />
       :
-      <NoRecord />
-    }
+      allBucketlist ?
+        <Container>
+          <BoardContainer>
+            <PostWrapper>
+              {allBucketlist && allBucketlist.map((memo, idx) => (
+                <OnePostItem key={idx} memo={memo} isMine={false}/>
+              ))}            
+            </PostWrapper>
+          </BoardContainer>
+        </Container>
+        :
+        <NoRecord email={email} text={"버킷리스트"}/>
+      }
     </>
   )
 }

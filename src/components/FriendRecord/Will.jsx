@@ -4,9 +4,11 @@ import {ReactComponent as MainIcon} from '../../assets/icons/PlayerRoom/Will/mai
 import willPaper from '../../assets/img/PlayerRoom/will_paper.png'
 import { getWill } from '../../apis/api/FriendRecord/friendRecord'
 import NoRecord from './NoRecord'
+import Loading from './Loading'
 
 export default function Will({email}) {
   const [content, setContent] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     getWill(email)
@@ -15,6 +17,7 @@ export default function Will({email}) {
       if(res.status === "OK"){
         setContent(res.data.content)
       }
+      setIsLoading(false)
     })
     .catch((error) => {
       console.log(error)
@@ -23,7 +26,8 @@ export default function Will({email}) {
 
   return (
     <>
-    {
+    { isLoading ? <Loading />
+    :
       content ?
       <Container>
         <TextArea>
@@ -41,7 +45,7 @@ export default function Will({email}) {
           />
       </Container>
       :
-      <NoRecord />
+      <NoRecord email={email} text={"유언장"}/>
     }
 
     </>
@@ -63,8 +67,8 @@ const TextArea = styled.div`
   gap: 1.5rem;
 
   p{
-    font-size: 1.25rem;
-    font-weight: 700;
+    font-size: 1.5rem;
+    font-weight: 600;
   }
 `
 

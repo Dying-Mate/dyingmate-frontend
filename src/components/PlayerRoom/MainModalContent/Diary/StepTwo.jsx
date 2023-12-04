@@ -7,7 +7,7 @@ import GraveStoneSrc from '../../../../assets/img/PlayerRoom/gravestone.png'
 export default function StepTwo({epitaph}) {
   const [stoneTextInput, setStoneTextInput] = useState('');
   const [stoneText, setStoneText] = useState('')
-  const {diary, setDiary} = useDiaryContext()
+  const {setDiary} = useDiaryContext()
 
   const handleChange = (e) => {
     setStoneTextInput(e.target.value)
@@ -22,6 +22,7 @@ export default function StepTwo({epitaph}) {
     setStoneTextInput(epitaph ? epitaph : stoneTextInput)
     setStoneText(epitaph ? epitaph : "")
   },[])
+
 
   return (
     <Content>
