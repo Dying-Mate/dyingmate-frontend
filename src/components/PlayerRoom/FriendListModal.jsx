@@ -4,11 +4,10 @@ import { ReactComponent as MainIcon } from '../../assets/icons/PlayerRoom//Frien
 import {IoIosClose} from 'react-icons/io'
 import OneFriendItem from './FriendList/OneFriendItem'
 import OneRequestItem from './FriendList/OneRequestItem'
-import axios from 'axios'
 import OneSearchItem from './FriendList/OneSearchItem'
-import { useAuthContext } from '../../contexts/AuthContext'
 import { addFriendSuccess } from '../ui/ToastMessage'
 import {ToastContainer} from 'react-toastify'
+import { acceptRequest, addFriend, getFriendList, getSearchList, refuseRequest } from '../../apis/api/PlayerRoom/friend'
 import ModalOverlay from '../FriendRecord/ModalOverlay'
 import { getFriendList } from '../../apis/api/PlayerRoom/friend'
 
@@ -17,10 +16,7 @@ export default function FriendListModal({setFriendListModal}) {
   const [friendList, setFriendList] = useState([])
   const [requestList, setRequestList] = useState([])
   const [searchList, setSearchList] = useState([])
-  const [update, setUpdate] = useState(false)
-  
-  const baseUrl = 'https://dying-mate-server.link'
-  const {token} = useAuthContext()
+  const [update, setUpdate] = useState(false)  
   const [open, setOpen] = useState(false)
   const [friendId, setFriendId] = useState('')
 
@@ -28,11 +24,8 @@ export default function FriendListModal({setFriendListModal}) {
     setSearchInput(e.target.value)
   }
 
-
   useEffect(() => {
-    axios.get(`${baseUrl}/friend/search`,{
-      headers: {Authorization: 'Bearer ' + token},
-    }, )
+    getSearchList()
     .then((res) => {
       setSearchList(prev => [...prev, ...res.data.data])
     })
@@ -52,56 +45,34 @@ export default function FriendListModal({setFriendListModal}) {
   })
 
   const handleAddFriend = (friendEmail, friendName, friendProfile) => {
-    axios
-    .post(`${baseUrl}/friend/add`, {
-      "friendEmail": friendEmail,
-      "friendName": friendName,
-      "friendProfile": friendProfile,
-    }, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-      withCredentials: true,
-    })
-    .then((response) => {
+    addFriend(friendEmail, friendName, friendProfile)
+    .then(() => {
       addFriendSuccess()   
       setSearchInput('')
       setUpdate((prev) => !prev)
-    }).catch(function (error) {
-        // 오류발생시 실행
-        console.log(error)
+    })
+    .catch((error) => {
+      console.log(error)
     })
   }
 
   const handleAcceptFriend = (acceptEmail) => {
-    axios
-    .post(`${baseUrl}/friend/accept?acceptEmail=${acceptEmail}`, {}, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-      withCredentials: true,
-    })
-    .then((response) => {
+    acceptRequest(acceptEmail)
+    .then(() => {
       setUpdate((prev) => !prev)     
-    }).catch(function (error) {
-        // 오류발생시 실행
-      console.log(error.message)
+    })
+    .catch((error) => {
+      console.log(error)
     })
   }
 
   const handleRefuseFriend = (refuseEmail) => {
-    axios
-    .delete(`${baseUrl}/friend/refuse?refuseEmail=${refuseEmail}`, {}, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-      withCredentials: true,
-    })
-    .then((response) => {
+    refuseRequest(refuseEmail)
+    .then(() => {
       setUpdate((prev) => !prev)
-    }).catch(function (error) {
-        // 오류발생시 실행
-      console.log(error.message)
+    })
+    .catch((error) => {
+      console.log(error)
     })
   }
 

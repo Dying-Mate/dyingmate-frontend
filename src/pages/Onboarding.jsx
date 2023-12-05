@@ -2,46 +2,38 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { ReactComponent as DialogNextIcon } from '../assets/icons/dialog_next_icon.svg'
 import {useNavigate} from 'react-router-dom'
-import axios from 'axios'  
 import { useLocation } from 'react-router-dom'
 import { useAuthContext } from '../contexts/AuthContext'
 import { DiaglogArr } from '../data/onboarding'
+import { saveUsername, userLogin } from '../apis/api/user'
 
 export default function Onboarding() {
   const navigate = useNavigate()
   const [curIdx, setCurIdx] = useState(0);
   const [userName, setUserName] = useState('')
+  const {setLogin} = useAuthContext()
   const location = useLocation();
   const {isSocialLogin} = location.state
   const {email, pwd} = !isSocialLogin && location.state
-  const {token, setLogin, setUser} = useAuthContext()
-  const baseUrl = 'https://dying-mate-server.link'
 
   useEffect(() => {
     if(!isSocialLogin) {
-      axios.post(
-        `${baseUrl}/user/login`,
-        {
-          email: email,
-          pwd: pwd  
-        },
-        {withCredentials: true},
-      )
-      .then((response) => {
-        console.log(response)
-        if(response.data.message !== '성공'){
-          setIsValid(false)
-          return;
+      userLogin(email, pwd)
+      .then((res) => {
+        console.log(res)
+        if(res.status === "OK") {
+          localStorage.setItem('login-token', res.data.accessToken);
         }
-        localStorage.setItem('login-token', response.data.data.accessToken);
-        setUser({...response.data.data})
+        else{
+          setIsValid(false)
+        }
       })
       .then(() => {
         setLogin(true)
+        navigate('/main')
       })
-      .catch(function (error) {
-          // 오류발생시 실행
-        console.log(error.message)
+      .catch((error) => {
+        console.log(error)
       })
     }
   },[])
@@ -56,19 +48,13 @@ export default function Onboarding() {
 
   const handleOnSubmit = async (e) => {
     e.preventDefault()
-    await axios
-    .post(`${baseUrl}/user/${userName}/save`, {}, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-      withCredentials: true,
-    })
+
+    saveUsername(userName)
     .then(() => {
-      navigate('/main')       
-      setUser((user) => ({...user, 'name':userName}))
-    }).catch(function (error) {
-        // 오류발생시 실행
-        console.log(error.message)
+      navigate('/main')    
+    })
+    .catch((error) => {
+      console.log(error)
     })
   }
 
