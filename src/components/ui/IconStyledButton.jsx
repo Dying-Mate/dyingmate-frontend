@@ -13,6 +13,7 @@ export default function IconStyledButton({width, text, fontSize, fontWeight, col
     gap: '0.75rem',
     justifyContent: 'center',
     fontSize:`${fontSize}`,
+    alignItems: "center"
   }
 
   return (
