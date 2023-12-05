@@ -6,19 +6,40 @@ import UserProfile from '../ui/UserProfile'
 import { useAuthContext } from '../../contexts/AuthContext'
 import { LuRotateCcw } from "react-icons/lu";
 import IconStyledButton from '../ui/IconStyledButton'
+import { editName, logout } from '../../apis/api/user'
+import {useNavigate} from 'react-router-dom'
+import ResetAlertModal from './ResetAlertModal'
 
 export default function SettingModal({showSetup, setShowSetup}) {
   const {user} = useAuthContext();
   const [input, setInput] = useState()
-  const testUser = "워리어즈"
+  const navigate = useNavigate()
+  const [open, setOpen] = useState(false)
 
   const handleOnChange = (e) => {
     setInput(e.target.value)
     console.log(e.target.value)
   }
 
-  const handleOnClick = (e) => {
-    // 저장하기
+  const handleChangeName = () => {
+    editName(input)
+    .then((res) => {
+      console.log(res)
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  }
+
+  const handleLogout = () => {
+    logout()
+    .then((res) => {
+      console.log(res)
+      navigate('/')
+    })
+    .catch((error) => {
+      console.log(error)
+    })
   }
 
   useEffect(() => {
@@ -47,19 +68,29 @@ export default function SettingModal({showSetup, setShowSetup}) {
                 <p>닉네임</p>
                 <NameInput 
                   onChange={handleOnChange} 
-                  value={input ?? "워리어즈"} />
+                  value={input ?? ""} />
               </NameWrapper>
-              <SaveButton isFill={user && input !== user.name} onClick={handleOnClick}>저장하기</SaveButton>
+              <SaveButton isFill={user && input !== user.name} onClick={handleChangeName}>저장하기</SaveButton>
               <ButtonWrapper>
-                <p>로그아웃</p>
+                <p onClick={handleLogout}>로그아웃</p>
                 <p>회원탈퇴</p>
               </ButtonWrapper>
             </ProfileBox>
-            <IconStyledButton width={"100%"} text={"초기화하기"} fontSize={'1.25rem'} fontWeight={500} color={`var(--font-gray-3)`} btnColor={"#F0EAE0"} icon={<LuRotateCcw />}>초기화하기</IconStyledButton>
+            <IconStyledButton 
+              width={"100%"} 
+              text={"초기화하기"} 
+              fontSize={'1.25rem'} 
+              fontWeight={500} 
+              color={`var(--font-gray-3)`} 
+              btnColor={"#F0EAE0"} 
+              icon={<LuRotateCcw />} 
+              handleOnClick={() => setOpen(true)}
+            />
           </ContentWrapper>
         </Container>
       </Overlay>
     )}
+    {open && <ResetAlertModal setOpen={setOpen} />}
     </>
   )
 }
