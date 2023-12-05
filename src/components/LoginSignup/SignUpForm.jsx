@@ -4,9 +4,9 @@ import styled from 'styled-components';
 import {ReactComponent as GoogleIcon} from '../../assets/icons/Splash/google_icon.svg'
 import {ReactComponent as KakaoIcon} from '../../assets/icons/Splash/kakao_icon.svg'
 import {ReactComponent as HidePwdIcon} from '../../assets/icons/Splash/hide_pwd_icon.svg'
-import axios from 'axios'  
 import {GoCheckCircleFill} from 'react-icons/go'
 import {IoMdAlert} from 'react-icons/io'
+import { checkEmail, userJoin } from '../../apis/api/user';
 
 export default function SignUpForm() {
   const navigate = useNavigate()
@@ -43,40 +43,31 @@ export default function SignUpForm() {
   }
 
   const handleCheckEmail = () => {
-    axios.get(`https://dying-mate-server.link/user/email/exists/${email}`,{}
-    ) 
-    .then(function (res) {
+    checkEmail(email)
+    .then((res) => {
       setEmailCheckText(true)
-      // 이미 존재하면 isEmailValid에 false
-      setIsEmailValid(!res.data)
+      setIsEmailValid(!res)
     })
-    .catch(function (error) {
-      console.log(error);
-    });
+    .catch((error) => {
+      console.log(error)
+    })
   }
-
 
   const handleSubmit = (e) => {
     e.preventDefault()  
 
-    axios.post(
-      'https://dying-mate-server.link/user/join',
-      {
-        email: email,
-        pwd: pwd
-      },
-      {withCredentials: true},
-    )
+    userJoin(email, pwd)
     .then((res) => {
-      if(!res.data){
+      console.log(res)
+      if(!res){
         return;
       }
       else{
         navigate('/onboarding',{state: {isSocialLogin: false, email: email, pwd: pwd}})
       }
-        
-    }).catch(function (error) {
-        console.log(error)
+    })
+    .catch((error) => {
+      console.log(error)
     })
   }
 
