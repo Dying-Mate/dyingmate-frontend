@@ -83,6 +83,10 @@ export const openMap = async (stageNum) => {
   try {
     await authInstance.patch(`/map/open/${stageNum}`)
   } 
+  catch (error) {
+    console.log(error)
+  }
+}
 
 // 사용자 이름 수정
 export const editName = async (name) => {
