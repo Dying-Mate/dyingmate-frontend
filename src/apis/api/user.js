@@ -47,6 +47,26 @@ export const saveUsername = async (username) => {
   }
 }
 
+// 로그아웃
+export const logout = async () => {
+  try{
+    await authInstance.post('/user/logout')
+  }
+  catch (error) {
+    console.log(error)
+  }
+}
+
+// 데이터 초기화
+export const resetData = async () => {
+  try{
+    await authInstance.delete('/user/reset')
+  }
+  catch (error) {
+    console.log(error)
+  }
+}
+
 // 지도(단계) 조회
 export const getUserMap = async () => {
   try {
@@ -63,7 +83,15 @@ export const openMap = async (stageNum) => {
   try {
     await authInstance.patch(`/map/open/${stageNum}`)
   } 
+
+// 사용자 이름 수정
+export const editName = async (name) => {
+  try{
+    await authInstance.patch(`user/${name}/modify`)
+  }
   catch (error) {
     console.log(error)
   }
 }
+
+

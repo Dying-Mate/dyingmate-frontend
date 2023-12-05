@@ -4,15 +4,17 @@ import styled from 'styled-components'
 import Draggable from 'react-draggable';
 import { movePost } from '../../../../apis/api/PlayerRoom/bucketlist';
 
-export default function OnePostItem({memo, memo:{bucketlistId, content, photo, memoX, memoY, isComplete}}) {
+export default function OnePostItem({memo, memo:{bucketlistId, content, photo, memoX, memoY, isComplete}, isMine}) {
   const trackPos = (data) => {    
-    movePost(bucketlistId, memoX+data.lastX, memoY+data.lastY)
-    .then((res) => {
-      console.log(res)
-    })
-    .catch((error) => {
-      console.log(error)
-    })
+    if(isMine) {
+      movePost(bucketlistId, memoX+data.lastX, memoY+data.lastY)
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    }
   }
 
   return (

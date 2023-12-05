@@ -1,19 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
-import StepOne from './Diary/StepOne'
-import StepTwo from './Diary/StepTwo'
-import StepThree from './Diary/StepThree'
-import StepFinal from './Diary/StepFinal'
-import {ReactComponent as PrevButton} from '../../../assets/icons/PlayerRoom/Diary/prev_btn.svg'
-import {ReactComponent as NextButton} from '../../../assets/icons/PlayerRoom/Diary/next_btn.svg'
-import ProgressBar from '../../Diary/ProgressBar'
-import {ToastContainer} from 'react-toastify'
-import { useDiaryContext } from '../../../contexts/DiaryContext'
+import Will from './Will';
+import Phone from './Phone';
+import Diary from './Diary';
+import Board from './Board';
+import {ReactComponent as PrevButton} from '../../assets/icons/PlayerRoom/Diary/prev_btn.svg'
+import {ReactComponent as NextButton} from '../../assets/icons/PlayerRoom/Diary/next_btn.svg'
+import styled from 'styled-components';
 
-export default function Diary() {
+export default function FriendRecord({email}) {
   const [comp, setComp] = useState()
   const [curIdx, setCurIdx] = useState(1)
-  const {diary} = useDiaryContext()
 
   const handleIndex = (side, e) => {
     if(side === 'prev'){
@@ -35,16 +31,16 @@ export default function Diary() {
   useEffect(() => {
     switch(curIdx) {
       case 1:
-        setComp(<StepOne method={diary.method}/>)
+        setComp(<Will email={email}/>)
         break;
       case 2:
-        setComp(<StepTwo epitaph={diary.epitaph}/>)
+        setComp(<Phone email={email}/>)
         break;
       case 3:
-        setComp(<StepThree photo={diary.portrait_photo}/>)
+        setComp(<Diary email={email}/>)
         break;
       case 4:
-        setComp(<StepFinal/>)
+        setComp(<Board email={email}/>)
         break;
     }
   },[curIdx])
@@ -53,17 +49,18 @@ export default function Diary() {
   return (
     <>
       <Container>
-        <MainComponent>
+        <Main>
           <Button onClick={(e)=>{handleIndex('prev', e)}} style={(curIdx === 1) ? {opacity: 0} : {}}><PrevButton/></Button>
-          {comp}
+          <MainComponent>
+            {comp}
+          </MainComponent>
           <Button onClick={(e)=>{handleIndex('next', e)}} style={(curIdx === 4) ? {opacity: 0} : {}}><NextButton/></Button>
-        </MainComponent>
-        <ProgressBar curIdx={curIdx}/>
+        </Main>
       </Container>
-      <ToastContainer/>
     </>
   )
 }
+
 const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -71,22 +68,31 @@ const Container = styled.div`
   position: absolute;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  align-items: center;
+  justify-content: center;
   box-sizing: border-box;
   border-radius: 2.5rem;  
-  padding: 2rem 8rem 2.5rem 8rem;
+  padding: 0 8rem 2.5rem 8rem;
   color: white;
   gap: 4rem;
 `
 
-const MainComponent = styled.div`
+const Main = styled.div`
  display: flex;
  align-items: center;
  justify-content: center;  
+ height: 100%;
 
  & > * {
   flex-shrink: 0;
  }
+`
+
+const MainComponent = styled.div`
+  width: 80rem;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
 `
 
 

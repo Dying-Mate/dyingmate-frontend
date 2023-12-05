@@ -8,14 +8,17 @@ import OneSearchItem from './FriendList/OneSearchItem'
 import { addFriendSuccess } from '../ui/ToastMessage'
 import {ToastContainer} from 'react-toastify'
 import { acceptRequest, addFriend, getFriendList, getSearchList, refuseRequest } from '../../apis/api/PlayerRoom/friend'
-
+import ModalOverlay from '../FriendRecord/ModalOverlay'
+import { getFriendList } from '../../apis/api/PlayerRoom/friend'
 
 export default function FriendListModal({setFriendListModal}) {
   const [searchInput, setSearchInput] = useState('')  
   const [friendList, setFriendList] = useState([])
   const [requestList, setRequestList] = useState([])
   const [searchList, setSearchList] = useState([])
-  const [update, setUpdate] = useState(false)
+  const [update, setUpdate] = useState(false)  
+  const [open, setOpen] = useState(false)
+  const [friendId, setFriendId] = useState('')
 
   const handleOnChange = (e) => {
     setSearchInput(e.target.value)
@@ -107,7 +110,7 @@ export default function FriendListModal({setFriendListModal}) {
             <p>친구 목록</p>
             {friendList && friendList.map((data, idx) => {
               const {email, name, photo} = data
-              return <OneFriendItem key={idx} userId={email} username={name} photoNum={photo}/>
+              return <OneFriendItem key={idx} userId={email} username={name} photoNum={photo} setOpen={() => setOpen(true)} setFriendId={() => setFriendId(email)}/>
             }
           )}
           </ListWrapper>
@@ -127,9 +130,10 @@ export default function FriendListModal({setFriendListModal}) {
           </ListWrapper>
         </ListContainer>
       </Container>
-      
       </Overlay>
     <ToastContainer />
+    {open && <ModalOverlay setOpen={() => setOpen()} email={friendId}/>}
+  
     </>
 
   )

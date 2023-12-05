@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import {ReactComponent as MainIcon} from '../../../../assets/icons/PlayerRoom/Diary/main_icon.svg'
 import UploadFrameSrc from '../../../../assets/img/PlayerRoom/upload_frame.png'
@@ -8,7 +8,7 @@ import {FiFolderPlus} from 'react-icons/fi'
 export default function StepThree({photo}) {
   const fileInput = useRef(null)
   const [selectImg, setSelectImg] = useState()
-  const {diary, setDiary} = useDiaryContext()
+  const {setDiary} = useDiaryContext()
 
   const handleChange = async (e) => {
     const {name, files} = e.target;
@@ -20,12 +20,17 @@ export default function StepThree({photo}) {
     }
   };
 
+  useEffect(() => {
+    setSelectImg(photo)
+  },[])
+
   return (
     <Content>
       <UploadBox>
         <img src={UploadFrameSrc}/>
-        {photo ? 
-          <img src={selectImg ? URL.createObjectURL(selectImg) : photo} />
+
+        {selectImg ? 
+          <img src={selectImg && URL.createObjectURL(selectImg)} />
           :
           <SelectFileBox>
             <FiFolderPlus/>

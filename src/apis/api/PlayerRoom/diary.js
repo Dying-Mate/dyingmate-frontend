@@ -24,3 +24,17 @@ export const saveDiary = async (formData) => {
     console.log(error)
   }
 }
+
+// 다이어리 수정
+export const editDiary = async (formData) => {
+  try {
+    await authInstance.patch('/funeral/modify', formData,{
+      headers: {
+        'Content-Type' : 'multipart/form-data',
+      }
+    })
+  } 
+  catch (error) {
+    console.log(error)
+  }
+}
