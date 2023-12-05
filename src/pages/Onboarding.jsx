@@ -14,7 +14,7 @@ export default function Onboarding() {
   const location = useLocation();
   const {isSocialLogin} = location.state
   const {email, pwd} = !isSocialLogin && location.state
-  const {token, setToken, setLogin} = useAuthContext()
+  const {token, setLogin, setUser} = useAuthContext()
   const baseUrl = 'https://dying-mate-server.link'
 
   useEffect(() => {
@@ -28,8 +28,13 @@ export default function Onboarding() {
         {withCredentials: true},
       )
       .then((response) => {
+        console.log(response)
+        if(response.data.message !== '성공'){
+          setIsValid(false)
+          return;
+        }
         localStorage.setItem('login-token', response.data.data.accessToken);
-        setToken(localStorage.getItem('login-token'));
+        setUser({...response.data.data})
       })
       .then(() => {
         setLogin(true)
@@ -60,6 +65,7 @@ export default function Onboarding() {
     })
     .then(() => {
       navigate('/main')       
+      setUser((user) => ({...user, 'name':userName}))
     }).catch(function (error) {
         // 오류발생시 실행
         console.log(error.message)

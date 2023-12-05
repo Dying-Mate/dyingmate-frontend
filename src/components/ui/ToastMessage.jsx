@@ -48,3 +48,27 @@ export const nullWarning = () => {
     theme: "light",
     });
 }
+
+export const resetSuccess = () => {
+  toast.success('모든 기록이 초기화되었습니다.', {
+    position: "bottom-right",
+    autoClose: 2000,
+    hideProgressBar: true,
+    closeOnClick: false,
+    pauseOnHover: true,
+    draggable: true,
+    theme: "light",
+    });
+}
+
+export const editNameSuccess = () => {
+  toast.success('이름이 변경되었습니다.', {
+    position: "bottom-right",
+    autoClose: 2000,
+    hideProgressBar: true,
+    closeOnClick: false,
+    pauseOnHover: true,
+    draggable: true,
+    theme: "light",
+    });
+}

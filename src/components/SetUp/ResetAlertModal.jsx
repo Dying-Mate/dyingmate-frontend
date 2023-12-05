@@ -2,6 +2,8 @@ import React, { useRef } from 'react'
 import styled from 'styled-components'
 import {IoMdAlert} from 'react-icons/io'
 import { resetData } from '../../apis/api/user'
+import {ToastContainer} from 'react-toastify'
+import { resetSuccess } from '../ui/ToastMessage'
 
 export default function ResetAlertModal({setOpen}) {
   const modalRef = useRef()
@@ -16,7 +18,8 @@ export default function ResetAlertModal({setOpen}) {
     resetData()
     .then((res) => {
       console.log(res)
-      navigate('/main')
+      setOpen(false)
+      resetSuccess()
     })
     .catch((error) => {
       console.log(error)
@@ -25,17 +28,20 @@ export default function ResetAlertModal({setOpen}) {
 
   
   return (
-    <Overlay>
-      <Container ref={modalRef} onClick={handleOutsideClick}>
-        <ContentWrapper>
-          <TextWrapper>
-            <div><IoMdAlert fontSize={'1.5rem'}/> 초기화 시, 모든 데이터가 사라져요.</div>
-            <p>정말로 다잉메이트를 초기화 하시겠습니까?</p>
-          </TextWrapper>
-          <ResetButton onClick={handleReset}>초기화</ResetButton>
-        </ContentWrapper>
-      </Container>
-    </Overlay>
+    <>
+      <Overlay>
+          <Container ref={modalRef} onClick={handleOutsideClick}>
+            <ContentWrapper>
+              <TextWrapper>
+                <div><IoMdAlert fontSize={'1.5rem'}/> 초기화 시, 모든 데이터가 사라져요.</div>
+                <p>정말로 다잉메이트를 초기화 하시겠습니까?</p>
+              </TextWrapper>
+              <ResetButton onClick={handleReset}>초기화</ResetButton>
+            </ContentWrapper>
+          </Container>
+      </Overlay>
+      <ToastContainer />
+    </>
   )
 }
 

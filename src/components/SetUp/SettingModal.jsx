@@ -9,6 +9,8 @@ import IconStyledButton from '../ui/IconStyledButton'
 import { editName, logout } from '../../apis/api/user'
 import {useNavigate} from 'react-router-dom'
 import ResetAlertModal from './ResetAlertModal'
+import {ToastContainer} from 'react-toastify'
+import { editNameSuccess } from '../ui/ToastMessage'
 
 export default function SettingModal({showSetup, setShowSetup}) {
   const {user} = useAuthContext();
@@ -25,6 +27,7 @@ export default function SettingModal({showSetup, setShowSetup}) {
     editName(input)
     .then((res) => {
       console.log(res)
+      editNameSuccess()
     })
     .catch((error) => {
       console.log(error)
@@ -36,6 +39,7 @@ export default function SettingModal({showSetup, setShowSetup}) {
     .then((res) => {
       console.log(res)
       navigate('/')
+      localStorage.removeItem('login-token')
     })
     .catch((error) => {
       console.log(error)
@@ -89,7 +93,9 @@ export default function SettingModal({showSetup, setShowSetup}) {
           </ContentWrapper>
         </Container>
       </Overlay>
+      
     )}
+    <ToastContainer />
     {open && <ResetAlertModal setOpen={setOpen} />}
     </>
   )
