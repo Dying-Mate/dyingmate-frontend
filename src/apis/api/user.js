@@ -1,35 +1,13 @@
 import { authInstance } from "../utils/api"
 
 // 로그인
-export const userLogin = async (email, pwd) => {
-  try {
-    await authInstance.post('user/login', {
-      email: email,
-      pwd: pwd
-    })
-  } 
-  catch (error) {
-    console.log(error)
-  }
-}
 
 // 회원가입
-export const userJoin = async (email, pwd) => {
-  try {
-    await authInstance.post('user/join', {
-      email: email,
-      pwd: pwd
-    })
-  } 
-  catch (error) {
-    console.log(error)
-  }
-}
 
-// 이메일 중복 확인
-export const checkEmail = async (email) => {
+// 사용자 이름 저장
+export const createUsername = async (username) => {
   try {
-    const {data} = await authInstance.get(`user/email/exists/${email}`)
+    const {data} =  await authInstance.post('/onboarding/username/post', {username: username})
     return data
   } 
   catch (error) {
@@ -37,11 +15,11 @@ export const checkEmail = async (email) => {
   }
 }
 
-// 사용자 이름 저장
-export const saveUsername = async (username) => {
-  try {
-    await authInstance.post(`/onboarding/${username}/save`)
-  } 
+// 사용자 이름 수정
+export const editName = async (name) => {
+  try{
+    await authInstance.patch(`user/${name}/modify`)
+  }
   catch (error) {
     console.log(error)
   }
@@ -66,32 +44,3 @@ export const resetData = async () => {
     console.log(error)
   }
 }
-
-// 지도(단계) 조회
-export const getUserMap = async () => {
-  try {
-    const {data} = await authInstance.get('/map')
-    return data
-  } 
-  catch (error) {
-    console.log(error)
-  }
-}
-
-// 지도(단계) 잠금 오픈
-export const openMap = async (stageNum) => {
-  try {
-    await authInstance.patch(`/map/open/${stageNum}`)
-  } 
-
-// 사용자 이름 수정
-export const editName = async (name) => {
-  try{
-    await authInstance.patch(`user/${name}/modify`)
-  }
-  catch (error) {
-    console.log(error)
-  }
-}
-
-

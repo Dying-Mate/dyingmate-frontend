@@ -5,8 +5,8 @@ import { ReactComponent as GoogleIcon } from '../../assets/icons/Splash/google_i
 import { ReactComponent as KakaoIcon } from '../../assets/icons/Splash/kakao_icon.svg'
 import { ReactComponent as HidePwdIcon } from '../../assets/icons/Splash/hide_pwd_icon.svg'
 import {IoMdAlert} from 'react-icons/io'
+import axios from 'axios'  
 import { useAuthContext } from '../../contexts/AuthContext';
-import { userLogin } from '../../apis/api/user';
 
 export default function LoginForm() {
   const navigate = useNavigate()
@@ -14,7 +14,7 @@ export default function LoginForm() {
   const [pwd, setPwd] = useState('')
   const [showPwd, setShowPwd] = useState()
   const [isValid, setIsValid] = useState(true)
-  const {setLogin} = useAuthContext()
+  const {user, setUser, setLogin} = useAuthContext()
 
   const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&response_type=code`
   const handleKakaoLogin = ()=>{
@@ -35,22 +35,30 @@ export default function LoginForm() {
       return
     }
 
-    userLogin(email, pwd)
-    .then((res) => {
-      console.log(res)
-      if(res.status === "OK") {
-        localStorage.setItem('login-token', res.data.accessToken);
-      }
-      else{
+    await axios.post(
+      'https://dying-mate-server.link/user/login',
+      {
+        email: email,
+        pwd: pwd  
+      },
+      {withCredentials: true},
+    )
+    .then((response) => {
+      console.log(response)
+      if(response.data.message !== '성공'){
         setIsValid(false)
+        return;
       }
+      localStorage.setItem('login-token', response.data.data.accessToken);
+      setUser({...response.data.data})
     })
     .then(() => {
       setLogin(true)
       navigate('/main')
     })
-    .catch((error) => {
-      console.log(error)
+    .catch(function (error) {
+        // 오류발생시 실행
+        console.log(error)
     })
   }
 

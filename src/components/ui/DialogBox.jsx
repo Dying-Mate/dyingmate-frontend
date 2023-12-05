@@ -4,14 +4,16 @@ import styled from 'styled-components';
 import {useNavigate} from 'react-router-dom'
 import { ReactComponent as DialogNextIcon } from '../../assets/icons/dialog_next_icon.svg'
 import { useRoomFocus } from '../../contexts/RoomFocus';
+import { useAuthContext } from '../../contexts/AuthContext';
 import {useStageContext} from '../../contexts/StageContext'
-import { openMap } from '../../apis/api/user';
+import axios from 'axios'
 
 export default function DialogBox({messageArr, stageNum}) {
   const [curMessage, setCurMessage] = useState(0);
   const [messageEnded, setMessageEnded] = useState(false);
   const {setFocus} = useRoomFocus();
   const navigate = useNavigate()
+  const {token} = useAuthContext()
   const {setComeOutRoom} = useStageContext()
 
     const handleOnClick = useCallback(() => {
@@ -24,17 +26,23 @@ export default function DialogBox({messageArr, stageNum}) {
       }
 
       if(curMessage > messageArr.length -2) {
-        openMap(stageNum+1)
-        .then((res) => {
-          console.log(res)
+        axios
+        .patch(`https://dying-mate-server.link/map/open/${stageNum+1}`, {}, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
+          withCredentials: true,
         })
-        .catch((error) => {
-          console.log(error)
+        .then((response) => {
+          console.log(response)
+            
+        }).catch(function (error) {
+            // 오류발생시 실행
+            console.log(error)
         })
-
         setTimeout(() => {
           navigate('/main')
-        }, 2000)
+        }, 3000)
         return;
       }
       setCurMessage(curMessage + 1)

@@ -9,10 +9,12 @@ import Map4 from '../assets/img/Map/map_4.png'
 import Map5 from '../assets/img/Map/map_5.png'
 
 import { useStageContext } from '../contexts/StageContext'
-import { getUserMap } from '../apis/api/user'
+import axios from 'axios'
+import { useAuthContext } from '../contexts/AuthContext'
 
 export default function MapOverlay({showMap, setShowMap}) {
   const {stage, setStage} = useStageContext()
+  const {token} = useAuthContext()
 
   // stageImg 수정 필요
   const StageInfo = [
@@ -24,15 +26,17 @@ export default function MapOverlay({showMap, setShowMap}) {
   ]
 
   useEffect(() => {
-    getUserMap()
-    .then((res) => {
+    axios.get(`https://dying-mate-server.link/map`, {
+      headers: {Authorization: 'Bearer ' + token},
+    }, )
+    .then(function (res) {
       if(res) {
         setStage(() => ({...res.data.data}))
       }
     })
-    .catch((error) => {
-      console.log(error)
-    })
+    .catch(function (error) {
+      console.log(error);
+    });
   },[])
 
 
