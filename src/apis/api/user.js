@@ -1,12 +1,13 @@
-import { authInstance } from "../utils/api"
+import { authInstance, defaultInstance } from "../utils/api"
 
 // 로그인
 export const userLogin = async (email, pwd) => {
   try {
-    await authInstance.post('user/login', {
+    const {data} = await defaultInstance.post('/user/login', {
       email: email,
       pwd: pwd
     })
+    return data
   } 
   catch (error) {
     console.log(error)
@@ -16,10 +17,11 @@ export const userLogin = async (email, pwd) => {
 // 회원가입
 export const userJoin = async (email, pwd) => {
   try {
-    await authInstance.post('user/join', {
+    const {data} = await defaultInstance.post('/user/join', {
       email: email,
       pwd: pwd
     })
+    return data
   } 
   catch (error) {
     console.log(error)
@@ -29,8 +31,7 @@ export const userJoin = async (email, pwd) => {
 // 이메일 중복 확인
 export const checkEmail = async (email) => {
   try {
-    const {data} = await authInstance.get(`user/email/exists/${email}`)
-    return data
+    return defaultInstance.get(`/user/email/exists/${email}`)
   } 
   catch (error) {
     console.log(error)
@@ -40,7 +41,7 @@ export const checkEmail = async (email) => {
 // 사용자 이름 저장
 export const saveUsername = async (username) => {
   try {
-    await authInstance.post(`/onboarding/${username}/save`)
+    return await authInstance.post(`/user/${username}/save`)
   } 
   catch (error) {
     console.log(error)
@@ -81,7 +82,7 @@ export const getUserMap = async () => {
 // 지도(단계) 잠금 오픈
 export const openMap = async (stageNum) => {
   try {
-    await authInstance.patch(`/map/open/${stageNum}`)
+    await authInstance.patch(`/map/open/${stageNum}`, {})
   } 
   catch (error) {
     console.log(error)

@@ -6,12 +6,13 @@ import { useLocation } from 'react-router-dom'
 import { useAuthContext } from '../contexts/AuthContext'
 import { DiaglogArr } from '../data/onboarding'
 import { saveUsername, userLogin } from '../apis/api/user'
+import axios from 'axios'
 
 export default function Onboarding() {
   const navigate = useNavigate()
   const [curIdx, setCurIdx] = useState(0);
   const [userName, setUserName] = useState('')
-  const {setLogin} = useAuthContext()
+  const {setLogin, setUser} = useAuthContext()
   const location = useLocation();
   const {isSocialLogin} = location.state
   const {email, pwd} = !isSocialLogin && location.state
@@ -23,14 +24,12 @@ export default function Onboarding() {
         console.log(res)
         if(res.status === "OK") {
           localStorage.setItem('login-token', res.data.accessToken);
+          setLogin(true)
+          setUser({...res.data})
         }
         else{
           setIsValid(false)
         }
-      })
-      .then(() => {
-        setLogin(true)
-        navigate('/main')
       })
       .catch((error) => {
         console.log(error)
@@ -49,13 +48,30 @@ export default function Onboarding() {
   const handleOnSubmit = async (e) => {
     e.preventDefault()
 
-    saveUsername(userName)
-    .then(() => {
-      navigate('/main')    
+    await axios.post(`https://dying-mate-server.link/user/${userName}/save`,{},{
+      headers:{
+        Authorization: `Bearer ${localStorage.getItem('login-token')}`
+      },
+      withCredentials: true
+    })
+    .then((res) => {
+      console.log(res)
+      navigate('/main')
+      setUser((user) => ({...user, 'name': res.data.data}))
     })
     .catch((error) => {
       console.log(error)
     })
+
+    // saveUsername(userName)
+    // .then((res) => {
+    //   console.log(res)
+    //   setUser((user) => ({...user, 'name': res.data.data}))
+    //   navigate('/main')    
+    // })
+    // .catch((error) => {
+    //   console.log(error)
+    // })
   }
 
   return (

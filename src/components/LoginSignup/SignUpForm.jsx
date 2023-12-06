@@ -46,7 +46,7 @@ export default function SignUpForm() {
     checkEmail(email)
     .then((res) => {
       setEmailCheckText(true)
-      setIsEmailValid(!res)
+      setIsEmailValid(!res.data)
     })
     .catch((error) => {
       console.log(error)

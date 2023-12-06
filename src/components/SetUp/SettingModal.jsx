@@ -11,6 +11,7 @@ import {useNavigate} from 'react-router-dom'
 import ResetAlertModal from './ResetAlertModal'
 import {ToastContainer} from 'react-toastify'
 import { editNameSuccess } from '../ui/ToastMessage'
+import axios from 'axios'
 
 export default function SettingModal({showSetup, setShowSetup}) {
   const {user} = useAuthContext();
@@ -24,13 +25,14 @@ export default function SettingModal({showSetup, setShowSetup}) {
   }
 
   const handleChangeName = () => {
-    editName(input)
+    axios.patch(`https://dying-mate-server.link/user/${input}/modify`, {}, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('login-token')}`
+      },
+      withCredentials: true
+    })
     .then((res) => {
       console.log(res)
-      editNameSuccess()
-    })
-    .catch((error) => {
-      console.log(error)
     })
   }
 

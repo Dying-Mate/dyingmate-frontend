@@ -6,6 +6,7 @@ import { ReactComponent as DialogNextIcon } from '../../assets/icons/dialog_next
 import { useRoomFocus } from '../../contexts/RoomFocus';
 import {useStageContext} from '../../contexts/StageContext'
 import { openMap } from '../../apis/api/user';
+import axios from 'axios'
 
 export default function DialogBox({messageArr, stageNum}) {
   const [curMessage, setCurMessage] = useState(0);
@@ -24,17 +25,19 @@ export default function DialogBox({messageArr, stageNum}) {
       }
 
       if(curMessage > messageArr.length -2) {
-        openMap(stageNum+1)
+        axios.patch(`https://dying-mate-server.link/map/open/${stageNum+1}`, {}, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('login-token')}`
+          },
+          withCredentials: true
+          
+        })
         .then((res) => {
           console.log(res)
         })
-        .catch((error) => {
-          console.log(error)
-        })
-
         setTimeout(() => {
           navigate('/main')
-        }, 2000)
+        },2000)
         return;
       }
       setCurMessage(curMessage + 1)
