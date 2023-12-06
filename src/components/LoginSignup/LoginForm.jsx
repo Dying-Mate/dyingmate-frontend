@@ -90,9 +90,6 @@ export default function LoginForm() {
           />
           <HidePwdIcon onClick={handlePwdHide}/>
         </PasswordInput>
-
-        <FindInfoText>아이디 / 비밀번호를 잊으셨나요?</FindInfoText>
-
         <LoginButton onClick={handleSubmit}>로그인</LoginButton>
         <SocialLogin>
           <p>간편하게 로그인하기</p>
@@ -192,16 +189,6 @@ const SocialLoginIcons = styled.div`
     cursor: pointer;
   }
 `
-
-const FindInfoText = styled.p`
-  display: flex;
-  justify-content: flex-end;
-  font-size: 0.9rem;
-  color: white;
-  font-weight: 300;
-  cursor: pointer;
-`
-
 
 const LoginButton = styled.button`
   width: 100%;

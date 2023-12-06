@@ -31,6 +31,9 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
+html{
+  width: fit-content;
+}
 body {
   color: #535353;
 }
