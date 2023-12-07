@@ -17,8 +17,18 @@ export default function LoginForm() {
   const {setLogin, setUser} = useAuthContext()
 
   const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&response_type=code`
+  const googleURL = `https://accounts.google.com/o/oauth2/v2/auth?
+                      response_type=code&
+                      scope=email profile&
+                      client_id=${process.env.REACT_APP_CLIENT_ID}&
+                      redirect_uri=${process.env.REACT_APP_GOOGLE_REDIRECT_URI}`
+
   const handleKakaoLogin = ()=>{
       window.location.href = kakaoURL;
+  }
+
+  const handleGoogleLogin = () => {
+    window.location.href = googleURL;
   }
 
   const handleEmail = (e) => {
@@ -94,7 +104,7 @@ export default function LoginForm() {
         <SocialLogin>
           <p>간편하게 로그인하기</p>
           <SocialLoginIcons>
-            <GoogleIcon />
+            <GoogleIcon onClick={handleGoogleLogin}/>
             <KakaoIcon onClick={handleKakaoLogin}/>
           </SocialLoginIcons>
         </SocialLogin>

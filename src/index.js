@@ -21,6 +21,7 @@ import { RoomFocusProvider } from './contexts/RoomFocus';
 import { AuthContextProvider } from './contexts/AuthContext';
 import { DiaryContextProvider } from './contexts/DiaryContext';
 import { StageContextProvider } from './contexts/StageContext';
+import GoogleAuth from './pages/GoogleAuth';
 
 
 const router = createBrowserRouter([
@@ -40,6 +41,7 @@ const router = createBrowserRouter([
       {path: '/womanroom', element: <WomanRoom/>},
       {path: '/final', element: <Final/>},
       {path: '/auth', element: <Auth/>},
+      {path: '/google/auth', element: <GoogleAuth/>},
 
     ]
   }

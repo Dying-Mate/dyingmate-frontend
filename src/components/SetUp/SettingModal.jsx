@@ -33,6 +33,7 @@ export default function SettingModal({showSetup, setShowSetup}) {
     })
     .then((res) => {
       console.log(res)
+      editNameSuccess()
     })
   }
 
