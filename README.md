@@ -7,6 +7,9 @@
   <br>
 </div>
 
+📍 2023.11.25 한국게임학회 캡스톤 경진대회 우수 논문상 수상<br><br>
+   **기사자료**<br>
+   https://www.it-b.co.kr/news/articleView.html?idxno=72174
 
   <br>
 
@@ -62,45 +65,32 @@ Dying  Mate는 죽음을 본인과는 상관없는 먼 미래로만 여기는 �
 <br>
 <br>
 
-## 구현 화면(진행중)
+## 구현 화면
 
-![image](https://github.com/Dying-Mate/dyingmate-frontend/assets/68267094/cc374a1a-9cb2-4ea5-8540-964b61352d85)
-![image](https://github.com/Dying-Mate/dyingmate-frontend/assets/68267094/999d4da3-b42d-4bb4-be42-c3cbd998e1cd)
-![image](https://github.com/Dying-Mate/dyingmate-frontend/assets/68267094/45eafd8f-b27a-40f0-b176-eb719195bd00)
-![image](https://github.com/Dying-Mate/dyingmate-frontend/assets/68267094/47c5defd-a833-4321-9193-9ff5c34b1d6a)
+![스플래시](https://github.com/lsy20140/dyingmate-frontend/assets/68267094/5fb19155-3b5d-4499-8538-f5a5736d9630)
 
-![image](https://github.com/Dying-Mate/dyingmate-frontend/assets/68267094/1b25a1bf-589f-4667-a3a7-f4452eded090)
+![ezgif com-video-to-gif-converted](https://github.com/lsy20140/dyingmate-frontend/assets/68267094/76d2b16f-dfa5-43fa-bdca-6b81948eb1d1)
 
+![ezgif com-video-to-gif-converted (2)](https://github.com/lsy20140/dyingmate-frontend/assets/68267094/b2238bd1-dbb1-4f1a-8637-f282711f5f30)
 
+![인물 방](https://github.com/lsy20140/dyingmate-frontend/assets/68267094/0253ae2f-dd0e-40eb-8025-b9474b68e3fe)
 
+![포커싱](https://github.com/lsy20140/dyingmate-frontend/assets/68267094/6f914585-26f4-48bc-8698-f1b3129163c4)
 
+![유언장 작성](https://github.com/lsy20140/dyingmate-frontend/assets/68267094/990c2686-a301-4f2b-bb7d-8157919d1c3c)
 
+![부고문자 작성](https://github.com/lsy20140/dyingmate-frontend/assets/68267094/a691f474-ad17-41fc-a1f2-176d76478d36)
 
-<img src="https://github.com/Dying-Mate/dyingmate-frontend/assets/68267094/a9dbecf5-46da-40ba-868e-8563b363251b">
+![다이어리 기능](https://github.com/lsy20140/dyingmate-frontend/assets/68267094/0e2c4926-cfde-4261-a2a3-1765c19e80aa)
 
-![image](https://github.com/Dying-Mate/dyingmate-frontend/assets/68267094/cc723bcb-93ee-4d47-91c7-a6285c2d357f)
+![포스트 추가](https://github.com/lsy20140/dyingmate-frontend/assets/68267094/01244a90-0783-45ec-bb79-7681484e8670)
 
-![image](https://github.com/Dying-Mate/dyingmate-frontend/assets/68267094/84593dc6-3819-4f33-905a-69975ad1ffef)
+![파일 포스트 추가](https://github.com/lsy20140/dyingmate-frontend/assets/68267094/475614d6-9440-4dbf-bccd-359b5a15153e)
 
+![커뮤니티 기능](https://github.com/lsy20140/dyingmate-frontend/assets/68267094/b53ee102-99b0-457a-a8fa-72ac501ccc7e)
 
-<img src="https://github.com/Dying-Mate/dyingmate-frontend/assets/68267094/ae476890-c8a1-48ef-9697-afa159848adb">
+![친구 추가](https://github.com/lsy20140/dyingmate-frontend/assets/68267094/eaf772d4-127f-4865-9a9e-91bdda392383)
 
-![image](https://github.com/Dying-Mate/dyingmate-frontend/assets/68267094/163d79c0-1625-47d5-bc99-4a5a08f4d076)
+![수락 열람](https://github.com/lsy20140/dyingmate-frontend/assets/68267094/2935cac0-f185-4d44-aa22-a47e14e367cb)
 
-![image](https://github.com/Dying-Mate/dyingmate-frontend/assets/68267094/217b6859-9dda-48bc-8813-da3a3fe2e520)
-
-
-![image](https://github.com/Dying-Mate/dyingmate-frontend/assets/68267094/45826bac-a4d9-48a9-ba10-234471658959)
-
-![image](https://github.com/Dying-Mate/dyingmate-frontend/assets/68267094/eb655dab-a5e1-4688-907c-ed72a0c1da2e)
-
-<img src="https://github.com/Dying-Mate/dyingmate-frontend/assets/68267094/001f041c-fac3-4f72-9a03-764a4d364baf">
-
-<img src="https://github.com/Dying-Mate/dyingmate-frontend/assets/68267094/8c024919-0099-4277-94bc-f0c1a0e2101c">
-
-![image](https://github.com/Dying-Mate/dyingmate-frontend/assets/68267094/f37c4cac-8415-4d62-b057-ee3f118faae0)
-
-
-
-
-
+![엔딩보기](https://github.com/lsy20140/dyingmate-frontend/assets/68267094/485137ba-02c0-4cec-8f10-14261f201614)
